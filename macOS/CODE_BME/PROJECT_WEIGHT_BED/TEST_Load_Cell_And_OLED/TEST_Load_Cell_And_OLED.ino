@@ -1,112 +1,235 @@
 #include <HX711_ADC.h>
-#if defined(ESP8266)|| defined(ESP32) || defined(AVR)
+#if defined(ESP8266) || defined(ESP32) || defined(AVR)
 #include <EEPROM.h>
 #endif
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal_I2C.h> 
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-//pins:
-const int HX711_dout_1 = A2; //mcu > HX711 no 1 dout pin
-const int HX711_sck_1 = A3; //mcu > HX711 no 1 sck pin
-const int HX711_dout_2 = A4; //mcu > HX711 no 2 dout pin
-const int HX711_sck_2 = A5; //mcu > HX711 no 2 sck pin
+const int HX711_dout[] = {A1, A3};
+const int HX711_sck[] = {A2, A4};
 
-//HX711 constructor (dout pin, sck pin)
-HX711_ADC LoadCell_1(HX711_dout_1, HX711_sck_1); //HX711 1
-HX711_ADC LoadCell_2(HX711_dout_2, HX711_sck_2); //HX711 2
+HX711_ADC LoadCell1(HX711_dout[0], HX711_sck[0]);
+HX711_ADC LoadCell2(HX711_dout[1], HX711_sck[1]);
 
-const int calVal_eepromAdress_1 = 0; // eeprom adress for calibration value load cell 1 (4 bytes)
-const int calVal_eepromAdress_2 = 4; // eeprom adress for calibration value load cell 2 (4 bytes)
-unsigned long t = 0;
+const int calVal_eepromAdress[] = {0, sizeof(float)};
+const int sampleSize = 100;  // จำนวนค่าวัดน้ำหนักที่จะเก็บ
 
-
-float calibrationValue_1; // calibration value load cell 1
-float calibrationValue_2; // calibration value load cell 2
+float weightBuffer[sampleSize];  // อาร์เรย์เก็บค่าน้ำหนัก
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(57600);
   delay(10);
-  Serial.println();
-  Serial.println("Starting...");
-  // initialize the LCD
+  
   lcd.begin();
-
-  // Turn on the blacklight and print a message.
   lcd.backlight();
-  lcd.print("");
-  lcd.print("Starting...");
-  delay(1000);
-  calibrationValue_1 = 696.0; // uncomment this if you want to set this value in the sketch
-  calibrationValue_2 = 733.0; // uncomment this if you want to set this value in the sketch
-#if defined(ESP8266) || defined(ESP32)
-  //EEPROM.begin(512); // uncomment this if you use ESP8266 and want to fetch the value from eeprom
-#endif
-  //EEPROM.get(calVal_eepromAdress_1, calibrationValue_1); // uncomment this if you want to fetch the value from eeprom
-  //EEPROM.get(calVal_eepromAdress_2, calibrationValue_2); // uncomment this if you want to fetch the value from eeprom
+  
+  Serial.println("Starting...");
 
-  LoadCell_1.begin();
-  LoadCell_2.begin();
-  //LoadCell_1.setReverseOutput();
-  //LoadCell_2.setReverseOutput();
-  unsigned long stabilizingtime = 2000; // tare preciscion can be improved by adding a few seconds of stabilizing time
-  boolean _tare = true; //set this to false if you don't want tare to be performed in the next step
-  byte loadcell_1_rdy = 0;
-  byte loadcell_2_rdy = 0;
-  while ((loadcell_1_rdy + loadcell_2_rdy) < 2) { //run startup, stabilization and tare, both modules simultaniously
-    if (!loadcell_1_rdy) loadcell_1_rdy = LoadCell_1.startMultiple(stabilizingtime, _tare);
-    if (!loadcell_2_rdy) loadcell_2_rdy = LoadCell_2.startMultiple(stabilizingtime, _tare);
-  }
-  if (LoadCell_1.getTareTimeoutFlag()) {
-    Serial.println("Timeout, check MCU>HX711 no.1 wiring and pin designations");
-  }
-  if (LoadCell_2.getTareTimeoutFlag()) {
-    Serial.println("Timeout, check MCU>HX711 no.2 wiring and pin designations");
-  }
-  LoadCell_1.setCalFactor(calibrationValue_1); // user set calibration value (float)
-  LoadCell_2.setCalFactor(calibrationValue_2); // user set calibration value (float)
-  lcd.print("");
-  lcd.print("Startup is complete");
+  checkEEPROM();
+
+  setupLoadCell(LoadCell1, calVal_eepromAdress[0], "Load Cell 1");
+  setupLoadCell(LoadCell2, calVal_eepromAdress[1], "Load Cell 2");
+
+  Serial.println("Startup complete");
 }
 
 void loop() {
-  static boolean newDataReady = 0;
-  const int serialPrintInterval = 0; //increase value to slow down serial print activity
+  // เก็บค่าเฉลี่ยน้ำหนักหลังจากวัด 500 ครั้ง
+  float weight1 = getStableWeight(LoadCell1, "Load Cell 1");
+  float weight2 = getStableWeight(LoadCell2, "Load Cell 2");
 
-  // check for new data/start next conversion:
-  if (LoadCell_1.update()) newDataReady = true;
-  LoadCell_2.update();
+  float totalWeight = weight1 + weight2;
 
-  //get smoothed value from data set
-  if ((newDataReady)) {
-    if (millis() > t + serialPrintInterval) {
-      float a = LoadCell_1.getData();
-      float b = LoadCell_2.getData();
-      Serial.print("Load_cell 1 output val: ");
-      Serial.print(a);
-      Serial.print("    Load_cell 2 output val: ");
-      Serial.println(b);
-      newDataReady = 0;
-      t = millis();
-    }
-  }
+  Serial.print("Total Weight: ");
+  Serial.println(totalWeight);
 
-  // receive command from serial terminal, send 't' to initiate tare operation:
+  lcd.setCursor(0, 0);
+  lcd.print("Total Weight: ");
+  lcd.setCursor(0, 1);
+  lcd.print(totalWeight);
+
   if (Serial.available() > 0) {
     char inByte = Serial.read();
-    if (inByte == 't') {
-      LoadCell_1.tareNoDelay();
-      LoadCell_2.tareNoDelay();
+    if (inByte == 'c') startCalibration();  // เรียกฟังก์ชัน Calibration
+    else if (inByte == 'v') checkEEPROM();  // ตรวจสอบ EEPROM
+  }
+}
+
+void setupLoadCell(HX711_ADC &LoadCell, int eepromAddr, const char *label) {
+  LoadCell.begin();
+  LoadCell.start(2000, true);
+
+  if (LoadCell.getTareTimeoutFlag() || LoadCell.getSignalTimeoutFlag()) {
+    Serial.println("Timeout, check wiring and pin assignments");
+    while (1);
+  }
+
+  float calVal;
+  EEPROM.get(eepromAddr, calVal);
+
+  if (calVal != 0) {
+    LoadCell.setCalFactor(calVal);
+    Serial.print(label);
+    Serial.print(" Calibration value from EEPROM: ");
+    Serial.println(calVal);
+  } else {
+    Serial.print(label);
+    Serial.println(" No valid calibration value found. Starting calibration...");
+    calibrate(LoadCell, eepromAddr, label);
+  }
+}
+
+float getStableWeight(HX711_ADC &LoadCell, const char *label) {
+  float sum = 0.0;
+
+  // เก็บค่าน้ำหนัก 100 ครั้งและหาค่าเฉลี่ย
+  for (int i = 0; i < sampleSize; i++) {
+    while (!LoadCell.update());  // รอจนกว่าจะมีข้อมูลอัปเดต
+    float weight = LoadCell.getData();
+    weightBuffer[i] = weight;  // เก็บน้ำหนักในอาร์เรย์
+    sum += weight;  // สะสมค่าน้ำหนัก
+  }
+
+  float averageWeight = sum / sampleSize;  // หาค่าเฉลี่ย
+  
+  // ตรวจสอบและแก้ไขกรณีที่ค่าน้ำหนักเป็นลบ
+  if (averageWeight < 0) {
+    averageWeight = 0.0;  // กำหนดให้เป็น 0 แทน
+  }
+
+  Serial.print(label);
+  Serial.print(" Average Weight: ");
+  Serial.println(averageWeight);
+
+  return averageWeight;  // คืนค่าเฉลี่ยเพื่อแสดงผล
+}
+
+void startCalibration() {
+  Serial.println("Starting Calibration for All Load Cells...");
+
+  // ถามผู้ใช้ว่าต้องการล้างข้อมูลใน EEPROM หรือไม่
+  Serial.println("Do you want to clear EEPROM? (y/n)");
+  bool clearConfirmed = false;
+  while (!clearConfirmed) {
+    if (Serial.available() > 0) {
+      char inByte = Serial.read();
+      if (inByte == 'y') {
+        clearEEPROM();  // ล้างข้อมูลใน EEPROM
+        clearConfirmed = true;
+      } else if (inByte == 'n') {
+        Serial.println("EEPROM not cleared.");
+        clearConfirmed = true;
+      }
     }
   }
 
-  //check if last tare operation is complete
-  if (LoadCell_1.getTareStatus() == true) {
-    Serial.println("Tare load cell 1 complete");
-  }
-  if (LoadCell_2.getTareStatus() == true) {
-    Serial.println("Tare load cell 2 complete");
+  // เริ่มปรับเทียบ Load Cell ทั้งสองตัว
+  calibrate(LoadCell1, calVal_eepromAdress[0], "Load Cell 1");
+  calibrate(LoadCell2, calVal_eepromAdress[1], "Load Cell 2");
+
+  Serial.println("*** All Load Cells Calibrated Successfully ***");
+}
+
+void calibrate(HX711_ADC &LoadCell, int eepromAddr, const char *label) {
+  Serial.print("*** Calibrating ");
+  Serial.println(label);
+
+  // ทำการ Tare เพื่อล้างน้ำหนักปัจจุบัน
+  Serial.println("Remove all weight from the Load Cell and send 't' to tare.");
+  bool tareComplete = false;
+  while (!tareComplete) {
+    LoadCell.update();
+    if (Serial.available() > 0) {
+      char inByte = Serial.read();
+      if (inByte == 't') {
+        LoadCell.tareNoDelay();
+        Serial.println("Taring in progress...");
+      }
+    }
+
+    if (LoadCell.getTareStatus()) {
+      Serial.println("Tare complete!");
+      tareComplete = true;
+    }
   }
 
+  // รอผู้ใช้ใส่น้ำหนักที่รู้ค่าแน่นอน
+  Serial.println("Place known mass on the Load Cell and send the weight (e.g., 100.0):");
+  float known_mass = getUserInputFloat();
+  LoadCell.refreshDataSet();
+  float newCalVal = LoadCell.getNewCalibration(known_mass);
+
+  Serial.print("New Calibration Value: ");
+  Serial.println(newCalVal);
+
+  // ถามผู้ใช้ว่าจะบันทึกค่าปรับเทียบลงใน EEPROM หรือไม่
+  Serial.println("Save this calibration value to EEPROM? (y/n)");
+  bool saveConfirmed = false;
+  while (!saveConfirmed) {
+    if (Serial.available() > 0) {
+      char inByte = Serial.read();
+      if (inByte == 'y') {
+        saveToEEPROM(eepromAddr, newCalVal);
+        saveConfirmed = true;
+      } else if (inByte == 'n') {
+        Serial.println("Calibration value not saved.");
+        saveConfirmed = true;
+      }
+    }
+  }
+
+  Serial.println("*** Calibration Complete ***");
+}
+
+float getUserInputFloat() {
+  while (true) {
+    if (Serial.available() > 0) {
+      float input = Serial.parseFloat();
+      if (input != 0) return input;
+    }
+  }
+}
+
+void saveToEEPROM(int addr, float value) {
+  EEPROM.put(addr, value);
+#if defined(ESP8266) || defined(ESP32)
+  EEPROM.commit();
+#endif
+  Serial.print("Saved to EEPROM address: ");
+  Serial.println(addr);
+}
+
+void clearEEPROM() {
+  Serial.println("Clearing all EEPROM data...");
+  for (int i = 0; i < EEPROM.length(); i++) {
+    EEPROM.write(i, 0);
+  }
+#if defined(ESP8266) || defined(ESP32)
+  EEPROM.commit();
+#endif
+  Serial.println("EEPROM cleared.");
+}
+
+void checkEEPROM() {
+  bool hasData = false;
+
+  for (int i = 0; i < sizeof(calVal_eepromAdress) / sizeof(calVal_eepromAdress[0]); i++) {
+    float value;
+    EEPROM.get(calVal_eepromAdress[i], value);
+
+    if (value != 0) {
+      hasData = true;
+      Serial.print("EEPROM Data at Address ");
+      Serial.print(calVal_eepromAdress[i]);
+      Serial.print(": ");
+      Serial.println(value);
+    }
+  }
+
+  if (!hasData) {
+    Serial.println("No valid calibration data found. Starting calibration...");
+    startCalibration();
+  }
 }
