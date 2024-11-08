@@ -6,7 +6,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 def transcribe_audio(file_path, language="en"):
-    model = whisper.load_model("turbo")
+    model = whisper.load_model("large")
     transcription = model.transcribe(file_path, language=language)
     return transcription["text"]
 
