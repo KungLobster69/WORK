@@ -41,9 +41,9 @@ static int recordCallback(const void *inputBuffer, void *outputBuffer,
 
 void transcribe_with_whisper(const char* audio_file, const char* language) {
     char command[256];
-    snprintf(command, sizeof(command), "python whisper_transcribe.py %s %s", audio_file, language);
+    snprintf(command, sizeof(command), "python3 whisper_transcribe.py %s %s", audio_file, language); // เปลี่ยนเป็น python3
     printf("Starting Whisper transcription...\n");
-    int result = system(command); // Run the Python script for transcription
+    int result = system(command);
     if (result == -1) {
         fprintf(stderr, "Error executing Whisper transcription.\n");
     } else {
