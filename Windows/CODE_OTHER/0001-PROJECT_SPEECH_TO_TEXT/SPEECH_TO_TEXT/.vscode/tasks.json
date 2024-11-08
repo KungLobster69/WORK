@@ -2,21 +2,25 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build C program",
+      "label": "build C program with PortAudio and libsndfile",
       "type": "shell",
       "command": "gcc",
       "args": [
         "-g",
         "${file}",
         "-o",
-        "${fileDirname}/${fileBasenameNoExtension}.exe"
+        "${fileDirname}/${fileBasenameNoExtension}.exe",
+        "-IC:/Development/msys64/mingw64/include",
+        "-LC:/Development/msys64/mingw64/lib",
+        "-lportaudio",
+        "-lsndfile"
       ],
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "problemMatcher": ["$gcc"],
-      "detail": "Generated task by user"
+      "detail": "Generated task to compile C program with PortAudio and libsndfile support"
     }
   ]
 }
