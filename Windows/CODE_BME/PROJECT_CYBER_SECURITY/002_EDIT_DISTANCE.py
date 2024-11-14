@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
 import os
 
@@ -32,27 +31,23 @@ def optimized_edit_distance(str1, str2):
 def save_progress(distance_matrix, current_i, current_j, save_path, checkpoint_path):
     # Save the current state of the matrix and parameters
     np.save(save_path, distance_matrix)
-    np.savez(checkpoint_path, i=current_i, j=current_j)
-    print(f"Progress saved: current pair ({current_i}, {current_j}) saved to {save_path} and {checkpoint_path}")
+    np.savez(checkpoint_path, current_i=current_i, current_j=current_j)
+    print(f"Saved at ({current_i}, {current_j})")
 
 def load_progress(save_path, checkpoint_path):
     # Load saved matrix and parameters if they exist
     if os.path.exists(save_path) and os.path.exists(checkpoint_path):
         distance_matrix = np.load(save_path)
         checkpoint_data = np.load(checkpoint_path)
-        return distance_matrix, checkpoint_data['i'], checkpoint_data['j']
+        
+        # ตรวจสอบว่าคีย์ current_i และ current_j มีอยู่หรือไม่
+        if 'current_i' in checkpoint_data and 'current_j' in checkpoint_data:
+            return distance_matrix, int(checkpoint_data['current_i']), int(checkpoint_data['current_j'])
+        else:
+            print("Checkpoint keys not found, starting from the beginning.")
+            return None, 0, 0
     else:
         return None, 0, 0
-
-def calculate_pairwise_distance(i, j, strings, distance_matrix, dataset_name, save_path, checkpoint_path):
-    # Save progress immediately when starting a new calculation
-    save_progress(distance_matrix, i, j, save_path, checkpoint_path)
-    
-    # คำนวณระยะห่างและจัดเก็บใน matrix
-    distance = optimized_edit_distance(strings[i], strings[j])
-    distance_matrix[i, j] = distance
-    distance_matrix[j, i] = distance
-    print(f"Distance between items {i} and {j} in {dataset_name} Done !!!")
 
 def calculate_distance_matrix(strings, save_path, checkpoint_path, dataset_name):
     print(f"Starting calculation for {dataset_name} dataset...")
@@ -62,17 +57,19 @@ def calculate_distance_matrix(strings, save_path, checkpoint_path, dataset_name)
     if distance_matrix is None:
         distance_matrix = np.zeros((len(strings), len(strings)))
 
-    # ใช้ ThreadPoolExecutor เพื่อคำนวณคู่สตริงพร้อมกัน
-    with ThreadPoolExecutor() as executor:
-        futures = []
-        for i in range(start_i, len(strings)):
-            for j in range(start_j if i == start_i else 0, len(strings)):
-                futures.append(executor.submit(calculate_pairwise_distance, i, j, strings, distance_matrix, dataset_name, save_path, checkpoint_path))
-            start_j = 0  # Reset start_j after the first row
+    # คำนวณทีละคู่และบันทึกสถานะทันทีหลังคำนวณเสร็จในแต่ละคู่
+    for i in range(start_i, len(strings)):
+        for j in range(start_j if i == start_i else 0, len(strings)):
+            if i != j:  # ข้ามคู่เดียวกันเอง
+                # คำนวณระยะห่าง
+                distance = optimized_edit_distance(strings[i], strings[j])
+                distance_matrix[i, j] = distance
+                distance_matrix[j, i] = distance
+                print(f"Distance between items {i} and {j} in {dataset_name} calculated")
 
-        # รอให้ทุกคู่คำนวณเสร็จ
-        for future in futures:
-            future.result()
+                # Save progress after each pair calculation
+                save_progress(distance_matrix, i, j, save_path, checkpoint_path)
+        start_j = 0  # Reset start_j after the first row
 
     # บันทึก distance_matrix สุดท้ายลงในไฟล์
     np.save(save_path, distance_matrix)
