@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import ProcessPoolExecutor
 from rapidfuzz.distance import Levenshtein
 from threading import Lock
+import sys
 
 # ระบุพาธของไฟล์ JSON สำหรับ benign และ malware
 benign_train_path = r'C:\Users\BMEI CMU\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT\01.TRAIN_TEST_SET\benign_train.json'
@@ -49,9 +50,8 @@ def calculate_pairwise_edit_distance_single(strings, save_path, checkpoint_path,
         for i in range(n):
             for j in range(i + 1, n):  # คำนวณเฉพาะครึ่งบนของเมทริกซ์
                 if distance_matrix[i, j] == 0:  # คำนวณเฉพาะที่ยังไม่ได้คำนวณ
-                    
-                    # แสดงคู่ที่กำลังคำนวณ
-                    print(f"Calculating Edit Distance for pair: ({i}, {j})")
+                    # แสดงคู่ที่กำลังคำนวณในบรรทัดเดิม (ไม่รบกวน progress bar)
+                    tqdm.write(f"Calculating Edit Distance for pair: ({i}, {j})")
 
                     # คำนวณ Edit Distance
                     distance_matrix[i, j] = distance_matrix[j, i] = Levenshtein.distance(strings[i], strings[j])
