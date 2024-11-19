@@ -49,6 +49,10 @@ def calculate_pairwise_edit_distance_single(strings, save_path, checkpoint_path,
         for i in range(n):
             for j in range(i + 1, n):  # คำนวณเฉพาะครึ่งบนของเมทริกซ์
                 if distance_matrix[i, j] == 0:  # คำนวณเฉพาะที่ยังไม่ได้คำนวณ
+                    
+                    # แสดงคู่ที่กำลังคำนวณ
+                    print(f"Calculating Edit Distance for pair: ({i}, {j})")
+
                     # คำนวณ Edit Distance
                     distance_matrix[i, j] = distance_matrix[j, i] = Levenshtein.distance(strings[i], strings[j])
                     
