@@ -44,14 +44,22 @@ def calculate_pairwise_edit_distance_single(strings, save_path, checkpoint_path,
 
     save_interval = 100  # บันทึกผลทุกๆ n คู่ที่คำนวณเสร็จ
 
-    overall_progress = tqdm(total=total_calculations, unit="pair", desc=f"{dataset_name} Progress", unit_scale=True, initial=current_progress)
+    # สร้าง progress bar
+    overall_progress = tqdm(
+        total=total_calculations, 
+        unit="pair", 
+        desc=f"{dataset_name} Progress", 
+        unit_scale=True, 
+        initial=current_progress,
+        dynamic_ncols=True  # ปรับขนาดอัตโนมัติ
+    )
 
     try:
         for i in range(n):
             for j in range(i + 1, n):  # คำนวณเฉพาะครึ่งบนของเมทริกซ์
                 if distance_matrix[i, j] == 0:  # คำนวณเฉพาะที่ยังไม่ได้คำนวณ
-                    # แสดงคู่ที่กำลังคำนวณในบรรทัดเดิม (ไม่รบกวน progress bar)
-                    tqdm.write(f"Calculating Edit Distance for pair: ({i}, {j})")
+                    # อัปเดตคำอธิบาย progress bar
+                    overall_progress.set_description(f"Calculating Edit Distance for pair: ({i}, {j}) {dataset_name} Progress")
 
                     # คำนวณ Edit Distance
                     distance_matrix[i, j] = distance_matrix[j, i] = Levenshtein.distance(strings[i], strings[j])
@@ -67,6 +75,10 @@ def calculate_pairwise_edit_distance_single(strings, save_path, checkpoint_path,
     finally:
         # ปิด bar ความคืบหน้ารวมเมื่อเสร็จสิ้น
         overall_progress.close()
+
+    # บันทึกผลลัพธ์ครั้งสุดท้าย
+    np.save(save_path, distance_matrix)
+    print(f"{dataset_name} matrix saved successfully at {save_path}")
 
     # บันทึกผลลัพธ์ครั้งสุดท้าย
     np.save(save_path, distance_matrix)
