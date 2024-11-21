@@ -57,7 +57,6 @@ def check_microphone_status(input_device_index=None, threshold=100):
         
         data = stream.read(1024, exception_on_overflow=False)
         audio_data = np.frombuffer(data, dtype=np.int16)
-
         if np.max(np.abs(audio_data)) > threshold:
             status = True
         else:
@@ -71,7 +70,7 @@ def check_microphone_status(input_device_index=None, threshold=100):
         audio.terminate()
 
 # check_speech_presence
-def check_speech_presence(input_device_index=None, threshold=400, chunk=1024, duration=None):
+def check_speech_presence(input_device_index=None, threshold=2000, chunk=1024, duration=None):
     audio = pyaudio.PyAudio()
     try:
         rate = int(audio.get_device_info_by_index(input_device_index)["defaultSampleRate"])
@@ -128,7 +127,6 @@ def transcribe_audio(filename, model):
     result = model.transcribe(filename, language="en")
     text = result.get("text", "").strip().lower()
     print(f"Transcribed Text: {text}")  
-    os.remove(filename)
     return text
 
 # Save command to .txt file
@@ -136,10 +134,10 @@ def save_command_to_file(command, output_file):
     with open(output_file, 'w') as f: 
         f.write(f"{command}\n")
 
-def listen_for_commands(wake_word, model, output_file="command_output.txt", input_device_index=None, duration=2):
-
+def listen_for_commands(wake_word, model, output_file="command_output.txt", input_device_index=None, duration=2, command_timeout=30):
     last_microphone_status = True  
-    
+    command_start_time = None 
+
     while True:
         current_status = check_microphone_status(input_device_index=input_device_index)
         
@@ -162,36 +160,52 @@ def listen_for_commands(wake_word, model, output_file="command_output.txt", inpu
 
         # Check for wake word
         if wake_word in audio_text:
-            response = f"Yse sir!. I'm ready for your command."
+            response = f"Yes sir! I'm ready for your command."
             text_to_speech(response)
 
+            command_start_time = time.time() 
+
             while True:
+                elapsed_time = time.time() - command_start_time
+                if elapsed_time > command_timeout:
+                    text_to_speech("Timeout. No command received.")
+                    break 
+
+                if not check_speech_presence(input_device_index=input_device_index, duration=1):
+                    continue  
+                
                 # Listen for command
                 record_audio(duration=duration, input_device_index=input_device_index)
                 command_text = transcribe_audio("temp_audio.wav", model)
 
                 # Check for specific commands
-                if "turn on" in command_text:
-                    response = "Turning on the system."
+                if "start" in command_text:
+                    response = "Start the system."
                     text_to_speech(response)
-                    save_command_to_file("turn on", output_file)
+                    save_command_to_file("Start", output_file)
                     break  
 
-                elif "turn off" in command_text:
-                    response = "Turning off the system."
+                elif "stop" in command_text:
+                    response = "Stop the system."
                     text_to_speech(response)
-                    save_command_to_file("turn off", output_file)
+                    save_command_to_file("Stop", output_file)
+                    break  
+
+                elif "hold on" in command_text:
+                    response = "Hold on the system."
+                    text_to_speech(response)
+                    save_command_to_file("Hold", output_file)
                     break  
 
                 else:
-                    response = "Sorry! Command not recognized. Please try again."
+                    response = "Sorry! Please try again."
                     text_to_speech(response)
         else:
-            response = "Sorry!. Please say it again."
+            response = "Sorry! Please say it again."
             text_to_speech(response)
 
 # Load Whisper model
-whisper_model = whisper.load_model("small")
+whisper_model = whisper.load_model("medium")
 
 # Find microphone
 mic_info = find_microphone()
