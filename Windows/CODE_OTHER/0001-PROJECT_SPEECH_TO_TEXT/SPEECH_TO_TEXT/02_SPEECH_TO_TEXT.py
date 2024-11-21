@@ -5,6 +5,7 @@ import os
 import pyttsx3
 import whisper
 import numpy as np
+import time
 
 # Suppress specific warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -17,13 +18,38 @@ def text_to_speech(message, rate=150):
     engine.say(message)
     engine.runAndWait()
 
-# Find specific microphone
-def find_microphone():
-    microphone_names = ["Microphone (BY Y02)", "USB Audio Device", "Built-in Microphone"]
+# Load microphone names from a .txt file or reset to default
+def load_microphone_names_from_txt(filename="microphone_names.txt"):
+    default_microphone_names = []
+    try:
+        with open(filename, 'r') as file:
+            # Read lines and strip newline characters
+            names = [line.strip() for line in file.readlines()]
+            if not names:  # If file exists but is empty
+                print("Microphone list is empty. Resetting to default names.")
+                save_microphone_names_to_txt(default_microphone_names, filename)
+                return default_microphone_names
+            return names
+    except FileNotFoundError:
+        # If file doesn't exist, create it with default names
+        print(f"No microphone names file found. Creating {filename} with default names.")
+        save_microphone_names_to_txt(default_microphone_names, filename)
+        return default_microphone_names
+
+# Save microphone names to a .txt file
+def save_microphone_names_to_txt(names, filename="microphone_names.txt"):
+    with open(filename, 'w') as file:
+        for name in names:
+            file.write(f"{name}\n")
+
+def find_or_select_microphone():
+    global microphone_names
+    microphone_names = load_microphone_names_from_txt()  # Load names from .txt
     audio = pyaudio.PyAudio()
     device_info = None
 
     try:
+        # Check if predefined microphones exist
         for i in range(audio.get_device_count()):
             info = audio.get_device_info_by_index(i)
             for mic_name in microphone_names:
@@ -33,12 +59,47 @@ def find_microphone():
             if device_info:
                 break
 
+        if not device_info:  # If no predefined microphone is found
+            print("No predefined microphone found. Searching for available microphones...")
+            text_to_speech("No predefined microphone found. Please select a microphone.")
+
+            available_microphones = []
+            for i in range(audio.get_device_count()):
+                info = audio.get_device_info_by_index(i)
+                if info.get('maxInputChannels', 0) > 0:
+                    available_microphones.append((i, info.get('name', 'Unknown')))
+
+            if not available_microphones:
+                text_to_speech("No microphones available. Please check your device.")
+                return None
+
+            # List available microphones
+            print("Available Microphones:")
+            for index, (i, name) in enumerate(available_microphones):
+                print(f"{index + 1}. {name}")
+
+            # User selects a microphone
+            while True:
+                try:
+                    choice = int(input("Select a microphone by number: ")) - 1
+                    if 0 <= choice < len(available_microphones):
+                        selected_index, selected_name = available_microphones[choice]
+                        text_to_speech(f"You selected {selected_name}. Saving this microphone.")
+                        if selected_name not in microphone_names:
+                            microphone_names.append(selected_name)  # Add name to the list
+                            save_microphone_names_to_txt(microphone_names)  # Save updated names to .txt
+                        device_info = audio.get_device_info_by_index(selected_index)
+                        break
+                    else:
+                        print("Invalid choice. Please try again.")
+                except ValueError:
+                    print("Please enter a valid number.")
+
         if device_info:
-            text_to_speech("Microphone connected. The system is ready to use.") 
+            text_to_speech("Microphone connected. The system is ready to use.")
             return device_info
         else:
-            message = "No predefined microphone found. Please check your device."
-            text_to_speech(message)
+            text_to_speech("No suitable microphone found.")
             return None
     finally:
         audio.terminate()
@@ -205,10 +266,10 @@ def listen_for_commands(wake_word, model, output_file="command_output.txt", inpu
             text_to_speech(response)
 
 # Load Whisper model
-whisper_model = whisper.load_model("medium")
+whisper_model = whisper.load_model("small")
 
 # Find microphone
-mic_info = find_microphone()
+mic_info = find_or_select_microphone()
 if mic_info:
     listen_for_commands(wake_word="computer", model=whisper_model, input_device_index=mic_info["index"])
 else:
