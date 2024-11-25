@@ -1,10 +1,10 @@
-addpath('D:\G6PD\Dataset1\GT\')
-addpath('D:\G6PD\Dataset1\')
+addpath('C:\Users\BMEI CMU\Documents\G6PD\Dataset\GT\')
+addpath('C:\Users\BMEI CMU\Documents\G6PD\Dataset\')
 clear, clc
 close all
 areas = zeros(59,10);
 results = zeros(59,4);
-for i=1:59
+for i=1%:59
     %% read image amd do some pre-process
     GT1 = imread([num2str(i) '-15.tif']); %rgb with ground truth
     RGB = imread([num2str(i) '-15.png']); %rgb without ground truth
@@ -65,6 +65,6 @@ for i=1:59
      results(i,:) = [Mean_control,var_control,Mean_test,var_test];
 
 
-    % figure,subplot(1,2,1),imshow(control_img,[]),title(num2str(Mean_control))
+    figure,subplot(1,2,1),imshow(control_img,[]),title(num2str(Mean_control))
     % subplot(1,2,2),imshow(test_img,[]),title(num2str(Mean_test))
 end
