@@ -18,6 +18,12 @@ def text_to_speech(message, rate=150):
     engine.say(message)
     engine.runAndWait()
 
+# Save microphone names to a .txt file
+def save_microphone_names_to_txt(names, filename="microphone_names.txt"):
+    with open(filename, 'w') as file:
+        for name in names:
+            file.write(f"{name}\n")
+
 # Load microphone names from a .txt file or reset to default
 def load_microphone_names_from_txt(filename="microphone_names.txt"):
     default_microphone_names = []
@@ -35,12 +41,6 @@ def load_microphone_names_from_txt(filename="microphone_names.txt"):
         print(f"No microphone names file found. Creating {filename} with default names.")
         save_microphone_names_to_txt(default_microphone_names, filename)
         return default_microphone_names
-
-# Save microphone names to a .txt file
-def save_microphone_names_to_txt(names, filename="microphone_names.txt"):
-    with open(filename, 'w') as file:
-        for name in names:
-            file.write(f"{name}\n")
 
 def find_or_select_microphone():
     global microphone_names
@@ -104,8 +104,8 @@ def find_or_select_microphone():
     finally:
         audio.terminate()
 
-# Check microphone status
-def check_microphone_status(input_device_index=None, threshold=100):
+# Check microphone status with separate audio file saving
+def check_microphone_status(input_device_index=None, threshold=10, filename="mic_status.wav"):
     audio = pyaudio.PyAudio()
     try:
         rate = int(audio.get_device_info_by_index(input_device_index)["defaultSampleRate"])
@@ -118,6 +118,14 @@ def check_microphone_status(input_device_index=None, threshold=100):
         
         data = stream.read(1024, exception_on_overflow=False)
         audio_data = np.frombuffer(data, dtype=np.int16)
+        
+        # Save audio to file
+        with wave.open(filename, 'wb') as wf:
+            wf.setnchannels(1)
+            wf.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
+            wf.setframerate(rate)
+            wf.writeframes(data)
+        
         if np.max(np.abs(audio_data)) > threshold:
             status = True
         else:
@@ -130,8 +138,8 @@ def check_microphone_status(input_device_index=None, threshold=100):
     finally:
         audio.terminate()
 
-# check_speech_presence
-def check_speech_presence(input_device_index=None, threshold=2000, chunk=1024, duration=None):
+# Check speech presence with separate audio file saving
+def check_speech_presence(input_device_index=None, threshold=2000, chunk=1024, duration=None, filename="speech_presence.wav"):
     audio = pyaudio.PyAudio()
     try:
         rate = int(audio.get_device_info_by_index(input_device_index)["defaultSampleRate"])
@@ -141,21 +149,38 @@ def check_speech_presence(input_device_index=None, threshold=2000, chunk=1024, d
                             input=True,
                             input_device_index=input_device_index,
                             frames_per_buffer=chunk)
-
-        for _ in range(0, int(44100 / chunk * duration)):
+        
+        frames = []
+        for _ in range(0, int(rate / chunk * duration)):
             data = stream.read(chunk, exception_on_overflow=False)
+            frames.append(data)
             audio_data = np.frombuffer(data, dtype=np.int16)
             if np.max(np.abs(audio_data)) > threshold:
-                return True  
-        return False 
+                speech_detected = True
+                break
+        else:
+            speech_detected = False
+        
+        # Save audio to file
+        with wave.open(filename, 'wb') as wf:
+            wf.setnchannels(1)
+            wf.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
+            wf.setframerate(rate)
+            wf.writeframes(b''.join(frames))
+        
+        stream.close()
+        return speech_detected
     except Exception as e:
         return False
     finally:
         stream.close()
         audio.terminate()
 
-# Audio recording function
-def record_audio(filename="temp_audio.wav", duration=None, chunk=1024, input_device_index=None):
+# Audio recording function with dynamic filename
+def record_audio(filename="recorded_audio.wav", duration=None, chunk=1024, input_device_index=None):
+    print(f"Record audio")
+    filename = os.path.abspath(filename)  
+
     audio = pyaudio.PyAudio()
     if input_device_index is None:
         input_device_index = audio.get_default_input_device_info()["index"]
@@ -177,14 +202,17 @@ def record_audio(filename="temp_audio.wav", duration=None, chunk=1024, input_dev
     stream.close()
     audio.terminate()
 
+    # บันทึกไฟล์เสียง
     with wave.open(filename, 'wb') as wf:
         wf.setnchannels(1)
         wf.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
         wf.setframerate(rate)
         wf.writeframes(b''.join(frames))
 
-# Transcribe audio using Whisper
 def transcribe_audio(filename, model):
+    filename = os.path.abspath(filename)  
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"Audio file not found: {filename}") 
     result = model.transcribe(filename, language="en")
     text = result.get("text", "").strip().lower()
     print(f"Transcribed Text: {text}")  
@@ -217,11 +245,11 @@ def listen_for_commands(wake_word, model, output_file="command_output.txt", inpu
 
         # Record short audio clip for the specified duration
         record_audio(duration=duration, input_device_index=input_device_index)
-        audio_text = transcribe_audio("temp_audio.wav", model)
+        audio_text = transcribe_audio("recorded_audio.wav", model)
 
         # Check for wake word
         if wake_word in audio_text:
-            response = f"Yes sir! I'm ready for your command."
+            response = f"Yes sir!."
             text_to_speech(response)
 
             command_start_time = time.time() 
@@ -237,19 +265,19 @@ def listen_for_commands(wake_word, model, output_file="command_output.txt", inpu
                 
                 # Listen for command
                 record_audio(duration=duration, input_device_index=input_device_index)
-                command_text = transcribe_audio("temp_audio.wav", model)
+                command_text = transcribe_audio("recorded_audio.wav", model)
 
                 # Check for specific commands
-                if "start" in command_text:
-                    response = "Start the system."
+                if "turn on" in command_text:
+                    response = "turn on the system."
                     text_to_speech(response)
-                    save_command_to_file("Start", output_file)
+                    save_command_to_file("turn on", output_file)
                     break  
 
-                elif "stop" in command_text:
-                    response = "Stop the system."
+                elif "turn off" in command_text:
+                    response = "turn off the system."
                     text_to_speech(response)
-                    save_command_to_file("Stop", output_file)
+                    save_command_to_file("turn off", output_file)
                     break  
 
                 elif "hold on" in command_text:
@@ -266,7 +294,7 @@ def listen_for_commands(wake_word, model, output_file="command_output.txt", inpu
             text_to_speech(response)
 
 # Load Whisper model
-whisper_model = whisper.load_model("small")
+whisper_model = whisper.load_model("medium.en")
 
 # Find microphone
 mic_info = find_or_select_microphone()
