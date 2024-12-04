@@ -16,7 +16,7 @@ function [U, V, clusterLabels] = GKClustering(data, percentClusters, m, maxIter,
         error('Percent of clusters must be in the range (0, 100]');
     end
 
-    % Calculate number of clusters based on percentClusters
+    % Calculate number of clusters
     totalData = size(data, 1);
     numClusters = max(1, round(totalData * (percentClusters / 100)));
 
@@ -72,16 +72,18 @@ function [U, V, clusterLabels] = GKClustering(data, percentClusters, m, maxIter,
 
         % Update membership matrix (U)
         U_new = zeros(size(U));
-        for j = 1:numClusters
-            for i = 1:n
+        for i = 1:n
+            for j = 1:numClusters
                 diff = (data(i, :) - V(j, :))';
                 d_ij = diff' * A(:, :, j) * diff; % Mahalanobis distance
                 if d_ij == 0
                     U_new(j, i) = 1;
                     continue;
                 end
-                denominator = sum((d_ij ./ (sum((data(i, :) - V) .^ 2, 2))).^(1 / (m - 1)));
-                U_new(j, i) = 1 / denominator;
+                % Correct calculation of membership values
+                U_new(j, i) = 1 / sum((d_ij ./ arrayfun(@(k) ...
+                    (data(i, :) - V(k, :)) * A(:, :, k) * (data(i, :) - V(k, :))', ...
+                    1:numClusters)).^(1 / (m - 1)));
             end
         end
 

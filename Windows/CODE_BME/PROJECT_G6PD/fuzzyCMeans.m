@@ -16,13 +16,12 @@ function [U, V, clusterLabels] = fuzzyCMeans(data, percentClusters, m, maxIter, 
         error('Percent of clusters must be in the range (0, 100]');
     end
 
-    % Determine the number of clusters based on percentClusters
+    % Determine the number of clusters
     totalData = size(data, 1);
     numClusters = max(1, round(totalData * (percentClusters / 100)));
 
     % Initialize membership matrix
-    n = totalData; % Number of data points
-    d = size(data, 2); % Number of dimensions
+    [n, d] = size(data); % Number of data points and dimensions
     rng(1); % Seed for reproducibility
     U = rand(numClusters, n);
     U = U ./ sum(U, 1); % Normalize
@@ -32,20 +31,25 @@ function [U, V, clusterLabels] = fuzzyCMeans(data, percentClusters, m, maxIter, 
 
     % Fuzzy C-Means Algorithm
     for iter = 1:maxIter
-        % Compute cluster centers
+        % Update cluster centers (V)
         for j = 1:numClusters
-            numerator = sum((U(j, :) .^ m)' .* data);
-            denominator = sum(U(j, :) .^ m);
+            Uj_m = U(j, :) .^ m;
+            numerator = sum((Uj_m') .* data, 1);
+            denominator = sum(Uj_m);
+            if denominator == 0
+                warning('Cluster %d has no members; skipping update', j);
+                continue;
+            end
             V(j, :) = numerator / denominator;
         end
 
-        % Update membership matrix
+        % Update membership matrix (U)
         U_new = zeros(size(U));
         for j = 1:numClusters
             for i = 1:n
-                distances = vecnorm(data(i, :) - V, 2, 2); % Euclidean distances
+                distances = vecnorm(data(i, :) - V, 2, 2) + 1e-8; % Regularization
                 if distances(j) == 0
-                    U_new(j, i) = 1; % Handle zero distance
+                    U_new(j, i) = 1;
                     continue;
                 end
                 denominator = sum((distances(j) ./ distances) .^ (2 / (m - 1)));
@@ -54,7 +58,9 @@ function [U, V, clusterLabels] = fuzzyCMeans(data, percentClusters, m, maxIter, 
         end
 
         % Check for convergence
-        if max(abs(U_new - U), [], 'all') < epsilon
+        delta = max(abs(U_new - U), [], 'all');
+        if delta < epsilon
+            fprintf('Converged at iteration %d with delta = %.6f\n', iter, delta);
             break;
         end
 
