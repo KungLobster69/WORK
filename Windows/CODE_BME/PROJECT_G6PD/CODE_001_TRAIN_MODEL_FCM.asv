@@ -147,6 +147,10 @@ for k = k_values
     predictedLabels_FuzzyKNN = fuzzyKNN(testData, trainData, trainLabels, k, m);
     accuracy_FuzzyKNN(k) = sum(predictedLabels_FuzzyKNN == testLabels) / length(testLabels) * 100;
     predicted_FuzzyKNN_all{k} = predictedLabels_FuzzyKNN; % เก็บ Predicted Labels
+
+    targets = labels_YGHTEST;
+    outputs = predictedLabels_FuzzyKNN;
+    [c,cm,ind,per] = confusion(targets,outputs)
     
     % % แสดงผล Predicted Labels สำหรับแต่ละ K
     % disp(['For K = ', num2str(k), ':']);
@@ -156,13 +160,13 @@ for k = k_values
     % disp(predictedLabels_FuzzyKNN');
 end
 
-% Plot results
-figure;
-plot(k_values, accuracy_KNN, '-o', 'LineWidth', 1.5, 'DisplayName', 'K-NN Accuracy');
-hold on;
-plot(k_values, accuracy_FuzzyKNN, '-s', 'LineWidth', 1.5, 'DisplayName', 'Fuzzy K-NN Accuracy');
-grid on;
-xlabel('Number of Neighbors (K)');
-ylabel('Accuracy (%)');
-title('Accuracy vs K for K-NN and Fuzzy K-NN');
-legend('show', 'Location', 'Best');
+% % Plot results
+% figure;
+% plot(k_values, accuracy_KNN, '-o', 'LineWidth', 1.5, 'DisplayName', 'K-NN Accuracy');
+% hold on;
+% plot(k_values, accuracy_FuzzyKNN, '-s', 'LineWidth', 1.5, 'DisplayName', 'Fuzzy K-NN Accuracy');
+% grid on;
+% xlabel('Number of Neighbors (K)');
+% ylabel('Accuracy (%)');
+% title('Accuracy vs K for K-NN and Fuzzy K-NN');
+% legend('show', 'Location', 'Best');
