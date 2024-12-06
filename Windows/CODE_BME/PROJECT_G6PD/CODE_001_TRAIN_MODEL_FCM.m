@@ -24,9 +24,9 @@ INTERMEDIATE = YGH_NORMALIZE(12:17,:);
 NORMAL = YGH_NORMALIZE(17:59,:);
 
 % พารามิเตอร
-Clusters_ABNORMAL = 4;
-Clusters_INTERMEDIATE = 4;
-Clusters_NORMAL = 4;
+Clusters_ABNORMAL = 6;
+Clusters_INTERMEDIATE = 6;
+Clusters_NORMAL = 6;
 m = 2; % Fuzziness parameter
 maxIter = 100; % จำนวนรอบสูงสุด
 epsilon = 1e-5; % เกณฑการลู่เข้า
