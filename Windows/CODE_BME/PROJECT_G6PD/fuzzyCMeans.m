@@ -1,24 +1,30 @@
-function [U, V, clusterLabels] = fuzzyCMeans(data, percentClusters, m, maxIter, epsilon)
-    % Fuzzy C-Means Clustering Algorithm with Percent-Based Cluster Count
+function [U, V, clusterLabels] = fuzzyCMeans(data, clusterInput, m, maxIter, epsilon)
+    % Fuzzy C-Means Clustering Algorithm with Flexible Cluster Input
     % Inputs:
-    %   data           - Dataset (n x d matrix)
-    %   percentClusters - Percentage of clusters relative to data size (0-100)
-    %   m              - Fuzziness parameter (must be > 1)
-    %   maxIter        - Maximum number of iterations
-    %   epsilon        - Convergence threshold
+    %   data          - Dataset (n x d matrix)
+    %   clusterInput  - Either percentage of clusters (0-100) or the exact number of clusters
+    %   m             - Fuzziness parameter (must be > 1)
+    %   maxIter       - Maximum number of iterations
+    %   epsilon       - Convergence threshold
     % Outputs:
-    %   U              - Final membership matrix
-    %   V              - Final cluster centers
-    %   clusterLabels  - Cluster assignment based on highest membership value
-
-    % Validate percentClusters
-    if percentClusters <= 0 || percentClusters > 100
-        error('Percent of clusters must be in the range (0, 100]');
-    end
+    %   U             - Final membership matrix
+    %   V             - Final cluster centers
+    %   clusterLabels - Cluster assignment based on highest membership value
 
     % Determine the number of clusters
     totalData = size(data, 1);
-    numClusters = max(1, round(totalData * (percentClusters / 100)));
+    if clusterInput <= 1 % If input is a percentage (e.g., 0.5 for 50%)
+        percentClusters = clusterInput * 100;
+        if percentClusters <= 0 || percentClusters > 100
+            error('Percentage of clusters must be in the range (0, 100].');
+        end
+        numClusters = max(1, round(totalData * (percentClusters / 100)));
+    else % If input is a direct number of clusters
+        numClusters = round(clusterInput);
+        if numClusters <= 0 || numClusters > totalData
+            error('Number of clusters must be in the range (1, total data points).');
+        end
+    end
 
     % Initialize membership matrix
     [n, d] = size(data); % Number of data points and dimensions

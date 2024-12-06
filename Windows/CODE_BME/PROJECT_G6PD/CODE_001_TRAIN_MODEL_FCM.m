@@ -24,9 +24,9 @@ INTERMEDIATE = YGH_NORMALIZE(12:17,:);
 NORMAL = YGH_NORMALIZE(17:59,:);
 
 % พารามิเตอร
-percentClusters_ABNORMAL = 50;
-percentClusters_INTERMEDIATE = 50;
-percentClusters_NORMAL = 50;
+Clusters_ABNORMAL = 4;
+Clusters_INTERMEDIATE = 4;
+Clusters_NORMAL = 4;
 m = 2; % Fuzziness parameter
 maxIter = 100; % จำนวนรอบสูงสุด
 epsilon = 1e-5; % เกณฑการลู่เข้า
@@ -34,7 +34,7 @@ epsilon = 1e-5; % เกณฑการลู่เข้า
 % เรียกใช้ Fuzzy C-Means สำหรับ ABNORMAL
 disp('Processing ABNORMAL Dataset...');
 [U_ABNORMAL, V_ABNORMAL, clusterLabels_ABNORMAL] = ...
-fuzzyCMeans(ABNORMAL, percentClusters_ABNORMAL, m, maxIter, epsilon);
+fuzzyCMeans(ABNORMAL, Clusters_ABNORMAL, m, maxIter, epsilon);
 
 % % แสดงผล ABNORMAL
 % figure;
@@ -52,7 +52,7 @@ fuzzyCMeans(ABNORMAL, percentClusters_ABNORMAL, m, maxIter, epsilon);
 % เรียกใช้ Fuzzy C-Means สำหรับ INTERMEDIATE
 disp('Processing INTERMEDIATE Dataset...');
 [U_INTERMEDIATE, V_INTERMEDIATE, clusterLabels_INTERMEDIATE] = ...
-    fuzzyCMeans(INTERMEDIATE, percentClusters_INTERMEDIATE, m, maxIter, epsilon);
+    fuzzyCMeans(INTERMEDIATE, Clusters_INTERMEDIATE, m, maxIter, epsilon);
 
 % % แสดงผล INTERMEDIATE
 % figure;
@@ -69,7 +69,7 @@ disp('Processing INTERMEDIATE Dataset...');
 % เรียกใช้ Fuzzy C-Means สำหรับ NORMAL
 disp('Processing NORMAL Dataset...');
 [U_NORMAL, V_NORMAL, clusterLabels_NORMAL] = ...
-    fuzzyCMeans(NORMAL, percentClusters_NORMAL, m, maxIter, epsilon);
+    fuzzyCMeans(NORMAL, Clusters_NORMAL, m, maxIter, epsilon);
 
 % % แสดงผล NORMAL
 % figure;
@@ -128,41 +128,29 @@ testData = YGHTEST_NORMALIZE;   % ข้อมูล test
 testLabels = labels_YGHTEST;    % label ของ test
 
 % สร้างตัวแปรสำหรับเก็บค่า Accuracy และ Predicted Labels
-k_values = 1:2:9; % ค่า K ตั้งแต่ 1 ถึง 19
+k_values = 1:2:9; % ค่า K ตั้งแต่ 1 ถึง 9
 accuracy_KNN = zeros(length(k_values), 1); % เก็บผล Accuracy สำหรับ K-NN
 accuracy_FuzzyKNN = zeros(length(k_values), 1); % เก็บผล Accuracy สำหรับ Fuzzy K-NN
-predicted_KNN_all = cell(length(k_values), 1); % เก็บ Predicted Labels สำหรับ K-NN
-predicted_FuzzyKNN_all = cell(length(k_values), 1); % เก็บ Predicted Labels สำหรับ Fuzzy K-NN
 
 % พารามิเตอร์สำหรับ Fuzzy K-NN
 m = 2; % Fuzziness parameter
 
-for k = k_values
+for k_idx = 1:length(k_values)
+    k = k_values(k_idx);
+    
     % K-NN Classification
     predictedLabels_KNN = knnclassify(testData, trainData, trainLabels, k);
-    accuracy_KNN(k) = sum(predictedLabels_KNN == testLabels) / length(testLabels) * 100;
-    predicted_KNN_all{k} = predictedLabels_KNN; % เก็บ Predicted Labels
+    cm_KNN = confusionmat(testLabels, predictedLabels_KNN); % Confusion Matrix
+    accuracy_KNN(k_idx) = sum(diag(cm_KNN)) / sum(cm_KNN(:)) * 100; % Accuracy
     
     % Fuzzy K-NN Classification
     predictedLabels_FuzzyKNN = fuzzyKNN(testData, trainData, trainLabels, k, m);
-    accuracy_FuzzyKNN(k) = sum(predictedLabels_FuzzyKNN == testLabels) / length(testLabels) * 100;
-    predicted_FuzzyKNN_all{k} = predictedLabels_FuzzyKNN; % เก็บ Predicted Labels
-    
-    % % แสดงผล Predicted Labels สำหรับแต่ละ K
-    % disp(['For K = ', num2str(k), ':']);
-    % disp('K-NN Predicted Labels:');
-    % disp(predictedLabels_KNN');
-    % disp('Fuzzy K-NN Predicted Labels:');
-    % disp(predictedLabels_FuzzyKNN');
+    cm_FuzzyKNN = confusionmat(testLabels, predictedLabels_FuzzyKNN); % Confusion Matrix
+    accuracy_FuzzyKNN(k_idx) = sum(diag(cm_FuzzyKNN)) / sum(cm_FuzzyKNN(:)) * 100; % Accuracy
 end
+% แสดงผลลัพธ์
+fprintf('Accuracy for K-NN (k = %s):\n', mat2str(k_values));
+disp(accuracy_KNN);
 
-% Plot results
-figure;
-plot(k_values, accuracy_KNN, '-o', 'LineWidth', 1.5, 'DisplayName', 'K-NN Accuracy');
-hold on;
-plot(k_values, accuracy_FuzzyKNN, '-s', 'LineWidth', 1.5, 'DisplayName', 'Fuzzy K-NN Accuracy');
-grid on;
-xlabel('Number of Neighbors (K)');
-ylabel('Accuracy (%)');
-title('Accuracy vs K for K-NN and Fuzzy K-NN');
-legend('show', 'Location', 'Best');
+fprintf('Accuracy for Fuzzy K-NN (k = %s):\n', mat2str(k_values));
+disp(accuracy_FuzzyKNN);
