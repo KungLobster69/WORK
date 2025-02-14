@@ -1,0 +1,134 @@
+2025-02-10 12:37:35,096 - WARNING - CUDA is not available. Training may be slow.
+2025-02-10 12:37:35,097 - INFO - Starting training for Fold 1
+2025-02-10 13:15:53,512 - WARNING - Validation accuracy not found for Fold 1
+2025-02-10 13:15:53,513 - ERROR - Test dataset file not found: C:\Users\BMEI CMU\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_MALARIA\DATA_SET\YOLOV8\fold_1\test.yaml
+2025-02-10 13:15:53,513 - ERROR - Model export failed for Fold 1: '[31m[1mpath[0m' is not a valid YOLO argument. Similar arguments are i.e. ['batch=16'].
+
+    Arguments received: ['yolo', '--f="c:\\Users\\BMEI CMU\\AppData\\Roaming\\jupyter\\runtime\\kernel-v3fa87bdab4a5d3b91ce65e475f967665fcf05e0d9.json"']. Ultralytics 'yolo' commands use the following syntax:
+
+        yolo TASK MODE ARGS
+
+        Where   TASK (optional) is one of frozenset({'pose', 'obb', 'classify', 'segment', 'detect'})
+                MODE (required) is one of frozenset({'predict', 'val', 'export', 'train', 'benchmark', 'track'})
+                ARGS (optional) are any number of custom 'arg=value' pairs like 'imgsz=320' that override defaults.
+                    See all ARGS at https://docs.ultralytics.com/usage/cfg or with 'yolo cfg'
+
+    1. Train a detection model for 10 epochs with an initial learning_rate of 0.01
+        yolo train data=coco8.yaml model=yolo11n.pt epochs=10 lr0=0.01
+
+    2. Predict a YouTube video using a pretrained segmentation model at image size 320:
+        yolo predict model=yolo11n-seg.pt source='https://youtu.be/LNwODJXcvt4' imgsz=320
+
+    3. Val a pretrained detection model at batch-size 1 and image size 640:
+        yolo val model=yolo11n.pt data=coco8.yaml batch=1 imgsz=640
+
+    4. Export a YOLO11n classification model to ONNX format at image size 224 by 128 (no TASK required)
+        yolo export model=yolo11n-cls.pt format=onnx imgsz=224,128
+
+    5. Ultralytics solutions usage
+        yolo solutions count or in ['heatmap', 'queue', 'speed', 'workout', 'analytics', 'trackzone', 'inference'] source="path/to/video/file.mp4"
+
+    6. Run special commands:
+        yolo help
+        yolo checks
+        yolo version
+        yolo settings
+        yolo copy-cfg
+        yolo cfg
+        yolo solutions help
+
+    Docs: https://docs.ultralytics.com
+    Solutions: https://docs.ultralytics.com/solutions/
+    Community: https://community.ultralytics.com
+    GitHub: https://github.com/ultralytics/ultralytics
+    
+2025-02-10 13:15:53,513 - INFO - Starting training for Fold 2
+2025-02-10 13:50:13,789 - WARNING - CUDA is not available. Training may be slow.
+2025-02-10 13:50:13,791 - INFO - Starting training for Fold 1
+2025-02-10 14:32:47,126 - WARNING - Validation accuracy not found for Fold 1
+2025-02-10 14:32:47,127 - ERROR - Test dataset file not found: C:\Users\BMEI CMU\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_MALARIA\DATA_SET\YOLOV8\fold_1\test.yaml
+2025-02-10 14:32:47,127 - ERROR - Model export failed for Fold 1: '[31m[1mpath[0m' is not a valid YOLO argument. Similar arguments are i.e. ['batch=16'].
+
+    Arguments received: ['yolo', '--f="c:\\Users\\BMEI CMU\\AppData\\Roaming\\jupyter\\runtime\\kernel-v3b88aca7bc493801e6de8c28e4ba7440e8fd60288.json"']. Ultralytics 'yolo' commands use the following syntax:
+
+        yolo TASK MODE ARGS
+
+        Where   TASK (optional) is one of frozenset({'obb', 'detect', 'pose', 'classify', 'segment'})
+                MODE (required) is one of frozenset({'predict', 'benchmark', 'train', 'track', 'export', 'val'})
+                ARGS (optional) are any number of custom 'arg=value' pairs like 'imgsz=320' that override defaults.
+                    See all ARGS at https://docs.ultralytics.com/usage/cfg or with 'yolo cfg'
+
+    1. Train a detection model for 10 epochs with an initial learning_rate of 0.01
+        yolo train data=coco8.yaml model=yolo11n.pt epochs=10 lr0=0.01
+
+    2. Predict a YouTube video using a pretrained segmentation model at image size 320:
+        yolo predict model=yolo11n-seg.pt source='https://youtu.be/LNwODJXcvt4' imgsz=320
+
+    3. Val a pretrained detection model at batch-size 1 and image size 640:
+        yolo val model=yolo11n.pt data=coco8.yaml batch=1 imgsz=640
+
+    4. Export a YOLO11n classification model to ONNX format at image size 224 by 128 (no TASK required)
+        yolo export model=yolo11n-cls.pt format=onnx imgsz=224,128
+
+    5. Ultralytics solutions usage
+        yolo solutions count or in ['heatmap', 'queue', 'speed', 'workout', 'analytics', 'trackzone', 'inference'] source="path/to/video/file.mp4"
+
+    6. Run special commands:
+        yolo help
+        yolo checks
+        yolo version
+        yolo settings
+        yolo copy-cfg
+        yolo cfg
+        yolo solutions help
+
+    Docs: https://docs.ultralytics.com
+    Solutions: https://docs.ultralytics.com/solutions/
+    Community: https://community.ultralytics.com
+    GitHub: https://github.com/ultralytics/ultralytics
+    
+2025-02-10 14:40:28,903 - WARNING - CUDA is not available. Training may be slow.
+2025-02-10 14:40:28,904 - INFO - Starting training for Fold 1
+2025-02-10 15:02:57,150 - WARNING - Validation accuracy not found for Fold 1
+2025-02-10 15:02:57,150 - ERROR - Test dataset file not found: C:\Users\BMEI CMU\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_MALARIA\DATA_SET\YOLOV8\fold_1\test.yaml
+2025-02-10 15:02:57,150 - ERROR - Model export failed for Fold 1: '[31m[1mpath[0m' is not a valid YOLO argument. Similar arguments are i.e. ['batch=16'].
+
+    Arguments received: ['yolo', '--f="c:\\Users\\BMEI CMU\\AppData\\Roaming\\jupyter\\runtime\\kernel-v31fa164200ffc654bf03002d4360f469f8cff3e53.json"']. Ultralytics 'yolo' commands use the following syntax:
+
+        yolo TASK MODE ARGS
+
+        Where   TASK (optional) is one of frozenset({'detect', 'classify', 'pose', 'obb', 'segment'})
+                MODE (required) is one of frozenset({'train', 'track', 'val', 'export', 'benchmark', 'predict'})
+                ARGS (optional) are any number of custom 'arg=value' pairs like 'imgsz=320' that override defaults.
+                    See all ARGS at https://docs.ultralytics.com/usage/cfg or with 'yolo cfg'
+
+    1. Train a detection model for 10 epochs with an initial learning_rate of 0.01
+        yolo train data=coco8.yaml model=yolo11n.pt epochs=10 lr0=0.01
+
+    2. Predict a YouTube video using a pretrained segmentation model at image size 320:
+        yolo predict model=yolo11n-seg.pt source='https://youtu.be/LNwODJXcvt4' imgsz=320
+
+    3. Val a pretrained detection model at batch-size 1 and image size 640:
+        yolo val model=yolo11n.pt data=coco8.yaml batch=1 imgsz=640
+
+    4. Export a YOLO11n classification model to ONNX format at image size 224 by 128 (no TASK required)
+        yolo export model=yolo11n-cls.pt format=onnx imgsz=224,128
+
+    5. Ultralytics solutions usage
+        yolo solutions count or in ['heatmap', 'queue', 'speed', 'workout', 'analytics', 'trackzone', 'inference'] source="path/to/video/file.mp4"
+
+    6. Run special commands:
+        yolo help
+        yolo checks
+        yolo version
+        yolo settings
+        yolo copy-cfg
+        yolo cfg
+        yolo solutions help
+
+    Docs: https://docs.ultralytics.com
+    Solutions: https://docs.ultralytics.com/solutions/
+    Community: https://community.ultralytics.com
+    GitHub: https://github.com/ultralytics/ultralytics
+    
+2025-02-10 15:02:57,151 - INFO - Accuracy results saved at C:\Users\BMEI CMU\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_MALARIA\MODEL\accuracy_results.csv
