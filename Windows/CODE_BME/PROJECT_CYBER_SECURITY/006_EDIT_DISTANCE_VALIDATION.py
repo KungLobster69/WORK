@@ -40,8 +40,8 @@ def load_existing_progress(csv_file_path, train_size):
 main_path = r'C:\Users\BMEI CMU\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT\05.DATA_VALIDATION'
 
 folds = [f"fold_{i}" for i in range(1, 5)]
-MALWARE = [f"MALWARE_{i}" for i in range(100, 400, 100)]
-BENIGN = [f"BENIGN_{i}" for i in range(100, 400, 100)]
+MALWARE = [f"MALWARE_100"]
+BENIGN = [f"BENIGN_100"]
 
 for fold in folds:
     validation_fold_path = os.path.join(main_path, fold)
@@ -68,8 +68,13 @@ for fold in folds:
                     print(f"Edit Distance Matrix already completed for {csv_file_name}")
                     continue
 
+                print(f"Starting edit distance calculation for {csv_file_name} from index {start_index}")
                 with open(csv_file_path, 'a', encoding='utf-8') as f:
                     for train_idx in tqdm(range(start_index, len(train_data)), desc=f"Processing {csv_file_name}"):
-                        row = [levenshtein_distance(str(train_data[train_idx]), str(test_item)) for test_item in test_data]
+                        print(f"Processing train index: {train_idx}")
+                        row = []
+                        for test_idx, test_item in enumerate(tqdm(test_data, desc=f"Train {train_idx}", leave=False)):
+                            print(f"Calculating distance for train index {train_idx}, test index {test_idx}")
+                            row.append(levenshtein_distance(str(train_data[train_idx]), str(test_item)))
                         save_progress(csv_file_path, row)
                 print(f"Resumed and saved Edit Distance Matrix to {csv_file_name}")
