@@ -37,7 +37,7 @@ def load_existing_progress(csv_file_path, train_size):
         return len(lines) if len(lines) < train_size else None
     return 0
 
-main_path = r'C:\Users\BMEI CMU\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT\05.DATA_VALIDATION'
+main_path = r'C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT\05.DATA_VALIDATION'
 
 folds = [f"fold_{i}" for i in range(3, 4)]
 MALWARE = [f"MALWARE_100"]
@@ -45,7 +45,7 @@ BENIGN = [f"BENIGN_100"]
 
 for fold in folds:
     validation_fold_path = os.path.join(main_path, fold)
-    output_path = os.path.join(r'C:\Users\BMEI CMU\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT\06.EDIT_DISTANCE_VALIDATION', fold)
+    output_path = os.path.join(r'C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT\06.EDIT_DISTANCE_VALIDATION', fold)
 
     for cluster_01 in MALWARE:
         for cluster_02 in BENIGN:
