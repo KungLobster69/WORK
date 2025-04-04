@@ -9,3 +9,5 @@ ipywidgets
 pyglet 
 pillow
 vedo
+networkx
+rtree
