@@ -1,0 +1,11 @@
+trimesh
+shapely
+numpy
+scipy
+cupy-cuda12x  # หรือ cupy-cuda118 ตาม CUDA ที่ใช้
+tqdm
+matplotlib
+ipywidgets
+pyglet 
+pillow
+vedo
