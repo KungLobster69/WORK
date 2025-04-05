@@ -11,7 +11,6 @@ from rapidfuzz.distance import Levenshtein
 def auto_config(test_data_len):
     total_ram_gb = psutil.virtual_memory().total / (1024 ** 3)
     total_cores = multiprocessing.cpu_count()
-
     max_ram_mb = int((total_ram_gb * 1024 * 0.8) / total_cores)
     process_workers = max(1, total_cores - 1)
 
@@ -24,8 +23,7 @@ def auto_config(test_data_len):
     else:
         test_parts = 8
 
-    print(f"⚙️ Auto config → CORES={total_cores}, RAM={total_ram_gb:.2f} GB")
-    print(f"➡️  PROCESS_WORKERS={process_workers}, MAX_RAM_PER_WORKER_MB={max_ram_mb}, NUM_TEST_PARTS={test_parts}")
+    print(f"⚙️ CORES={total_cores}, RAM={total_ram_gb:.2f} GB → WORKERS={process_workers}, RAM/WORKER={max_ram_mb}MB, PARTS={test_parts}")
     return test_parts, max_ram_mb, process_workers
 
 def read_multiline_json(file_path):
@@ -43,7 +41,7 @@ def auto_batch_size(json_strs, max_ram_per_worker_mb=400):
     avg_size = sum(len(s.encode('utf-8')) for s in json_strs[:10]) / 10
     avg_size_mb = avg_size / 1024 / 1024
     batch = max(1, int(max_ram_per_worker_mb / avg_size_mb))
-    print(f"🧠 Auto-selected BATCH_SIZE={batch} (~{avg_size_mb:.2f}MB/string × {batch} ≈ {batch*avg_size_mb:.2f}MB)")
+    print(f"🧠 BATCH_SIZE={batch} (~{avg_size_mb:.2f}MB/string × {batch} ≈ {batch*avg_size_mb:.2f}MB)")
     return batch
 
 def save_row_to_csv(csv_file_path, data_row):
@@ -62,28 +60,18 @@ def split_test_data(test_strs, num_parts):
 
 def compute_distance_row(train_idx, train_str, test_chunks):
     try:
-        pid = os.getpid()
-        print(f"🚧 [PID {pid}] [Train {train_idx}] Started processing")
-
         full_row = []
-        for i, chunk in enumerate(test_chunks):
-            print(f"🔄 [PID {pid}] [Train {train_idx}] Chunk {i + 1}/{len(test_chunks)}")
+        for chunk in test_chunks:
             dists = [Levenshtein.distance(train_str, t) for t in chunk]
             full_row.extend(dists)
-
-        print(f"✅ [PID {pid}] [Train {train_idx}] Done. Total distances: {len(full_row)}")
         return (train_idx, full_row)
-
     except Exception as e:
-        pid = os.getpid()
-        print(f"🔥 [PID {pid}] [ERROR] Train idx={train_idx}: {e}")
         return (train_idx, [])
 
 # ✅ MAIN
 if __name__ == "__main__":
-    multiprocessing.set_start_method('spawn', force=True)  # สำคัญมากบน Windows
+    multiprocessing.set_start_method('spawn', force=True)
 
-    # === Paths
     base_path = r'C:\Users\KUNG_LOBSTER69\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY'
     train_path = os.path.join(base_path, r'RESULT\05.DATA_VALIDATION\fold_3\MALWARE_100_BENIGN_100\validation_train.json')
     malware_test_path = os.path.join(base_path, r'RESULT\01.TRAIN_TEST_SET\malware_test.json')
@@ -92,7 +80,6 @@ if __name__ == "__main__":
     os.makedirs(output_path, exist_ok=True)
     matrix_csv_path = os.path.join(output_path, 'EDIT_DISTANCE_MATRIX_FINAL.csv')
 
-    # === Load data
     print("📥 Loading data...")
     with open(train_path, 'r', encoding='utf-8') as f:
         train_data = json.load(f)
@@ -110,11 +97,11 @@ if __name__ == "__main__":
         total_train = len(train_data)
         completed_rows = get_completed_row_count(matrix_csv_path)
 
-        print(f"📊 Loaded train: {total_train}, test total: {len(test_strs_full)}, parts: {NUM_TEST_PARTS}")
-        print(f"🔁 Resuming from row: {completed_rows}/{total_train} in CSV")
+        print(f"📊 Train={total_train}, Test={len(test_strs_full)}, PARTS={NUM_TEST_PARTS}")
+        print(f"🔁 Resuming from row: {completed_rows}/{total_train}")
 
         for part_index, test_subset in enumerate(test_part_list):
-            print(f"\n🚀 Starting PART {part_index + 1}/{NUM_TEST_PARTS} → {len(test_subset)} test strings")
+            print(f"\n🚀 PART {part_index + 1}/{NUM_TEST_PARTS} → {len(test_subset)} strings")
 
             BATCH_SIZE = min(auto_batch_size(test_subset, MAX_RAM_PER_WORKER_MB), 100)
             test_chunks = chunk_list(test_subset, BATCH_SIZE)
@@ -125,10 +112,8 @@ if __name__ == "__main__":
             ]
 
             if not tasks:
-                print(f"✅ Already completed for PART {part_index + 1}")
+                print(f"✅ Already completed PART {part_index + 1}")
                 continue
-
-            print(f"🚀 Submitting {len(tasks)} tasks to ProcessPoolExecutor with {len(test_chunks)} test chunks")
 
             with ProcessPoolExecutor(max_workers=PROCESS_WORKERS) as executor:
                 futures = {
@@ -136,12 +121,11 @@ if __name__ == "__main__":
                     for train_idx, train_str in tasks
                 }
 
-                for future in tqdm(as_completed(futures), total=len(futures), desc=f"Processing PART {part_index + 1}"):
+                for future in tqdm(as_completed(futures), total=len(futures), desc=f"PART {part_index + 1}"):
                     try:
                         train_idx, row = future.result(timeout=300)
-                        print(f"💾 [Train {train_idx}] Writing to CSV...")
                         save_row_to_csv(matrix_csv_path, row)
                     except Exception as e:
-                        print(f"🔥 [PART {part_index + 1}] ERROR saving row: {e}")
+                        print(f"🔥 [PART {part_index + 1}] ERROR: {e}")
 
-        print(f"\n🎉 All done! Final matrix saved to: {matrix_csv_path}")
+        print(f"\n🎉 Done! Saved to: {matrix_csv_path}")
