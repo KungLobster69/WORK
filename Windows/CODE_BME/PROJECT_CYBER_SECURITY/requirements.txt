@@ -1,6 +1,6 @@
 numpy
 pandas
 scipy
-numpy
 tqdm
-json
+rapidfuzz
+python-Levenshtein
