@@ -72,7 +72,7 @@ def compute_distance_row(train_idx, train_str, test_chunks):
 if __name__ == "__main__":
     multiprocessing.set_start_method('spawn', force=True)
 
-    base_path = r'C:\Users\KUNG_LOBSTER69\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY'
+    base_path = r'C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY'
     train_path = os.path.join(base_path, r'RESULT\05.DATA_VALIDATION\fold_3\MALWARE_100_BENIGN_100\validation_train.json')
     malware_test_path = os.path.join(base_path, r'RESULT\01.TRAIN_TEST_SET\malware_test.json')
     benign_test_path = os.path.join(base_path, r'RESULT\01.TRAIN_TEST_SET\benign_test.json')
