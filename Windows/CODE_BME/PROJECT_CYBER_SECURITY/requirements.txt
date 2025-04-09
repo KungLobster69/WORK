@@ -5,3 +5,6 @@ tqdm
 rapidfuzz
 python-Levenshtein
 psutil
+scikit-learn
+seaborn
+matplotlib
