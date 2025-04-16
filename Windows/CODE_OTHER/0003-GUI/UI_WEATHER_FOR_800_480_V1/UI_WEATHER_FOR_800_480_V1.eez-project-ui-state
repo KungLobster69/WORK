@@ -1,5 +1,6 @@
 {
   "navigation": {
+    "selectedUserPageObject": "[UI_WEATHER_FOR_800_480_V1.eez-project]:/userPages/0",
     "subnavigationSelectedItems": {}
   },
   "layoutModel": {
@@ -188,6 +189,18 @@
               "enableDeleteWhenEmpty": false,
               "enableClose": false,
               "children": [
+                {
+                  "type": "tab",
+                  "id": "#d4e1efc2-4994-48a9-bbd7-8902dee6a6ee",
+                  "name": "Settings",
+                  "component": "editor",
+                  "config": {
+                    "objectPath": "[UI_WEATHER_FOR_800_480_V1.eez-project]:/settings",
+                    "subObjectPath": "[UI_WEATHER_FOR_800_480_V1.eez-project]:/settings",
+                    "permanent": false
+                  },
+                  "icon": "material:settings"
+                },
                 {
                   "type": "tab",
                   "id": "#9ffc1769-71de-4607-8164-0e81478fc129",
@@ -966,7 +979,9 @@
   "features": {},
   "objects": {
     "[UI_WEATHER_FOR_800_480_V1.eez-project]:/userPages/0[flow-state]": {
-      "selection": {},
+      "selection": {
+        "0": {}
+      },
       "transform": {
         "translate": {
           "x": -496.125,
