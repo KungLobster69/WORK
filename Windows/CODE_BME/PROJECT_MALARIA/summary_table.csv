@@ -1,0 +1,5 @@
+Fold,Total GT,Total Prediction,Detection Accuracy,Classification Accuracy
+Fold 1,5922,6467,97.64%,93.94%
+Fold 2,5922,6490,97.47%,93.52%
+Fold 3,5922,6419,96.99%,92.89%
+Fold 4,5922,6393,96.67%,92.79%
