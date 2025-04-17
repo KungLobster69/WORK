@@ -993,10 +993,10 @@
       },
       "transform": {
         "translate": {
-          "x": -370.2088816738817,
-          "y": -252.4199999999999
+          "x": -196.4974083694084,
+          "y": -288.3796363636362
         },
-        "scale": 1
+        "scale": 0.8
       },
       "timeline": {
         "isEditorActive": false,
@@ -1024,6 +1024,6 @@
   ],
   "showInactiveFlowsInDebugger": true,
   "globalFlowZoom": true,
-  "flowZoom": 1,
+  "flowZoom": 0.8,
   "implementationLanguage": "C"
 }

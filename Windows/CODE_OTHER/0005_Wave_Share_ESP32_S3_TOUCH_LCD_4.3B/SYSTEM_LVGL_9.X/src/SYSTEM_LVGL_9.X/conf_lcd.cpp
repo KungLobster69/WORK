@@ -1,4 +1,4 @@
-#include "waveshare_lcd_port.h"
+#include "conf_lcd.h"
 
 using namespace esp_panel::drivers;
 
@@ -123,38 +123,35 @@ IRAM_ATTR bool onLCD_DrawFinishCallback(void *user_data)
 }
 #endif
 
-// Function to initialize the LCD
-void waveshare_lcd_init(void)
-{
+LCD *active_lcd = nullptr;
 
+void conf_lcd_init(void)
+{
 #if EXAMPLE_LCD_ENABLE_CREATE_WITH_CONFIG
     Serial.println("Initializing \"RGB\" LCD with config");
-    auto lcd = create_lcd_with_config();
+    active_lcd = create_lcd_with_config();
 #else
     Serial.println("Initializing \"RGB\" LCD without config");
-    auto lcd = create_lcd_without_config();
+    active_lcd = create_lcd_without_config();
 #endif
 
-    // Configure bounce buffer to avoid screen drift
-    auto bus = static_cast<BusRGB *>(lcd->getBus());
-    bus->configRGB_BounceBufferSize(EXAMPLE_LCD_RGB_BOUNCE_BUFFER_SIZE); // Set bounce buffer to avoid screen drift
+    auto bus = static_cast<BusRGB *>(active_lcd->getBus());
+    bus->configRGB_BounceBufferSize(EXAMPLE_LCD_RGB_BOUNCE_BUFFER_SIZE);
 
-    lcd->init();
+    active_lcd->init();
 #if EXAMPLE_LCD_ENABLE_PRINT_FPS
-    // Attach a callback function which will be called when the Vsync signal is detected
-    lcd->attachRefreshFinishCallback(onLCD_RefreshFinishCallback);
+    active_lcd->attachRefreshFinishCallback(onLCD_RefreshFinishCallback);
 #endif
 #if EXAMPLE_LCD_ENABLE_DRAW_FINISH_CALLBACK
-    // Attach a callback function which will be called when every bitmap drawing is completed
-    lcd->attachDrawBitmapFinishCallback(onLCD_DrawFinishCallback);
+    active_lcd->attachDrawBitmapFinishCallback(onLCD_DrawFinishCallback);
 #endif
-    lcd->reset();
-    assert(lcd->begin());
-    if (lcd->getBasicAttributes().basic_bus_spec.isFunctionValid(LCD::BasicBusSpecification::FUNC_DISPLAY_ON_OFF)) {
-        lcd->setDisplayOnOff(true);
+    active_lcd->reset();
+    assert(active_lcd->begin());
+    if (active_lcd->getBasicAttributes().basic_bus_spec.isFunctionValid(LCD::BasicBusSpecification::FUNC_DISPLAY_ON_OFF)) {
+        active_lcd->setDisplayOnOff(true);
     }
 
     Serial.println("Draw color bar from top left to bottom right, the order is B - G - R");
-    lcd->colorBarTest();
-
+    active_lcd->colorBarTest();
 }
+

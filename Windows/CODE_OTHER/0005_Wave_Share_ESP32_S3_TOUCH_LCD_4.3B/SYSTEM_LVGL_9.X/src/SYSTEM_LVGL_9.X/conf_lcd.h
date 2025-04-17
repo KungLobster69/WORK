@@ -5,6 +5,9 @@
 
 #include <Arduino.h>
 #include <esp_display_panel.hpp>
+using namespace esp_panel::drivers;
+
+#define ESP_PANEL_USE_1024_600_LCD (0) // 0: 800x480, 1: 1024x600
 
 // I2C Pin define 
 #define I2C_MASTER_NUM I2C_NUM_0 // I2C master number
@@ -26,19 +29,37 @@
  *      - ST7262
  */
 #define EXAMPLE_LCD_NAME                        ST7262 // LCD model name
-#define EXAMPLE_LCD_WIDTH                       (800) // LCD width in pixels
-#define EXAMPLE_LCD_HEIGHT                      (480) // LCD height in pixels
-#define EXAMPLE_LCD_COLOR_BITS                  (24)  // Color depth in bits
+
+#if ESP_PANEL_USE_1024_600_LCD
+    #define EXAMPLE_LCD_WIDTH                       (1024) // LCD width in pixels
+    #define EXAMPLE_LCD_HEIGHT                      (600) // LCD height in pixels
+#else
+    #define EXAMPLE_LCD_WIDTH                       (800) // LCD width in pixels
+    #define EXAMPLE_LCD_HEIGHT                      (480) // LCD height in pixels
+#endif
+
+#define EXAMPLE_LCD_COLOR_BITS                  (16)  // Color depth in bits
 #define EXAMPLE_LCD_RGB_DATA_WIDTH              (16)  // Width of RGB data
 #define EXAMPLE_LCD_RGB_COLOR_BITS          (16)    // |      24      |      16       |
 
 #define EXAMPLE_LCD_RGB_TIMING_FREQ_HZ          (16 * 1000 * 1000) // RGB timing frequency
-#define EXAMPLE_LCD_RGB_TIMING_HPW              (4)   // Horizontal pulse width
-#define EXAMPLE_LCD_RGB_TIMING_HBP              (8)   // Horizontal back porch
-#define EXAMPLE_LCD_RGB_TIMING_HFP              (8)   // Horizontal front porch
-#define EXAMPLE_LCD_RGB_TIMING_VPW              (4)   // Vertical pulse width
-#define EXAMPLE_LCD_RGB_TIMING_VBP              (8)   // Vertical back porch
-#define EXAMPLE_LCD_RGB_TIMING_VFP              (8)   // Vertical front porch
+
+#if ESP_PANEL_USE_1024_600_LCD
+    #define EXAMPLE_LCD_RGB_TIMING_HPW              (30)   // Horizontal pulse width
+    #define EXAMPLE_LCD_RGB_TIMING_HBP              (145)   // Horizontal back porch
+    #define EXAMPLE_LCD_RGB_TIMING_HFP              (170)   // Horizontal front porch
+    #define EXAMPLE_LCD_RGB_TIMING_VPW              (2)   // Vertical pulse width
+    #define EXAMPLE_LCD_RGB_TIMING_VBP              (23)   // Vertical back porch
+    #define EXAMPLE_LCD_RGB_TIMING_VFP              (12)   // Vertical front porch
+#else
+    #define EXAMPLE_LCD_RGB_TIMING_HPW              (4)   // Horizontal pulse width
+    #define EXAMPLE_LCD_RGB_TIMING_HBP              (8)   // Horizontal back porch
+    #define EXAMPLE_LCD_RGB_TIMING_HFP              (8)   // Horizontal front porch
+    #define EXAMPLE_LCD_RGB_TIMING_VPW              (4)   // Vertical pulse width
+    #define EXAMPLE_LCD_RGB_TIMING_VBP              (8)   // Vertical back porch
+    #define EXAMPLE_LCD_RGB_TIMING_VFP              (8)   // Vertical front porch
+#endif
+
 #define EXAMPLE_LCD_RGB_BOUNCE_BUFFER_SIZE  (EXAMPLE_LCD_WIDTH * 10)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,6 +111,7 @@
 
 
 
-void waveshare_lcd_init(); // Function to initialize LCD
+void conf_lcd_init(); // Function to initialize LCD
+extern LCD *active_lcd;
 
 #endif // End of IO_PORT_H
