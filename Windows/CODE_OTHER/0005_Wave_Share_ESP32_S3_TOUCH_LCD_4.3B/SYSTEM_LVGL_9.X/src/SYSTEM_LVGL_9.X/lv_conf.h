@@ -20,6 +20,12 @@
 #define LV_USE_SLIDER       1
 
 // Demos (สำหรับทดสอบ)
-#define LV_USE_DEMO_WIDGETS 1
+// #define LV_USE_DEMO_WIDGETS 1
+
+#define LV_FONT_MONTSERRAT_20 1
+#define LV_FONT_MONTSERRAT_28 1
+#define LV_FONT_MONTSERRAT_30 1
+#define LV_FONT_MONTSERRAT_40 1
+#define LV_FONT_MONTSERRAT_48 1
 
 #endif // LV_CONF_H
