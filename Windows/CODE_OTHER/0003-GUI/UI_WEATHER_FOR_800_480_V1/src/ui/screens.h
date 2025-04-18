@@ -39,6 +39,9 @@ typedef struct _objects_t {
     lv_obj_t *label_date;
     lv_obj_t *label_time;
     lv_obj_t *obj19;
+    lv_obj_t *image_icon_weather;
+    lv_obj_t *label_weather_main;
+    lv_obj_t *label_weather_description;
 } objects_t;
 
 extern objects_t objects;

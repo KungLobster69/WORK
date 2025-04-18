@@ -313,7 +313,7 @@ void create_screen_main() {
         }
         {
             lv_obj_t *obj = lv_image_create(parent_obj);
-            lv_obj_set_pos(obj, 20, 20);
+            lv_obj_set_pos(obj, 361, 21);
             lv_obj_set_size(obj, 30, 30);
             lv_image_set_src(obj, &img_icon_location);
             lv_image_set_inner_align(obj, LV_IMAGE_ALIGN_STRETCH);
@@ -322,7 +322,7 @@ void create_screen_main() {
             // label_city
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.label_city = obj;
-            lv_obj_set_pos(obj, 55, 24);
+            lv_obj_set_pos(obj, 396, 25);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xfff0f0f0), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -332,7 +332,7 @@ void create_screen_main() {
             // label_date
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.label_date = obj;
-            lv_obj_set_pos(obj, 20, 135);
+            lv_obj_set_pos(obj, 361, 136);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xfff0f0f0), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -342,7 +342,7 @@ void create_screen_main() {
             // label_time
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.label_time = obj;
-            lv_obj_set_pos(obj, 70, 59);
+            lv_obj_set_pos(obj, 406, 63);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xfff0f0f0), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_font(obj, &lv_font_montserrat_48, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -351,11 +351,40 @@ void create_screen_main() {
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.obj19 = obj;
-            lv_obj_set_pos(obj, 394, 59);
+            lv_obj_set_pos(obj, 36, 67);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0xfff0f0f0), LV_PART_MAIN | LV_STATE_DEFAULT);
-            lv_obj_set_style_text_font(obj, &lv_font_montserrat_48, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &lv_font_montserrat_40, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "SmartMonitor");
+        }
+        {
+            // image_icon_weather
+            lv_obj_t *obj = lv_image_create(parent_obj);
+            objects.image_icon_weather = obj;
+            lv_obj_set_pos(obj, 628, 10);
+            lv_obj_set_size(obj, 157, 157);
+            lv_image_set_src(obj, &img_icon_label_01d);
+            lv_image_set_inner_align(obj, LV_IMAGE_ALIGN_STRETCH);
+        }
+        {
+            // label_weather_main
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.label_weather_main = obj;
+            lv_obj_set_pos(obj, 681, 21);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(0xfff0f0f0), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Clear");
+        }
+        {
+            // label_weather_description
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.label_weather_description = obj;
+            lv_obj_set_pos(obj, 661, 136);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(0xfff0f0f0), LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "Clear Sky");
         }
     }
     

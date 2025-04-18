@@ -1,7 +1,7 @@
 {
   "navigation": {
     "selectedUserPageObject": "[UI_WEATHER_FOR_800_480_V1.eez-project]:/userPages/0",
-    "selectedBitmapObject": "[UI_WEATHER_FOR_800_480_V1.eez-project]:/bitmaps/0",
+    "selectedBitmapObject": "[UI_WEATHER_FOR_800_480_V1.eez-project]:/bitmaps/7",
     "subnavigationSelectedItems": {}
   },
   "layoutModel": {
@@ -216,7 +216,8 @@
                   },
                   "icon": "svg:page"
                 }
-              ]
+              ],
+              "active": true
             },
             {
               "type": "row",
@@ -236,8 +237,7 @@
                       "enableClose": false,
                       "icon": "svg:properties"
                     }
-                  ],
-                  "active": true
+                  ]
                 },
                 {
                   "type": "tabset",
@@ -989,17 +989,15 @@
           "0": {},
           "2": {},
           "6": {},
-          "31": {
-            "$selected": true
-          }
+          "31": {}
         }
       },
       "transform": {
         "translate": {
-          "x": -196.4974083694084,
-          "y": -188.37963636363622
+          "x": -395.10708441558427,
+          "y": -143.4020909090907
         },
-        "scale": 0.8
+        "scale": 0.9
       },
       "timeline": {
         "isEditorActive": false,
@@ -1027,6 +1025,6 @@
   ],
   "showInactiveFlowsInDebugger": true,
   "globalFlowZoom": true,
-  "flowZoom": 0.8,
+  "flowZoom": 0.9,
   "implementationLanguage": "C"
 }
