@@ -36,6 +36,20 @@ float read_sensor_humidity() {
   return 58.5;
 }
 
+// เพิ่มฟังก์ชันอัปเดตค่าเซ็นเซอร์
+void update_sensor_data() {
+  char buf[32];
+  if (useSensorData) {
+    float t = read_sensor_temperature();
+    sprintf(buf, "%.1f°C", t);
+    lv_label_set_text(objects.label_temperature, buf);
+
+    float h = read_sensor_humidity();
+    sprintf(buf, "%.0f%%", h);
+    lv_label_set_text(objects.label_humidity, buf);
+  }
+}
+
 // ===================== UI Setup =====================
 
 // แสดงค่าเริ่มต้นของ label ทั้งหมดบนหน้าจอ
@@ -218,6 +232,7 @@ void fetch_weather_data() {
 
 // ฟังก์ชันนี้จะเรียกทุกวินาที เพื่ออัปเดตเวลาปัจจุบัน และดึงอากาศทุก 10 นาที
 void update_weather_ui(lv_timer_t* timer) {
+  update_sensor_data();
   char buf[32];
   struct tm timeinfo;
   if (getLocalTime(&timeinfo)) {

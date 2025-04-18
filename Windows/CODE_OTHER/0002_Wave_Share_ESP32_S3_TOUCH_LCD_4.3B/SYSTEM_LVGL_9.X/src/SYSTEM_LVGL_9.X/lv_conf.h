@@ -6,7 +6,7 @@
 #define LV_COLOR_DEPTH      16
 
 #define LV_USE_OS           LV_OS_NONE     // ไม่มี RTOS (Arduino style)
-#define LV_USE_LOG          1
+#define LV_USE_LOG          0
 
 #define LV_USE_DRAW         1
 #define LV_USE_DRAW_SW      1
