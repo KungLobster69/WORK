@@ -63,7 +63,7 @@ void set_initial_display_of_labels() {
   lv_label_set_text(objects.label_humidity, "--%");
   lv_label_set_text(objects.label_wind, "-- km/h");
   lv_label_set_text(objects.label_pressure, "-- hPa");
-  lv_label_set_text(objects.label_info, "--");
+  lv_label_set_text(objects.label_info, "Last Data Update --:--:--");
 }
 
 // ===================== WiFi =====================
