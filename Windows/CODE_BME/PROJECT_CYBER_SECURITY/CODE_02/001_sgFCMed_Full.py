@@ -1,5 +1,5 @@
 # ===============================================
-# SG-FCMedians Fully Parallel: Resume + Evaluation + All-Core Configs
+# SG-FCMedians with Core-Balanced Parallelism (Non-nested)
 # ===============================================
 
 import numpy as np
@@ -112,7 +112,7 @@ def evaluate_clustering_quality(strings, prototypes, true_labels, save_path):
     print(f"📊 Saved: Purity={purity:.4f}, NMI={nmi:.4f}, ARI={ari:.4f} → {quality_path}")
 
 # --------------------------------
-# Prototype Save (Safe Append)
+# Resume-safe Prototype Save
 # --------------------------------
 def safe_append_prototype(prototype, filepath):
     mode = 'a' if os.path.exists(filepath) else 'w'
@@ -128,7 +128,7 @@ def get_existing_prototypes(filepath):
         return 0
 
 # --------------------------------
-# SG-FCMedians Core Runner (Parallel)
+# SG-FCMedians Main (Sequential Config, Parallel Inside)
 # --------------------------------
 def compute_single_prototype(j, D, strings, prototypes_idx, m, alphabet):
     memberships = update_membership(D, prototypes_idx, m)[:, j]
@@ -137,6 +137,7 @@ def compute_single_prototype(j, D, strings, prototypes_idx, m, alphabet):
     return j, new_proto
 
 def sgfcmed_resume_by_prototype_parallel(strings, c, m, save_path, label, max_iter=10):
+    print(f"\n🔄 Running config: LABEL={label}, c={c}, m={m} ...")
     D = compute_distance_matrix(strings)
     indices = list(range(len(strings)))
     random.shuffle(indices)
@@ -165,21 +166,11 @@ def sgfcmed_resume_by_prototype_parallel(strings, c, m, save_path, label, max_it
     evaluate_clustering_quality(strings, prototypes, true_labels, save_path)
 
 # --------------------------------
-# Run All Configs in Parallel
+# Run All Configs Sequentially (Avoid nested parallelism)
 # --------------------------------
-def run_config(label, strings, c, m):
-    filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
-    save_path = os.path.join(path_save, filename)
-    print(f"\n🔄 Running config: LABEL={label}, c={c}, m={m} ...")
-    sgfcmed_resume_by_prototype_parallel(strings.copy(), c, m, save_path, label)
-
-all_tasks = []
 for label, strings, c_values in [('benign', benign_strings, c_benign), ('malware', malware_strings, c_malware)]:
-    for c, m in product(c_values, m_values):
-        all_tasks.append((label, strings, c, m))
-
-with parallel_backend("loky"):
-    Parallel(n_jobs=-1)(
-        delayed(run_config)(label, strings, c, m)
-        for label, strings, c, m in all_tasks
-    )
+    for c in c_values:
+        for m in m_values:
+            filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
+            save_path = os.path.join(path_save, filename)
+            sgfcmed_resume_by_prototype_parallel(strings.copy(), c, m, save_path, label)
