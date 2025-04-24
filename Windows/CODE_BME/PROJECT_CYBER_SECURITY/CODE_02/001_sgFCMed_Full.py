@@ -1,5 +1,5 @@
 # ===============================================
-# SG-FCMedians with Resume + Parallel + Evaluation + Progress Bar + Status
+# SG-FCMedians Fully Parallel: Resume + Evaluation + All-Core Configs
 # ===============================================
 
 import numpy as np
@@ -8,6 +8,7 @@ import random
 import os
 import json
 from collections import Counter
+from itertools import product
 from rapidfuzz.distance import Levenshtein
 from joblib import Parallel, delayed, parallel_backend
 from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
@@ -85,12 +86,10 @@ def update_membership(D, prototypes, m):
 # Evaluation: Purity / NMI / ARI
 # --------------------------------
 def assign_clusters(strings, prototypes):
-    labels = []
-    for s in strings:
+    def nearest_cluster(s):
         distances = [Levenshtein.distance(s, p) for p in prototypes]
-        cluster = np.argmin(distances)
-        labels.append(cluster)
-    return labels
+        return np.argmin(distances)
+    return Parallel(n_jobs=-1)(delayed(nearest_cluster)(s) for s in strings)
 
 def calculate_purity(true_labels, pred_labels):
     contingency_matrix = {}
@@ -98,7 +97,6 @@ def calculate_purity(true_labels, pred_labels):
         if p not in contingency_matrix:
             contingency_matrix[p] = []
         contingency_matrix[p].append(t)
-    
     majority_sum = sum(Counter(v).most_common(1)[0][1] for v in contingency_matrix.values())
     return majority_sum / len(true_labels)
 
@@ -107,21 +105,14 @@ def evaluate_clustering_quality(strings, prototypes, true_labels, save_path):
     purity = calculate_purity(true_labels, pred_labels)
     nmi = normalized_mutual_info_score(true_labels, pred_labels)
     ari = adjusted_rand_score(true_labels, pred_labels)
-    
-    quality = {
-        'purity': purity,
-        'nmi': nmi,
-        'ari': ari
-    }
-
+    quality = {'purity': purity, 'nmi': nmi, 'ari': ari}
     quality_path = save_path.replace('.csv', '_quality.json')
     with open(quality_path, 'w') as f:
         json.dump(quality, f, indent=4)
-
     print(f"📊 Saved: Purity={purity:.4f}, NMI={nmi:.4f}, ARI={ari:.4f} → {quality_path}")
 
 # --------------------------------
-# Resume-safe Prototype Save
+# Prototype Save (Safe Append)
 # --------------------------------
 def safe_append_prototype(prototype, filepath):
     mode = 'a' if os.path.exists(filepath) else 'w'
@@ -137,7 +128,7 @@ def get_existing_prototypes(filepath):
         return 0
 
 # --------------------------------
-# Main SG-FCMedians (Parallel per prototype)
+# SG-FCMedians Core Runner (Parallel)
 # --------------------------------
 def compute_single_prototype(j, D, strings, prototypes_idx, m, alphabet):
     memberships = update_membership(D, prototypes_idx, m)[:, j]
@@ -159,34 +150,36 @@ def sgfcmed_resume_by_prototype_parallel(strings, c, m, save_path, label, max_it
         print(f"✅ Already completed: {save_path}")
     else:
         print(f"🚀 Computing {len(indices_to_process)} prototypes in parallel...")
-
         with parallel_backend('loky'):
             results = Parallel(n_jobs=-1)(
                 delayed(compute_single_prototype)(j, D, strings, prototypes_idx, m, alphabet)
                 for j in tqdm(indices_to_process, desc=f"⚙️  {label} c={c} m={m}")
             )
-
         for j, proto in sorted(results):
             safe_append_prototype(proto, save_path)
             print(f"✅ Saved prototype {j+1} to {save_path}")
 
-    # Evaluate quality
     df = pd.read_csv(save_path)
     prototypes = df['prototype'].tolist()
     true_labels = [0 if label == "benign" else 1] * len(strings)
     evaluate_clustering_quality(strings, prototypes, true_labels, save_path)
 
 # --------------------------------
-# Run All Configs
+# Run All Configs in Parallel
 # --------------------------------
+def run_config(label, strings, c, m):
+    filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
+    save_path = os.path.join(path_save, filename)
+    print(f"\n🔄 Running config: LABEL={label}, c={c}, m={m} ...")
+    sgfcmed_resume_by_prototype_parallel(strings.copy(), c, m, save_path, label)
+
+all_tasks = []
 for label, strings, c_values in [('benign', benign_strings, c_benign), ('malware', malware_strings, c_malware)]:
-    for c in c_values:
-        for m in m_values:
-            filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
-            save_path = os.path.join(path_save, filename)
+    for c, m in product(c_values, m_values):
+        all_tasks.append((label, strings, c, m))
 
-            # ✅ แสดง config ปัจจุบัน
-            print(f"\n🔄 Running config: LABEL={label}, c={c}, m={m} ...")
-
-            # ✅ เรียก SG-FCMedians พร้อมทุกฟีเจอร์
-            sgfcmed_resume_by_prototype_parallel(strings.copy(), c=c, m=m, save_path=save_path, label=label, max_iter=10)
+with parallel_backend("loky"):
+    Parallel(n_jobs=-1)(
+        delayed(run_config)(label, strings, c, m)
+        for label, strings, c, m in all_tasks
+    )
