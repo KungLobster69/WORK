@@ -1,5 +1,5 @@
 # ===============================================
-# SG-FCMedians with Resume + Parallel + Purity/NMI/ARI Evaluation
+# SG-FCMedians with Resume + Parallel + Evaluation + Progress Bar + Status
 # ===============================================
 
 import numpy as np
@@ -11,6 +11,7 @@ from collections import Counter
 from rapidfuzz.distance import Levenshtein
 from joblib import Parallel, delayed, parallel_backend
 from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
+from tqdm import tqdm
 
 # --------------------------------
 # Parameters
@@ -162,7 +163,7 @@ def sgfcmed_resume_by_prototype_parallel(strings, c, m, save_path, label, max_it
         with parallel_backend('loky'):
             results = Parallel(n_jobs=-1)(
                 delayed(compute_single_prototype)(j, D, strings, prototypes_idx, m, alphabet)
-                for j in indices_to_process
+                for j in tqdm(indices_to_process, desc=f"⚙️  {label} c={c} m={m}")
             )
 
         for j, proto in sorted(results):
@@ -183,4 +184,9 @@ for label, strings, c_values in [('benign', benign_strings, c_benign), ('malware
         for m in m_values:
             filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
             save_path = os.path.join(path_save, filename)
+
+            # ✅ แสดง config ปัจจุบัน
+            print(f"\n🔄 Running config: LABEL={label}, c={c}, m={m} ...")
+
+            # ✅ เรียก SG-FCMedians พร้อมทุกฟีเจอร์
             sgfcmed_resume_by_prototype_parallel(strings.copy(), c=c, m=m, save_path=save_path, label=label, max_iter=10)
