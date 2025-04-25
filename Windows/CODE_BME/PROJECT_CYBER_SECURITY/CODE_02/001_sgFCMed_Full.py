@@ -4,7 +4,6 @@ import random
 import os
 import json
 from collections import Counter
-from itertools import product
 from rapidfuzz.distance import Levenshtein
 from joblib import Parallel, delayed, parallel_backend
 from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
@@ -17,39 +16,53 @@ path = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECU
 path_save = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_02\01.PROTOTYPE"
 os.makedirs(path_save, exist_ok=True)
 
-c_benign = [100, 200, 300, 400, 500]
-c_malware = [1000, 2000, 3000, 4000, 5000]
-m_values = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+c_benign = [100, 200]
+c_malware = [1000]
+m_values = [2.0, 3.0]
 
 # --------------------------------
 # Load Datasets
 # --------------------------------
+print("📥 Loading JSON datasets ...")
 benign_df = pd.read_json(os.path.join(path, "benign_train.json"), lines=True)
 malware_df = pd.read_json(os.path.join(path, "malware_train.json"), lines=True)
 benign_strings = benign_df.iloc[:, 0].astype(str).tolist()
 malware_strings = malware_df.iloc[:, 0].astype(str).tolist()
 
 # --------------------------------
-# Parallel Distance Matrix (Full Core Utilization)
+# Compute Distance Matrix
 # --------------------------------
 def compute_distance_matrix(strings):
+    print(f"📏 Computing Distance Matrix for {len(strings)} strings ...")
     n = len(strings)
     pairs = [(i, j) for i in range(n) for j in range(n)]
-    
     def compute(i, j):
         return (i, j, Levenshtein.distance(strings[i], strings[j]))
-    
     results = Parallel(n_jobs=-1, prefer="processes")(
-        delayed(compute)(i, j) for i, j in tqdm(pairs, desc="📏 Distance Matrix")
+        delayed(compute)(i, j) for i, j in tqdm(pairs, desc="🔧 Distance Calculation")
     )
-
     D = np.zeros((n, n), dtype=int)
     for i, j, d in results:
         D[i, j] = d
+    print("✅ Distance Matrix ready.")
     return D
 
 # --------------------------------
-# Edit Distance-Based Candidate Generator
+# Membership Matrix
+# --------------------------------
+def update_membership(D, prototypes, m):
+    n, c = D.shape[0], len(prototypes)
+    def compute_row(i):
+        u_i = []
+        for j in range(c):
+            d_ij = D[i, prototypes[j]] + 1e-6
+            denom = sum((d_ij / (D[i, prototypes[k]] + 1e-6)) ** (2 / (m - 1)) for k in range(c))
+            u_i.append(1 / denom)
+        return u_i
+    return np.array(Parallel(n_jobs=-1)(delayed(compute_row)(i) for i in range(n)))
+
+# --------------------------------
+# Fuzzy Median String
 # --------------------------------
 def generate_edit_candidates(s, alphabet):
     candidates = set()
@@ -64,134 +77,88 @@ def generate_edit_candidates(s, alphabet):
         candidates.add(s[:i] + s[i+1:])
     return candidates
 
-# --------------------------------
-# Improved Fuzzy Median String
-# --------------------------------
-def improved_fuzzy_median_string(current_string, strings, memberships, alphabet, max_iter=5):
+def improved_fuzzy_median_string(current_string, strings, memberships, alphabet, max_local_iter=5):
     s = current_string
-    for _ in range(max_iter):
+    for _ in range(max_local_iter):
         candidates = generate_edit_candidates(s, alphabet)
         candidates.add(s)
-        best_candidate = s
-        best_score = sum(m * Levenshtein.distance(s, s_i) for m, s_i in zip(memberships, strings))
-        for candidate in candidates:
-            score = sum(m * Levenshtein.distance(candidate, s_i) for m, s_i in zip(memberships, strings))
+        best = s
+        best_score = sum(m * Levenshtein.distance(s, x) for m, x in zip(memberships, strings))
+        for c in candidates:
+            score = sum(m * Levenshtein.distance(c, x) for m, x in zip(memberships, strings))
             if score < best_score:
-                best_candidate = candidate
-                best_score = score
-        if best_candidate == s:
+                best, best_score = c, score
+        if best == s:
             break
-        s = best_candidate
+        s = best
     return s
 
 # --------------------------------
-# Membership Matrix Update (Parallel Row-wise)
-# --------------------------------
-def update_membership(D, prototypes, m):
-    n, c = D.shape[0], len(prototypes)
-
-    def compute_row(i):
-        u_i = []
-        for j in range(c):
-            d_ij = D[i, prototypes[j]] + 1e-6
-            denom = sum((d_ij / (D[i, prototypes[k]] + 1e-6)) ** (2 / (m - 1)) for k in range(c))
-            u_i.append(1 / denom)
-        return u_i
-
-    U = Parallel(n_jobs=-1, prefer="processes")(
-        delayed(compute_row)(i) for i in range(n)
-    )
-    return np.array(U)
-
-# --------------------------------
-# Clustering Assignment & Evaluation
+# Evaluation
 # --------------------------------
 def assign_clusters(strings, prototypes):
-    def nearest_cluster(s):
-        distances = [Levenshtein.distance(s, p) for p in prototypes]
-        return np.argmin(distances)
-    return Parallel(n_jobs=-1)(delayed(nearest_cluster)(s) for s in strings)
+    def nearest(s):
+        dists = [Levenshtein.distance(s, p) for p in prototypes]
+        return np.argmin(dists)
+    return Parallel(n_jobs=-1)(delayed(nearest)(s) for s in strings)
 
 def calculate_purity(true_labels, pred_labels):
-    contingency_matrix = {}
+    contingency = {}
     for t, p in zip(true_labels, pred_labels):
-        if p not in contingency_matrix:
-            contingency_matrix[p] = []
-        contingency_matrix[p].append(t)
-    majority_sum = sum(Counter(v).most_common(1)[0][1] for v in contingency_matrix.values())
-    return majority_sum / len(true_labels)
+        contingency.setdefault(p, []).append(t)
+    majority = sum(Counter(v).most_common(1)[0][1] for v in contingency.values())
+    return majority / len(true_labels)
 
 def evaluate_clustering_quality(strings, prototypes, true_labels, save_path):
+    print("📊 Evaluating clustering quality ...")
     pred_labels = assign_clusters(strings, prototypes)
     purity = calculate_purity(true_labels, pred_labels)
     nmi = normalized_mutual_info_score(true_labels, pred_labels)
     ari = adjusted_rand_score(true_labels, pred_labels)
-    quality = {'purity': purity, 'nmi': nmi, 'ari': ari}
-    quality_path = save_path.replace('.csv', '_quality.json')
-    with open(quality_path, 'w') as f:
-        json.dump(quality, f, indent=4)
-    print(f"📊 Saved: Purity={purity:.4f}, NMI={nmi:.4f}, ARI={ari:.4f} → {quality_path}")
+    metrics = {"purity": purity, "nmi": nmi, "ari": ari}
+    with open(save_path.replace(".csv", "_quality.json"), "w") as f:
+        json.dump(metrics, f, indent=4)
+    print(f"✅ Purity={purity:.4f}, NMI={nmi:.4f}, ARI={ari:.4f}")
 
 # --------------------------------
-# Resume-safe Prototype Save
+# Main SG-FCMedians (Full Iterative)
 # --------------------------------
-def safe_append_prototype(prototype, filepath):
-    mode = 'a' if os.path.exists(filepath) else 'w'
-    header = not os.path.exists(filepath)
-    pd.DataFrame({'prototype': [prototype]}).to_csv(filepath, mode=mode, header=header, index=False)
-
-def get_existing_prototypes(filepath):
-    if not os.path.exists(filepath):
-        return 0
-    try:
-        return pd.read_csv(filepath).shape[0]
-    except Exception:
-        return 0
-
-# --------------------------------
-# Main SG-FCMedians Runner (No Nested Parallelism)
-# --------------------------------
-def compute_single_prototype(j, D, strings, prototypes_idx, m, alphabet):
-    memberships = update_membership(D, prototypes_idx, m)[:, j]
-    proto_init = strings[prototypes_idx[j]]
-    new_proto = improved_fuzzy_median_string(proto_init, strings, memberships, alphabet)
-    return j, new_proto
-
-def sgfcmed_resume_by_prototype_parallel(strings, c, m, save_path, label, max_iter=10):
-    print(f"\n🔄 Running config: LABEL={label}, c={c}, m={m} ...")
+def sgfcmed_iterative(strings, c, m, save_path, label, max_iter=5):
+    print(f"\n🚀 SG-FCMedians: label={label}, c={c}, m={m}")
     D = compute_distance_matrix(strings)
-    indices = list(range(len(strings)))
+    n = len(strings)
+    indices = list(range(n))
     random.shuffle(indices)
     prototypes_idx = indices[:c]
     alphabet = set(''.join(strings))
-
-    existing_count = get_existing_prototypes(save_path)
-    indices_to_process = list(range(existing_count, c))
-
-    if not indices_to_process:
-        print(f"✅ Already completed: {save_path}")
-    else:
-        print(f"🚀 Computing {len(indices_to_process)} prototypes in parallel...")
-        with parallel_backend('loky'):
-            results = Parallel(n_jobs=-1, prefer="processes")(
-                delayed(compute_single_prototype)(j, D, strings, prototypes_idx, m, alphabet)
-                for j in tqdm(indices_to_process, desc=f"⚙️  {label} c={c} m={m}")
+    
+    for it in range(max_iter):
+        print(f"🔁 Iteration {it+1}/{max_iter}")
+        U = update_membership(D, prototypes_idx, m)
+        with parallel_backend("loky"):
+            new_prototypes = Parallel(n_jobs=-1)(
+                delayed(improved_fuzzy_median_string)(
+                    strings[prototypes_idx[j]], strings, U[:, j], alphabet
+                ) for j in tqdm(range(c), desc=f"🧬 Updating Prototypes")
             )
-        for j, proto in sorted(results):
-            safe_append_prototype(proto, save_path)
-            print(f"✅ Saved prototype {j+1} to {save_path}")
-
-    df = pd.read_csv(save_path)
-    prototypes = df['prototype'].tolist()
-    true_labels = [0 if label == "benign" else 1] * len(strings)
-    evaluate_clustering_quality(strings, prototypes, true_labels, save_path)
+        # Remap prototypes back to index
+        prototypes_idx = []
+        for p in new_prototypes:
+            dists = [Levenshtein.distance(p, s) for s in strings]
+            prototypes_idx.append(np.argmin(dists))
+    
+    final_prototypes = [strings[i] for i in prototypes_idx]
+    pd.DataFrame({'prototype': final_prototypes}).to_csv(save_path, index=False)
+    true_labels = [0 if label == 'benign' else 1] * len(strings)
+    evaluate_clustering_quality(strings, final_prototypes, true_labels, save_path)
+    print(f"🏁 Done: saved to {save_path}")
 
 # --------------------------------
-# Run All Configs (Sequential Outer Loop, Parallel Inner Loop)
+# Run All Configs
 # --------------------------------
-for label, strings, c_values in [('benign', benign_strings, c_benign), ('malware', malware_strings, c_malware)]:
+for label, str_list, c_values in [("benign", benign_strings, c_benign), ("malware", malware_strings, c_malware)]:
     for c in c_values:
         for m in m_values:
             filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
             save_path = os.path.join(path_save, filename)
-            sgfcmed_resume_by_prototype_parallel(strings.copy(), c, m, save_path, label)
+            sgfcmed_iterative(str_list.copy(), c, m, save_path, label)
