@@ -16,9 +16,9 @@ path = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECU
 path_save = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_02\01.PROTOTYPE"
 os.makedirs(path_save, exist_ok=True)
 
-c_benign = [100, 200]
-c_malware = [1000]
-m_values = [2.0, 3.0]
+c_benign = [100, 200, 300, 400, 500]
+c_malware = [1000, 2000, 3000, 4000, 5000]
+m_values = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
 
 # --------------------------------
 # Load Datasets
