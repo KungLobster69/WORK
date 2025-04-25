@@ -1,7 +1,3 @@
-# ===============================================
-# SG-FCMedians with Core-Balanced Parallelism (Non-nested)
-# ===============================================
-
 import numpy as np
 import pandas as pd
 import random
@@ -34,14 +30,27 @@ benign_strings = benign_df.iloc[:, 0].astype(str).tolist()
 malware_strings = malware_df.iloc[:, 0].astype(str).tolist()
 
 # --------------------------------
-# SG-FCMedians Core Functions
+# Parallel Distance Matrix (Full Core Utilization)
 # --------------------------------
 def compute_distance_matrix(strings):
     n = len(strings)
-    def row(i):
-        return [Levenshtein.distance(strings[i], strings[j]) for j in range(n)]
-    return np.array(Parallel(n_jobs=-1)(delayed(row)(i) for i in range(n)))
+    pairs = [(i, j) for i in range(n) for j in range(n)]
+    
+    def compute(i, j):
+        return (i, j, Levenshtein.distance(strings[i], strings[j]))
+    
+    results = Parallel(n_jobs=-1, prefer="processes")(
+        delayed(compute)(i, j) for i, j in tqdm(pairs, desc="📏 Distance Matrix")
+    )
 
+    D = np.zeros((n, n), dtype=int)
+    for i, j, d in results:
+        D[i, j] = d
+    return D
+
+# --------------------------------
+# Edit Distance-Based Candidate Generator
+# --------------------------------
 def generate_edit_candidates(s, alphabet):
     candidates = set()
     for i in range(len(s)):
@@ -55,6 +64,9 @@ def generate_edit_candidates(s, alphabet):
         candidates.add(s[:i] + s[i+1:])
     return candidates
 
+# --------------------------------
+# Improved Fuzzy Median String
+# --------------------------------
 def improved_fuzzy_median_string(current_string, strings, memberships, alphabet, max_iter=5):
     s = current_string
     for _ in range(max_iter):
@@ -72,18 +84,27 @@ def improved_fuzzy_median_string(current_string, strings, memberships, alphabet,
         s = best_candidate
     return s
 
+# --------------------------------
+# Membership Matrix Update (Parallel Row-wise)
+# --------------------------------
 def update_membership(D, prototypes, m):
     n, c = D.shape[0], len(prototypes)
-    U = np.zeros((n, c))
-    for i in range(n):
+
+    def compute_row(i):
+        u_i = []
         for j in range(c):
             d_ij = D[i, prototypes[j]] + 1e-6
             denom = sum((d_ij / (D[i, prototypes[k]] + 1e-6)) ** (2 / (m - 1)) for k in range(c))
-            U[i, j] = 1 / denom
-    return U
+            u_i.append(1 / denom)
+        return u_i
+
+    U = Parallel(n_jobs=-1, prefer="processes")(
+        delayed(compute_row)(i) for i in range(n)
+    )
+    return np.array(U)
 
 # --------------------------------
-# Evaluation: Purity / NMI / ARI
+# Clustering Assignment & Evaluation
 # --------------------------------
 def assign_clusters(strings, prototypes):
     def nearest_cluster(s):
@@ -128,7 +149,7 @@ def get_existing_prototypes(filepath):
         return 0
 
 # --------------------------------
-# SG-FCMedians Main (Sequential Config, Parallel Inside)
+# Main SG-FCMedians Runner (No Nested Parallelism)
 # --------------------------------
 def compute_single_prototype(j, D, strings, prototypes_idx, m, alphabet):
     memberships = update_membership(D, prototypes_idx, m)[:, j]
@@ -152,7 +173,7 @@ def sgfcmed_resume_by_prototype_parallel(strings, c, m, save_path, label, max_it
     else:
         print(f"🚀 Computing {len(indices_to_process)} prototypes in parallel...")
         with parallel_backend('loky'):
-            results = Parallel(n_jobs=-1)(
+            results = Parallel(n_jobs=-1, prefer="processes")(
                 delayed(compute_single_prototype)(j, D, strings, prototypes_idx, m, alphabet)
                 for j in tqdm(indices_to_process, desc=f"⚙️  {label} c={c} m={m}")
             )
@@ -166,7 +187,7 @@ def sgfcmed_resume_by_prototype_parallel(strings, c, m, save_path, label, max_it
     evaluate_clustering_quality(strings, prototypes, true_labels, save_path)
 
 # --------------------------------
-# Run All Configs Sequentially (Avoid nested parallelism)
+# Run All Configs (Sequential Outer Loop, Parallel Inner Loop)
 # --------------------------------
 for label, strings, c_values in [('benign', benign_strings, c_benign), ('malware', malware_strings, c_malware)]:
     for c in c_values:
