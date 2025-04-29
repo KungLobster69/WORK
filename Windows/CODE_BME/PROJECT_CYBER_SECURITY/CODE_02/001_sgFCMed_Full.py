@@ -312,7 +312,7 @@ if __name__ == "__main__":
             m_candidates=m_candidates,
             save_dir=path_save,
             tolerance_percent=20,
-            max_iter=50
+            max_iter=10
         )
     else:
         for c in c_candidates:
@@ -337,7 +337,7 @@ if __name__ == "__main__":
             m_candidates=m_candidates,
             save_dir=path_save,
             tolerance_percent=20,
-            max_iter=50
+            max_iter=10
         )
     else:
         for c in c_candidates:
