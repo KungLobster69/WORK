@@ -1,0 +1,9 @@
+pump1,0.031
+pump2,0.354
+CalRot,30.0
+MotorRes,200.0
+mortormode,1.0
+calduration,30.0
+microsecpersec,1000000.0
+decimalcorr,1000.0
+StepVolRatio,5100

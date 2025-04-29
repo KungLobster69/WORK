@@ -1,0 +1,23 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!main.py
+!agilent_8168D_laser.py
+!AQ2140.py
+!biosensor_new.py
+!BMEi 2018.png
+!biosensor_rc.py
+!ui_splash_screen.py
+!data.py
+!pump_control.py
+!Config.txt
+# etc...
+
+# ...even if they are in subdirectories
+!*/
+
+# if the files to be tracked are in subdirectories
+!*/a/b/file1.txt
+!*/a/b/c/*
