@@ -20,11 +20,13 @@ path = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECU
 path_save = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_02\01.PROTOTYPE"
 os.makedirs(path_save, exist_ok=True)
 
-c_candidates = [100, 200, 300, 400, 500]          # candidate c values
-m_candidates = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0] # candidate m values
+# 🧩 เลือก mode ว่าอยากใช้ 'percent' หรือ 'fixed'
+c_mode = 'percent'  # 'percent' = ตามเปอร์เซ็นต์, 'fixed' = จำนวน
+c_percentages = [10, 20]  # ถ้าเป็น percent mode
+c_fixed = [100, 200, 300, 400, 500]  # ถ้าเป็น fixed mode
 
-batch_size = 500
-candidate_batch_size = 5000
+m_candidates = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+
 num_cores = max(1, os.cpu_count() - 2)
 
 # --------------------------
@@ -41,60 +43,36 @@ def load_json_lines(filepath):
     return pd.DataFrame(data)
 
 # --------------------------
-# HELPER FUNCTIONS
+# Utility Functions
 # --------------------------
+def compute_c_candidates(n_samples, mode='percent', percentages=None, fixed=None):
+    if mode == 'percent':
+        return [max(1, int(n_samples * pct / 100)) for pct in percentages]
+    elif mode == 'fixed':
+        return fixed
+    else:
+        raise ValueError("Invalid c_mode. Choose 'percent' or 'fixed'.")
+
+def auto_batch_size(n_samples, n_prototypes):
+    total_pairs = n_samples * n_prototypes
+    if total_pairs <= 10000:
+        return 200
+    elif total_pairs <= 50000:
+        return 500
+    elif total_pairs <= 200000:
+        return 1000
+    else:
+        return 2000
 
 def pair_distance(i, j, strings_ref, prototypes_ref):
     return (i, j, lev_distance(strings_ref[i], prototypes_ref[j]))
 
-def generate_edit_candidates(s, alphabet):
-    candidates = set()
-    for i in range(len(s)):
-        for a in alphabet:
-            if s[i] != a:
-                candidates.add(s[:i] + a + s[i+1:])
-    for i in range(len(s) + 1):
-        for a in alphabet:
-            candidates.add(s[:i] + a + s[i:])
-    for i in range(len(s)):
-        candidates.add(s[:i] + s[i+1:])
-    return candidates
-
-def compute_weighted_distance(candidate, strings, memberships):
-    return sum(m * lev_distance(candidate, x) for m, x in zip(memberships, strings))
-
-def improved_fuzzy_median_string(current_string, strings, memberships, alphabet, max_local_iter=5):
-    s = current_string
-    for _ in range(max_local_iter):
-        candidates = generate_edit_candidates(s, alphabet)
-        candidates.add(s)
-        candidates = list(candidates)
-
-        best = s
-        best_score = sum(m * lev_distance(s, x) for m, x in zip(memberships, strings))
-
-        batches = [candidates[i:i+candidate_batch_size] for i in range(0, len(candidates), candidate_batch_size)]
-        for batch in batches:
-            scores = Parallel(n_jobs=num_cores, backend="loky")(
-                delayed(compute_weighted_distance)(cand, strings, memberships) for cand in batch
-            )
-            min_idx = np.argmin(scores)
-            if scores[min_idx] < best_score:
-                best = batch[min_idx]
-                best_score = scores[min_idx]
-
-        if best == s:
-            break
-        s = best
-    return s
-
-def compute_distance_matrix_to_prototypes(strings, prototypes, batch_size=None):
+def compute_distance_matrix_to_prototypes(strings, prototypes):
     n, c = len(strings), len(prototypes)
-    if batch_size is None:
-        batch_size = 500
-    print(f"📏 Computing Distance Matrix: strings={n} × prototypes={c}")
-    D = np.zeros((n, c), dtype=np.int32)
+    batch_size = auto_batch_size(n, c)
+    print(f"📏 Computing Distance Matrix: strings={n} × prototypes={c} (batch_size={batch_size})")
 
+    D = np.zeros((n, c), dtype=np.int32)
     pairs = [(i, j) for i in range(n) for j in range(c)]
     batches = [pairs[k:k+batch_size] for k in range(0, len(pairs), batch_size)]
 
@@ -149,10 +127,51 @@ def evaluate_clustering_quality(strings, prototypes, true_labels, save_path):
         json.dump(metrics, f, indent=4)
     print(f"✅ Purity={purity:.4f}, NMI={nmi:.4f}, ARI={ari:.4f}")
 
+def generate_edit_candidates(s, alphabet):
+    candidates = set()
+    for i in range(len(s)):
+        for a in alphabet:
+            if s[i] != a:
+                candidates.add(s[:i] + a + s[i+1:])
+    for i in range(len(s) + 1):
+        for a in alphabet:
+            candidates.add(s[:i] + a + s[i:])
+    for i in range(len(s)):
+        candidates.add(s[:i] + s[i+1:])
+    return candidates
+
+def compute_weighted_distance(candidate, strings, memberships):
+    return sum(m * lev_distance(candidate, x) for m, x in zip(memberships, strings))
+
+def improved_fuzzy_median_string(current_string, strings, memberships, alphabet, max_local_iter=5):
+    s = current_string
+    for _ in range(max_local_iter):
+        candidates = generate_edit_candidates(s, alphabet)
+        candidates.add(s)
+        candidates = list(candidates)
+
+        best = s
+        best_score = sum(m * lev_distance(s, x) for m, x in zip(memberships, strings))
+
+        batches = [candidates[i:i+5000] for i in range(0, len(candidates), 5000)]
+        for batch in batches:
+            scores = Parallel(n_jobs=num_cores, backend="loky")(
+                delayed(compute_weighted_distance)(cand, strings, memberships) for cand in batch
+            )
+            min_idx = np.argmin(scores)
+            if scores[min_idx] < best_score:
+                best = batch[min_idx]
+                best_score = scores[min_idx]
+
+        if best == s:
+            break
+        s = best
+    return s
+
 # --------------------------
-# SGFCMedIterativeFast (Dynamic Adjust Tolerance)
+# SGFCMedIterativeFast
 # --------------------------
-def sgfcmed_iterative_fast(strings, c, m, save_path, label, 
+def sgfcmed_iterative_fast(strings, c, m, save_path, label,
                            tolerance_percent=1.0, max_iter=50,
                            adjust_every=1, adjust_rate=0.9):
     temp_save_path = save_path.replace(".csv", "_temp.csv")
@@ -190,7 +209,7 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
     for it in range(start_iter, max_iter):
         print(f"🔁 Iteration {it+1}/{max_iter} (Current tolerance = {tolerance})")
 
-        D = compute_distance_matrix_to_prototypes(strings, prototype_strings, batch_size=batch_size)
+        D = compute_distance_matrix_to_prototypes(strings, prototype_strings)
         U = update_membership(D, m)
         J = compute_objective(D, U, m)
         J_values.append(J)
@@ -218,7 +237,6 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
 
         prototype_strings = new_prototypes
 
-        # 🔥 Dynamic Adjust Tolerance: ลดลงทุก adjust_every รอบ
         if (it + 1) % adjust_every == 0:
             tolerance = max(1, int(tolerance * adjust_rate))
             print(f"⚙️ Adjusted tolerance to {tolerance}")
@@ -264,7 +282,6 @@ def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
             sgfcmed_iterative_fast(strings.copy(), c, m, save_path, label,
                                    tolerance_percent=tolerance_percent, max_iter=max_iter)
 
-            # Load quality metrics
             with open(save_path.replace(".csv", "_quality.json"), 'r') as f:
                 metrics = json.load(f)
 
@@ -277,11 +294,9 @@ def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
                 'path': save_path
             })
 
-    # Save optimization results
     df_results = pd.DataFrame(results)
     df_results.to_csv(os.path.join(save_dir, f"{label}_optimization_summary.csv"), index=False)
 
-    # Select best c, m
     df_sorted = df_results.sort_values(
         by=['purity', 'nmi', 'ari'],
         ascending=[False, False, False]
@@ -294,28 +309,35 @@ def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
     return best_c, best_m
 
 # --------------------------
-# MAIN PROGRAM (เลือกใช้ Optimizer หรือ Manual)
+# MAIN PROGRAM
 # --------------------------
 if __name__ == "__main__":
-    mode = "optimizer"  # เปลี่ยนเป็น "manual" ถ้าอยากกำหนดเอง
+    mode = "optimizer"  # หรือ "manual" ก็ได้
 
     print("📥 Loading benign dataset ...")
     benign_df = load_json_lines(os.path.join(path, "benign_train.json"))
     benign_strings = benign_df.iloc[:, 0].astype(str).tolist()
+
+    benign_c_candidates = compute_c_candidates(
+        n_samples=len(benign_strings),
+        mode=c_mode,
+        percentages=c_percentages,
+        fixed=c_fixed
+    )
 
     if mode == "optimizer":
         print("🔍 Running optimizer for benign dataset ...")
         optimizer_c_m(
             strings=benign_strings,
             label="benign",
-            c_candidates=c_candidates,
+            c_candidates=benign_c_candidates,
             m_candidates=m_candidates,
             save_dir=path_save,
             tolerance_percent=20,
             max_iter=10
         )
     else:
-        for c in c_candidates:
+        for c in benign_c_candidates:
             for m in m_candidates:
                 filename = f"benign_c{c}_m{str(m).replace('.', '_')}.csv"
                 save_path = os.path.join(path_save, filename)
@@ -328,19 +350,26 @@ if __name__ == "__main__":
     malware_df = load_json_lines(os.path.join(path, "malware_train.json"))
     malware_strings = malware_df.iloc[:, 0].astype(str).tolist()
 
+    malware_c_candidates = compute_c_candidates(
+        n_samples=len(malware_strings),
+        mode=c_mode,
+        percentages=c_percentages,
+        fixed=c_fixed
+    )
+
     if mode == "optimizer":
         print("🔍 Running optimizer for malware dataset ...")
         optimizer_c_m(
             strings=malware_strings,
             label="malware",
-            c_candidates=c_candidates,
+            c_candidates=malware_c_candidates,
             m_candidates=m_candidates,
             save_dir=path_save,
             tolerance_percent=20,
             max_iter=10
         )
     else:
-        for c in c_candidates:
+        for c in malware_c_candidates:
             for m in m_candidates:
                 filename = f"malware_c{c}_m{str(m).replace('.', '_')}.csv"
                 save_path = os.path.join(path_save, filename)
