@@ -311,7 +311,7 @@ if __name__ == "__main__":
             c_candidates=c_candidates,
             m_candidates=m_candidates,
             save_dir=path_save,
-            tolerance_percent=1.0,
+            tolerance_percent=20,
             max_iter=50
         )
     else:
@@ -336,7 +336,7 @@ if __name__ == "__main__":
             c_candidates=c_candidates,
             m_candidates=m_candidates,
             save_dir=path_save,
-            tolerance_percent=0.5,
+            tolerance_percent=20,
             max_iter=50
         )
     else:
