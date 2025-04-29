@@ -345,7 +345,7 @@ if __name__ == "__main__":
                 filename = f"malware_c{c}_m{str(m).replace('.', '_')}.csv"
                 save_path = os.path.join(path_save, filename)
                 sgfcmed_iterative_fast(malware_strings.copy(), c, m, save_path, label="malware",
-                                       tolerance_percent=0.5, max_iter=50)
+                                       tolerance_percent=1.0, max_iter=50)
 
     del malware_df, malware_strings
     print("✅ All datasets processed successfully.")
