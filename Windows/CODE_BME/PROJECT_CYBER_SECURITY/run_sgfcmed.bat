@@ -2,7 +2,7 @@
 echo ============================================
 echo Running 001_sgFCMed_Full_benign.py in a new window...
 echo ============================================
-cd /d C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY
+cd /d C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\CODE_02
 start "Benign Window" cmd /k "python 001_sgFCMed_Full_benign.py"
 
 echo ============================================
