@@ -1,3 +1,6 @@
+# --------------------------
+# IMPORTS
+# --------------------------
 import numpy as np
 import pandas as pd
 import random
@@ -11,15 +14,14 @@ from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
 from tqdm import tqdm
 
 # --------------------------
-# Parameters
+# PARAMETERS
 # --------------------------
 path = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_01\01.TRAIN_TEST_SET"
 path_save = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_02\01.PROTOTYPE"
 os.makedirs(path_save, exist_ok=True)
 
-c_benign = [100, 200, 300, 400, 500]
-c_malware = [1000, 2000, 3000, 4000, 5000]
-m_values = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+c_candidates = [100, 200, 300, 400, 500]          # candidate c values
+m_candidates = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0] # candidate m values
 
 batch_size = 500
 candidate_batch_size = 5000
@@ -39,8 +41,9 @@ def load_json_lines(filepath):
     return pd.DataFrame(data)
 
 # --------------------------
-# Helper Functions
+# HELPER FUNCTIONS
 # --------------------------
+
 def pair_distance(i, j, strings_ref, prototypes_ref):
     return (i, j, lev_distance(strings_ref[i], prototypes_ref[j]))
 
@@ -85,7 +88,7 @@ def improved_fuzzy_median_string(current_string, strings, memberships, alphabet,
         s = best
     return s
 
-def compute_distance_matrix_to_prototypes(strings, prototypes, batch_size=None, temp_save_path=None):
+def compute_distance_matrix_to_prototypes(strings, prototypes, batch_size=None):
     n, c = len(strings), len(prototypes)
     if batch_size is None:
         batch_size = 500
@@ -94,7 +97,6 @@ def compute_distance_matrix_to_prototypes(strings, prototypes, batch_size=None, 
 
     pairs = [(i, j) for i in range(n) for j in range(c)]
     batches = [pairs[k:k+batch_size] for k in range(0, len(pairs), batch_size)]
-    save_every_batches = max(1, len(batches) // 100)
 
     for batch_num, batch_pairs in enumerate(tqdm(batches, desc="🔧 Distance Matrix (Batched)")):
         results = Parallel(n_jobs=num_cores, backend="loky")(
@@ -102,10 +104,6 @@ def compute_distance_matrix_to_prototypes(strings, prototypes, batch_size=None, 
         )
         for i, j, d in results:
             D[i, j] = d
-
-        if temp_save_path and ((batch_num + 1) % save_every_batches == 0 or (batch_num + 1) == len(batches)):
-            np.save(temp_save_path.replace(".csv", "_distmatrix.npy"), D)
-            print(f"💾 Distance Matrix checkpoint saved at {batch_num+1}/{len(batches)}")
 
     return D
 
@@ -152,86 +150,83 @@ def evaluate_clustering_quality(strings, prototypes, true_labels, save_path):
     print(f"✅ Purity={purity:.4f}, NMI={nmi:.4f}, ARI={ari:.4f}")
 
 # --------------------------
-# Main SG-FCMedians
+# SGFCMedIterativeFast (Dynamic Adjust Tolerance)
 # --------------------------
-def sgfcmed_iterative_fast(strings, c, m, save_path, label, max_iter=5):
+def sgfcmed_iterative_fast(strings, c, m, save_path, label, 
+                           tolerance_percent=1.0, max_iter=50,
+                           adjust_every=1, adjust_rate=0.9):
     temp_save_path = save_path.replace(".csv", "_temp.csv")
     idx_save_path = save_path.replace(".csv", "_temp_idx.json")
     iter_save_path = save_path.replace(".csv", "_temp_iter.json")
-    distmatrix_save_path = save_path.replace(".csv", "_distmatrix.npy")
 
     J_values = []
 
-    if os.path.exists(idx_save_path) and os.path.exists(iter_save_path):
-        print("🔄 Resuming previous run ...")
+    if os.path.exists(temp_save_path) and os.path.exists(idx_save_path) and os.path.exists(iter_save_path):
+        print("🔄 Resuming from checkpoint...")
+        df_temp = pd.read_csv(temp_save_path)
         with open(idx_save_path, 'r') as f:
             prototypes_idx = json.load(f)
         with open(iter_save_path, 'r') as f:
-            iter_info = json.load(f)
-        start_iter = iter_info['current_iter']
+            start_iter = json.load(f)['current_iter']
+        prototype_strings = df_temp['prototype'].tolist()
         if os.path.exists(save_path.replace(".csv", "_J_log.csv")):
             J_values = pd.read_csv(save_path.replace(".csv", "_J_log.csv"))["J"].tolist()
     else:
         indices = list(range(len(strings)))
         random.shuffle(indices)
         prototypes_idx = indices[:c]
+        prototype_strings = [strings[i] for i in prototypes_idx]
         start_iter = 0
+        pd.DataFrame({'prototype': prototype_strings}).to_csv(temp_save_path, index=False)
         with open(idx_save_path, 'w') as f:
             json.dump(prototypes_idx, f)
         with open(iter_save_path, 'w') as f:
             json.dump({'current_iter': start_iter}, f)
 
     alphabet = set(''.join(strings))
+    tolerance = max(1, int(c * tolerance_percent / 100))
+    print(f"⚙️ Initial tolerance = {tolerance} ({tolerance_percent}% of c={c})")
 
     for it in range(start_iter, max_iter):
-        print(f"🔁 Iteration {it+1}/{max_iter}")
-        prototype_strings = [strings[i] for i in prototypes_idx]
+        print(f"🔁 Iteration {it+1}/{max_iter} (Current tolerance = {tolerance})")
 
-        if os.path.exists(distmatrix_save_path):
-            D = np.load(distmatrix_save_path)
-        else:
-            D = compute_distance_matrix_to_prototypes(strings, prototype_strings, batch_size=batch_size, temp_save_path=temp_save_path)
-
+        D = compute_distance_matrix_to_prototypes(strings, prototype_strings, batch_size=batch_size)
         U = update_membership(D, m)
         J = compute_objective(D, U, m)
         J_values.append(J)
+
         pd.DataFrame({"iteration": list(range(1, len(J_values)+1)), "J": J_values}) \
             .to_csv(save_path.replace(".csv", "_J_log.csv"), index=False)
         print(f"📉 Objective J(U,P) = {J:.2f}")
 
-        new_prototypes = [None] * c
-        completed = set()
-        if os.path.exists(temp_save_path):
-            df_temp = pd.read_csv(temp_save_path)
-            for idx, row in df_temp.iterrows():
-                if pd.notnull(row['prototype']):
-                    new_prototypes[idx] = row['prototype']
-                    completed.add(idx)
-
+        new_prototypes = []
         for j in tqdm(range(c), desc=f"🧬 Updating Prototypes (Iter {it+1})"):
-            if j in completed:
-                continue
-            proto = improved_fuzzy_median_string(strings[prototypes_idx[j]], strings, U[:, j], alphabet)
-            new_prototypes[j] = proto
+            proto = improved_fuzzy_median_string(prototype_strings[j], strings, U[:, j], alphabet)
+            dists = [lev_distance(proto, s) for s in strings]
+            nearest_idx = np.argmin(dists)
+            new_prototypes.append(strings[nearest_idx])
 
-            if (j+1) % max(1, c // 100) == 0 or (j+1) == c:
-                temp_df = pd.DataFrame({'prototype': new_prototypes})
-                temp_df.to_csv(temp_save_path, index=False)
+        changes = sum(1 for a, b in zip(prototype_strings, new_prototypes) if a != b)
+        print(f"🔎 Prototype changes: {changes}")
 
-        prototypes_idx = []
-        for p in new_prototypes:
-            dists = [lev_distance(p, s) for s in strings]
-            prototypes_idx.append(np.argmin(dists))
-
+        pd.DataFrame({'prototype': new_prototypes}).to_csv(temp_save_path, index=False)
+        prototypes_idx = [strings.index(p) for p in new_prototypes]
         with open(idx_save_path, 'w') as f:
             json.dump(prototypes_idx, f)
         with open(iter_save_path, 'w') as f:
             json.dump({'current_iter': it+1}, f)
 
-        if os.path.exists(distmatrix_save_path):
-            os.remove(distmatrix_save_path)
+        prototype_strings = new_prototypes
 
-    # ✅ Plot J(U,P)
+        # 🔥 Dynamic Adjust Tolerance: ลดลงทุก adjust_every รอบ
+        if (it + 1) % adjust_every == 0:
+            tolerance = max(1, int(tolerance * adjust_rate))
+            print(f"⚙️ Adjusted tolerance to {tolerance}")
+
+        if changes <= tolerance:
+            print(f"🛑 Stopping: prototypes converged (changes={changes} <= tolerance={tolerance}).")
+            break
+
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, len(J_values)+1), J_values, marker='o')
     plt.title(f"Objective J(U,P) vs Iteration (label={label}, c={c}, m={m})")
@@ -242,30 +237,90 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label, max_iter=5):
     plt.savefig(save_path.replace(".csv", "_J_plot.png"))
     plt.close()
 
-    final_prototypes = [strings[i] for i in prototypes_idx]
+    final_prototypes = prototype_strings
     pd.DataFrame({'prototype': final_prototypes}).to_csv(save_path, index=False)
 
     true_labels = [0 if label == 'benign' else 1] * len(strings)
     evaluate_clustering_quality(strings, final_prototypes, true_labels, save_path)
 
-    for f in [temp_save_path, idx_save_path, iter_save_path, distmatrix_save_path]:
+    for f in [temp_save_path, idx_save_path, iter_save_path]:
         if os.path.exists(f):
             os.remove(f)
     print(f"🏁 Done: saved to {save_path}")
 
 # --------------------------
-# Run Program
+# OPTIMIZER หา c และ m อัตโนมัติ
+# --------------------------
+def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
+                  tolerance_percent=1.0, max_iter=50):
+    results = []
+    os.makedirs(save_dir, exist_ok=True)
+
+    for c in c_candidates:
+        for m in m_candidates:
+            print(f"\n🚀 Trying c={c}, m={m} ...")
+            filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
+            save_path = os.path.join(save_dir, filename)
+            sgfcmed_iterative_fast(strings.copy(), c, m, save_path, label,
+                                   tolerance_percent=tolerance_percent, max_iter=max_iter)
+
+            # Load quality metrics
+            with open(save_path.replace(".csv", "_quality.json"), 'r') as f:
+                metrics = json.load(f)
+
+            results.append({
+                'c': c,
+                'm': m,
+                'purity': metrics['purity'],
+                'nmi': metrics['nmi'],
+                'ari': metrics['ari'],
+                'path': save_path
+            })
+
+    # Save optimization results
+    df_results = pd.DataFrame(results)
+    df_results.to_csv(os.path.join(save_dir, f"{label}_optimization_summary.csv"), index=False)
+
+    # Select best c, m
+    df_sorted = df_results.sort_values(
+        by=['purity', 'nmi', 'ari'],
+        ascending=[False, False, False]
+    ).reset_index(drop=True)
+
+    best_c = df_sorted.loc[0, 'c']
+    best_m = df_sorted.loc[0, 'm']
+
+    print(f"\n🏆 Best configuration: c={best_c}, m={best_m}")
+    return best_c, best_m
+
+# --------------------------
+# MAIN PROGRAM (เลือกใช้ Optimizer หรือ Manual)
 # --------------------------
 if __name__ == "__main__":
+    mode = "optimizer"  # เปลี่ยนเป็น "manual" ถ้าอยากกำหนดเอง
+
     print("📥 Loading benign dataset ...")
     benign_df = load_json_lines(os.path.join(path, "benign_train.json"))
     benign_strings = benign_df.iloc[:, 0].astype(str).tolist()
 
-    for c in c_benign:
-        for m in m_values:
-            filename = f"benign_c{c}_m{str(m).replace('.', '_')}.csv"
-            save_path = os.path.join(path_save, filename)
-            sgfcmed_iterative_fast(benign_strings.copy(), c, m, save_path, label="benign")
+    if mode == "optimizer":
+        print("🔍 Running optimizer for benign dataset ...")
+        optimizer_c_m(
+            strings=benign_strings,
+            label="benign",
+            c_candidates=c_candidates,
+            m_candidates=m_candidates,
+            save_dir=path_save,
+            tolerance_percent=1.0,
+            max_iter=50
+        )
+    else:
+        for c in c_candidates:
+            for m in m_candidates:
+                filename = f"benign_c{c}_m{str(m).replace('.', '_')}.csv"
+                save_path = os.path.join(path_save, filename)
+                sgfcmed_iterative_fast(benign_strings.copy(), c, m, save_path, label="benign",
+                                       tolerance_percent=1.0, max_iter=50)
 
     del benign_df, benign_strings
 
@@ -273,11 +328,24 @@ if __name__ == "__main__":
     malware_df = load_json_lines(os.path.join(path, "malware_train.json"))
     malware_strings = malware_df.iloc[:, 0].astype(str).tolist()
 
-    for c in c_malware:
-        for m in m_values:
-            filename = f"malware_c{c}_m{str(m).replace('.', '_')}.csv"
-            save_path = os.path.join(path_save, filename)
-            sgfcmed_iterative_fast(malware_strings.copy(), c, m, save_path, label="malware")
+    if mode == "optimizer":
+        print("🔍 Running optimizer for malware dataset ...")
+        optimizer_c_m(
+            strings=malware_strings,
+            label="malware",
+            c_candidates=c_candidates,
+            m_candidates=m_candidates,
+            save_dir=path_save,
+            tolerance_percent=0.5,
+            max_iter=50
+        )
+    else:
+        for c in c_candidates:
+            for m in m_candidates:
+                filename = f"malware_c{c}_m{str(m).replace('.', '_')}.csv"
+                save_path = os.path.join(path_save, filename)
+                sgfcmed_iterative_fast(malware_strings.copy(), c, m, save_path, label="malware",
+                                       tolerance_percent=0.5, max_iter=50)
 
     del malware_df, malware_strings
     print("✅ All datasets processed successfully.")
