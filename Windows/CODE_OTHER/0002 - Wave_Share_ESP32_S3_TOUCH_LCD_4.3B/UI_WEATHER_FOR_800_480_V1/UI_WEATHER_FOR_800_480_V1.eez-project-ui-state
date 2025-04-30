@@ -22,7 +22,6 @@
           },
           {
             "type": "border",
-            "selected": 2,
             "size": 240,
             "location": "right",
             "children": [
@@ -457,10 +456,22 @@
               "type": "tabset",
               "id": "RUNTIME-EDITORS",
               "weight": 1,
-              "selected": -1,
               "enableDeleteWhenEmpty": false,
               "enableClose": false,
-              "children": []
+              "children": [
+                {
+                  "type": "tab",
+                  "id": "#42f09534-d1fe-4a42-bd43-607a6ba1f8d8",
+                  "name": "Main",
+                  "component": "editor",
+                  "config": {
+                    "objectPath": "[UI_WEATHER_FOR_800_480_V1.eez-project]:/userPages/0",
+                    "permanent": false
+                  },
+                  "icon": "svg:page"
+                }
+              ],
+              "active": true
             },
             {
               "type": "row",
@@ -995,9 +1006,9 @@
       "transform": {
         "translate": {
           "x": -395.10708441558427,
-          "y": -143.4020909090907
+          "y": -110.45209090909083
         },
-        "scale": 0.9
+        "scale": 1
       },
       "timeline": {
         "isEditorActive": false,
@@ -1013,6 +1024,7 @@
   "searchMatchWholeWord": false,
   "replaceEnabled": false,
   "replaceText": "",
+  "pageRuntimeFrontFace": false,
   "breakpoints": {},
   "watchExpressions": [],
   "showComponentDescriptions": true,
@@ -1025,6 +1037,6 @@
   ],
   "showInactiveFlowsInDebugger": true,
   "globalFlowZoom": true,
-  "flowZoom": 0.9,
+  "flowZoom": 1,
   "implementationLanguage": "C"
 }
