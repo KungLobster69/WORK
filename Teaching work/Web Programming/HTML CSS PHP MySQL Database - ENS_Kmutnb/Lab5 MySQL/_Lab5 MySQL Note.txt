@@ -1,0 +1,5 @@
+แยกไฟล์ Zip แล้ว
+วางไฟล์ใน Folder
+dbemp
+เช่น
+http://localhost/dbemp/1connect.php

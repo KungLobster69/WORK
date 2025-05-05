@@ -1,0 +1,99 @@
+
+ 
+CREATE TABLE `employee` (
+  `EmployeeID` varchar(6) NOT NULL PRIMARY KEY,
+  `Title` varchar(10) NOT NULL,
+  `Name` varchar(30) NOT NULL,
+  `Sex` varchar(10) NOT NULL,
+  `Education` varchar(20) NOT NULL,
+  `Start_Date` date NOT NULL,
+  `Salary` float NOT NULL,
+  `DepartmentID` varchar(2) NOT NULL,
+  FOREIGN KEY (`DepartmentID`) REFERENCES `department` (`DepartmentID`)
+);
+ 
+
+ DROP TABLE employee;
+
+
+ALTER TABLE department ADD Tel int;
+ALTER TABLE department MODIFY Tel varchar(10);
+ALTER TABLE department CHANGE Tel DepartmentTel varchar(10);
+ALTER TABLE department DROP DepartmentTel;
+
+
+
+INSERT INTO `department` VALUES
+('AC', 'บัญชี');
+
+INSERT INTO `department` (`DepartmentName`, `DepartmentID`) VALUES
+('โปรแกรมเมอร์', 'PG');
+
+UPDATE department SET DepartmentName = 'นักเขียนโปรแกรม' WHERE DepartmentID = 'PG';
+
+DELETE FROM `department` WHERE DepartmentID = 'PG';
+
+
+SELECT * FROM `department`;
+
+SELECT `EmployeeID`, `Name`, `Salary`
+FROM employee
+WHERE `Salary` >= 15000;
+
+
+SELECT `EmployeeID`, `Name`, `Salary`
+FROM employee
+WHERE `Salary` >= 15000
+ORDER BY `Salary` ASC;
+
+SELECT * FROM `employee` WHERE `Title` LIKE 'นาย';
+
+SELECT * FROM `employee` WHERE `Title` LIKE 'นา_';
+
+SELECT * FROM `employee` WHERE `Title` LIKE 'นา%';
+
+SELECT `Name`,`Title`,`Salary` FROM `employee` WHERE Title = 'นาย' OR `Salary` >= 20000;
+
+SELECT * FROM `employee` WHERE `Salary` >= 15000
+AND `Education` IN ('ปริญญาตรี','ปริญญาโท');
+--
+-- Indexes for table `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`EmployeeID`),
+  ADD KEY `DepartmentID` (`DepartmentID`);
+
+SELECT * FROM `employee` WHERE `DepartmentID` = (SELECT DepartmentID FROM department WHERE DepartmentID IN ('AC','PG');
+
+SELECT * 
+FROM `employee` 
+WHERE `DepartmentID` = 
+(SELECT `DepartmentID` 
+ FROM `department` 
+ WHERE `DepartmentName` LIKE 'โปรแกรมเมอร์' );
+
+
+SELECT `EmployeeID`,`Name`, `Salary`, `DepartmentName`  FROM `employee`, `department` WHERE employee.DepartmentID = department.DepartmentID AND `Salary` >= 15000;
+
+SELECT * FROM `employee`;
+
+SELECT `EmployeeID`,`Name`, `Salary`, `DepartmentName`  FROM `employee` INNER JOIN `department` ON employee.DepartmentID = department.DepartmentID
+WHERE `Salary` >= 15000;
+
+SELECT `EmployeeID`,`Name`, `Salary`, `DepartmentName`  FROM `employee` RIGHT JOIN `department` ON employee.DepartmentID = department.DepartmentID
+
+CREATE VIEW emp_view AS SELECT `EmployeeID`, `Title`, `Name`, `Start_Date` FROM employee WHERE `Salary` >= 15000;
+
+
+CREATE VIEW emp_view2 AS SELECT `EmployeeID`,`Name`, `Salary`, `DepartmentName`  FROM `employee` INNER JOIN `department` ON employee.DepartmentID = department.DepartmentID
+WHERE `Salary` >= 15000;
+
+SELECT `Name`, `Salary` FROM `emp_view2` WHERE `Salary` >= 18000;
+
+SELECT `Name`, `Salary` FROM `emp_view2` WHERE `DepartmentName` LIKE 'โปรแกรมเมอร์';
+
+DROP VIEW emp_view2;
+
+DROP TABLE employee;
+
+
