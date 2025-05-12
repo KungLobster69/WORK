@@ -20,18 +20,12 @@ path = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECU
 path_save = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_02\01.PROTOTYPE"
 os.makedirs(path_save, exist_ok=True)
 
-# 🧩 เลือก mode ว่าอยากใช้ 'percent' หรือ 'fixed'
-c_mode = 'percent'  # 'percent' = ตามเปอร์เซ็นต์, 'fixed' = จำนวน
-c_percentages = [10, 20]  # ถ้าเป็น percent mode
-c_fixed = [100, 200, 300, 400, 500]  # ถ้าเป็น fixed mode
-
+c_mode = 'percent'  # 'percent' or 'fixed'
+c_percentages = [10, 20]
+c_fixed = [100, 200, 300, 400, 500]
 m_candidates = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
-
 num_cores = max(1, os.cpu_count() - 2)
 
-# --------------------------
-# JSON Loader
-# --------------------------
 def load_json_lines(filepath):
     data = []
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -42,9 +36,6 @@ def load_json_lines(filepath):
                 continue
     return pd.DataFrame(data)
 
-# --------------------------
-# Utility Functions
-# --------------------------
 def compute_c_candidates(n_samples, mode='percent', percentages=None, fixed=None):
     if mode == 'percent':
         return [max(1, int(n_samples * pct / 100)) for pct in percentages]
@@ -168,18 +159,20 @@ def improved_fuzzy_median_string(current_string, strings, memberships, alphabet,
         s = best
     return s
 
-# --------------------------
-# SGFCMedIterativeFast
-# --------------------------
 def sgfcmed_iterative_fast(strings, c, m, save_path, label,
                            tolerance_percent=1.0, max_iter=50,
                            adjust_every=1, adjust_rate=0.9):
     temp_save_path = save_path.replace(".csv", "_temp.csv")
     idx_save_path = save_path.replace(".csv", "_temp_idx.json")
     iter_save_path = save_path.replace(".csv", "_temp_iter.json")
+    temp_D_path = save_path.replace(".csv", "_temp_D.npy")
+    temp_U_path = save_path.replace(".csv", "_temp_U.npy")
 
     J_values = []
 
+    # --------------------
+    # RESUME: Load checkpoint
+    # --------------------
     if os.path.exists(temp_save_path) and os.path.exists(idx_save_path) and os.path.exists(iter_save_path):
         print("🔄 Resuming from checkpoint...")
         df_temp = pd.read_csv(temp_save_path)
@@ -209,15 +202,34 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
     for it in range(start_iter, max_iter):
         print(f"🔁 Iteration {it+1}/{max_iter} (Current tolerance = {tolerance})")
 
-        D = compute_distance_matrix_to_prototypes(strings, prototype_strings)
-        U = update_membership(D, m)
+        # --------------------
+        # CACHED DISTANCE AND MEMBERSHIP
+        # --------------------
+        if os.path.exists(temp_D_path) and os.path.exists(temp_U_path):
+            print("🧠 Loading cached D and U matrices ...")
+            D = np.load(temp_D_path)
+            U = np.load(temp_U_path)
+        else:
+            print("⏳ Computing distance matrix D ...")
+            D = compute_distance_matrix_to_prototypes(strings, prototype_strings)
+            print("⏳ Computing membership matrix U ...")
+            U = update_membership(D, m)
+
+            np.save(temp_D_path, D)
+            np.save(temp_U_path, U)
+
+        # --------------------
+        # Objective
+        # --------------------
         J = compute_objective(D, U, m)
         J_values.append(J)
-
         pd.DataFrame({"iteration": list(range(1, len(J_values)+1)), "J": J_values}) \
             .to_csv(save_path.replace(".csv", "_J_log.csv"), index=False)
         print(f"📉 Objective J(U,P) = {J:.2f}")
 
+        # --------------------
+        # Prototype Update
+        # --------------------
         new_prototypes = []
         for j in tqdm(range(c), desc=f"🧬 Updating Prototypes (Iter {it+1})"):
             proto = improved_fuzzy_median_string(prototype_strings[j], strings, U[:, j], alphabet)
@@ -228,6 +240,7 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
         changes = sum(1 for a, b in zip(prototype_strings, new_prototypes) if a != b)
         print(f"🔎 Prototype changes: {changes}")
 
+        # Save intermediate
         pd.DataFrame({'prototype': new_prototypes}).to_csv(temp_save_path, index=False)
         prototypes_idx = [strings.index(p) for p in new_prototypes]
         with open(idx_save_path, 'w') as f:
@@ -245,6 +258,9 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
             print(f"🛑 Stopping: prototypes converged (changes={changes} <= tolerance={tolerance}).")
             break
 
+    # --------------------
+    # Visualization
+    # --------------------
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, len(J_values)+1), J_values, marker='o')
     plt.title(f"Objective J(U,P) vs Iteration (label={label}, c={c}, m={m})")
@@ -255,15 +271,22 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
     plt.savefig(save_path.replace(".csv", "_J_plot.png"))
     plt.close()
 
+    # --------------------
+    # Save final results
+    # --------------------
     final_prototypes = prototype_strings
     pd.DataFrame({'prototype': final_prototypes}).to_csv(save_path, index=False)
 
     true_labels = [0 if label == 'benign' else 1] * len(strings)
     evaluate_clustering_quality(strings, final_prototypes, true_labels, save_path)
 
+    # --------------------
+    # Clean temporary resume files (keep D/U/J files for analysis)
+    # --------------------
     for f in [temp_save_path, idx_save_path, iter_save_path]:
         if os.path.exists(f):
             os.remove(f)
+
     print(f"🏁 Done: saved to {save_path}")
 
 # --------------------------
@@ -279,6 +302,7 @@ def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
             print(f"\n🚀 Trying c={c}, m={m} ...")
             filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
             save_path = os.path.join(save_dir, filename)
+
             sgfcmed_iterative_fast(strings.copy(), c, m, save_path, label,
                                    tolerance_percent=tolerance_percent, max_iter=max_iter)
 
@@ -312,8 +336,9 @@ def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
 # MAIN PROGRAM
 # --------------------------
 if __name__ == "__main__":
-    mode = "optimizer"  # หรือ "manual" ก็ได้
+    mode = "optimizer"  # เลือก "optimizer" หรือ "manual"
 
+    # ========= BENIGN =========
     print("📥 Loading benign dataset ...")
     benign_df = load_json_lines(os.path.join(path, "benign_train.json"))
     benign_strings = benign_df.iloc[:, 0].astype(str).tolist()
@@ -346,6 +371,7 @@ if __name__ == "__main__":
 
     del benign_df, benign_strings
 
+    # ========= MALWARE =========
     print("📥 Loading malware dataset ...")
     malware_df = load_json_lines(os.path.join(path, "malware_train.json"))
     malware_strings = malware_df.iloc[:, 0].astype(str).tolist()
