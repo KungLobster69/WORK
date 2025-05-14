@@ -20,14 +20,8 @@ path = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECU
 path_save = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_02\01.PROTOTYPE"
 os.makedirs(path_save, exist_ok=True)
 
-c_mode = 'percent'
-c_percentages = [10, 20]
-c_fixed = [100, 200, 300, 400, 500]
-m_candidates = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
-num_cores = max(1, os.cpu_count() - 2)
-
 # --------------------------
-# UTILITY FUNCTIONS
+# JSON LOADER
 # --------------------------
 def load_json_lines(filepath):
     data = []
@@ -39,6 +33,11 @@ def load_json_lines(filepath):
                 continue
     return pd.DataFrame(data)
 
+# --------------------------
+# UTILITY FUNCTIONS
+# --------------------------
+
+# การคำนวณค่าของ c
 def compute_c_candidates(n_samples, mode='percent', percentages=None, fixed=None):
     if mode == 'percent':
         return [max(1, int(n_samples * pct / 100)) for pct in percentages]
@@ -47,60 +46,12 @@ def compute_c_candidates(n_samples, mode='percent', percentages=None, fixed=None
     else:
         raise ValueError("Invalid c_mode. Choose 'percent' or 'fixed'.")
 
-def auto_batch_size(n_samples, n_prototypes):
-    total_pairs = n_samples * n_prototypes
-    if total_pairs <= 10000:
-        return 200
-    elif total_pairs <= 50000:
-        return 500
-    elif total_pairs <= 200000:
-        return 1000
-    else:
-        return 2000
-
-def pair_distance(i, j, strings_ref, prototypes_ref):
-    return (i, j, lev_distance(strings_ref[i], prototypes_ref[j]))
-
-def compute_distance_matrix_to_prototypes_with_checkpoint(strings, prototypes, cache_path):
+def compute_distance_matrix_to_prototypes(strings, prototypes):
     n, c = len(strings), len(prototypes)
-    batch_size = auto_batch_size(n, c)
-    print(f"📏 Computing Distance Matrix: strings={n} × prototypes={c} (batch_size={batch_size})")
-
-    D_path = cache_path.replace(".csv", "_partial_D.npy")
-    batch_done_path = cache_path.replace(".csv", "_partial_batches.json")
-
-    if os.path.exists(D_path):
-        D = np.load(D_path)
-        with open(batch_done_path, 'r') as f:
-            done_batches = set(json.load(f))
-        print(f"🔄 Resuming D: {len(done_batches)} batches already done")
-    else:
-        D = np.zeros((n, c), dtype=np.int32)
-        done_batches = set()
-
-    pairs = [(i, j) for i in range(n) for j in range(c)]
-    batches = [pairs[k:k+batch_size] for k in range(0, len(pairs), batch_size)]
-
-    for batch_idx, batch_pairs in enumerate(tqdm(batches, desc="🔧 Distance Matrix (Batched)")):
-        if batch_idx in done_batches:
-            continue
-
-        results = Parallel(n_jobs=num_cores, backend="loky")(
-            delayed(pair_distance)(i, j, strings, prototypes) for i, j in batch_pairs
-        )
-        for i, j, d in results:
-            D[i, j] = d
-
-        done_batches.add(batch_idx)
-
-        if batch_idx % 10 == 0 or batch_idx == len(batches) - 1:
-            np.save(D_path, D)
-            with open(batch_done_path, 'w') as f:
-                json.dump(sorted(done_batches), f)
-
-    if os.path.exists(D_path): os.remove(D_path)
-    if os.path.exists(batch_done_path): os.remove(batch_done_path)
-
+    D = np.zeros((n, c), dtype=np.int32)
+    for i in range(n):
+        for j in range(c):
+            D[i, j] = lev_distance(strings[i], prototypes[j])
     return D
 
 def update_membership(D, m):
@@ -145,20 +96,27 @@ def evaluate_clustering_quality(strings, prototypes, true_labels, save_path):
         json.dump(metrics, f, indent=4)
     print(f"✅ Purity={purity:.4f}, NMI={nmi:.4f}, ARI={ari:.4f}")
 
+# --------------------------
+# IMPROVED FUZZY MEDIAN STRING
+# --------------------------
 def generate_edit_candidates(s, alphabet):
     candidates = set()
+    # แก้ไขตัวอักษรในสตริง
     for i in range(len(s)):
         for a in alphabet:
             if s[i] != a:
                 candidates.add(s[:i] + a + s[i+1:])
+    # การแทรกตัวอักษรใหม่
     for i in range(len(s) + 1):
         for a in alphabet:
             candidates.add(s[:i] + a + s[i:])
+    # การลบตัวอักษร
     for i in range(len(s)):
         candidates.add(s[:i] + s[i+1:])
     return candidates
 
 def compute_weighted_distance(candidate, strings, memberships):
+    # คำนวณระยะห่างที่มีน้ำหนัก
     return sum(m * lev_distance(candidate, x) for m, x in zip(memberships, strings))
 
 def improved_fuzzy_median_string(current_string, strings, memberships, alphabet, max_local_iter=5):
@@ -171,6 +129,7 @@ def improved_fuzzy_median_string(current_string, strings, memberships, alphabet,
         best = s
         best_score = sum(m * lev_distance(s, x) for m, x in zip(memberships, strings))
 
+        # แบ่งการประมวลผลเป็น batch
         batches = [candidates[i:i+5000] for i in range(0, len(candidates), 5000)]
         for batch in batches:
             scores = Parallel(n_jobs=num_cores, backend="loky")(
@@ -186,13 +145,15 @@ def improved_fuzzy_median_string(current_string, strings, memberships, alphabet,
         s = best
     return s
 
+# --------------------------
+# SGFCMedIterativeFast
+# --------------------------
 def sgfcmed_iterative_fast(strings, c, m, save_path, label,
-                           tolerance_percent=1.0, max_iter=50,
+                           tolerance_percent=1.0, max_iter=10,
                            adjust_every=1, adjust_rate=0.9):
     temp_save_path = save_path.replace(".csv", "_temp.csv")
     idx_save_path = save_path.replace(".csv", "_temp_idx.json")
     iter_save_path = save_path.replace(".csv", "_temp_iter.json")
-    temp_U_path = save_path.replace(".csv", "_temp_U.npy")
 
     J_values = []
 
@@ -225,17 +186,11 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
     for it in range(start_iter, max_iter):
         print(f"🔁 Iteration {it+1}/{max_iter} (Current tolerance = {tolerance})")
 
-        if os.path.exists(temp_U_path):
-            print("🧠 Loading cached U matrix ...")
-            U = np.load(temp_U_path)
-            D = compute_distance_matrix_to_prototypes_with_checkpoint(strings, prototype_strings, save_path)
-        else:
-            D = compute_distance_matrix_to_prototypes_with_checkpoint(strings, prototype_strings, save_path)
-            U = update_membership(D, m)
-            np.save(temp_U_path, U)
-
+        D = compute_distance_matrix_to_prototypes(strings, prototype_strings)
+        U = update_membership(D, m)
         J = compute_objective(D, U, m)
         J_values.append(J)
+
         pd.DataFrame({"iteration": list(range(1, len(J_values)+1)), "J": J_values}) \
             .to_csv(save_path.replace(".csv", "_J_log.csv"), index=False)
         print(f"📉 Objective J(U,P) = {J:.2f}")
@@ -258,6 +213,7 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
             json.dump({'current_iter': it+1}, f)
 
         prototype_strings = new_prototypes
+
         if (it + 1) % adjust_every == 0:
             tolerance = max(1, int(tolerance * adjust_rate))
             print(f"⚙️ Adjusted tolerance to {tolerance}")
@@ -278,121 +234,60 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
 
     final_prototypes = prototype_strings
     pd.DataFrame({'prototype': final_prototypes}).to_csv(save_path, index=False)
+
     true_labels = [0 if label == 'benign' else 1] * len(strings)
     evaluate_clustering_quality(strings, final_prototypes, true_labels, save_path)
 
-    for f in [temp_save_path, idx_save_path, iter_save_path, temp_U_path]:
+    for f in [temp_save_path, idx_save_path, iter_save_path]:
         if os.path.exists(f):
             os.remove(f)
-
     print(f"🏁 Done: saved to {save_path}")
 
-
-def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
-                  tolerance_percent=1.0, max_iter=50):
-    results = []
-    os.makedirs(save_dir, exist_ok=True)
-
-    for c in c_candidates:
-        for m in m_candidates:
-            print(f"\n🚀 Trying c={c}, m={m} ...")
-            filename = f"{label}_c{c}_m{str(m).replace('.', '_')}.csv"
-            save_path = os.path.join(save_dir, filename)
-
-            sgfcmed_iterative_fast(strings.copy(), c, m, save_path, label,
-                                   tolerance_percent=tolerance_percent, max_iter=max_iter)
-
-            with open(save_path.replace(".csv", "_quality.json"), 'r') as f:
-                metrics = json.load(f)
-
-            results.append({
-                'c': c,
-                'm': m,
-                'purity': metrics['purity'],
-                'nmi': metrics['nmi'],
-                'ari': metrics['ari'],
-                'path': save_path
-            })
-
-    df_results = pd.DataFrame(results)
-    df_results.to_csv(os.path.join(save_dir, f"{label}_optimization_summary.csv"), index=False)
-
-    df_sorted = df_results.sort_values(
-        by=['purity', 'nmi', 'ari'],
-        ascending=[False, False, False]
-    ).reset_index(drop=True)
-
-    best_c = df_sorted.loc[0, 'c']
-    best_m = df_sorted.loc[0, 'm']
-
-    print(f"\n🏆 Best configuration: c={best_c}, m={best_m}")
-    return best_c, best_m
-
-
+# --------------------------
+# MAIN PROGRAM
+# --------------------------
 if __name__ == "__main__":
-    mode = "optimizer"  # or "manual"
+    # รับข้อมูลจากผู้ใช้
+    dataset = input("กรุณากรอกชื่อไฟล์ชุดข้อมูล (เช่น benign_train.json หรือ malware_train.json): ").strip()
+    mode = input("กรุณากรอกโหมด (percent หรือ fixed): ").strip()
 
-    print("📥 Loading benign dataset ...")
-    benign_df = load_json_lines(os.path.join(path, "benign_train.json"))
-    benign_strings = benign_df.iloc[:, 0].astype(str).tolist()
+    # ตรวจสอบว่าเลือก percent หรือ fixed
+    if mode == 'percent':
+        # ถ้าเลือกโหมด percent, ให้กรอกเปอร์เซ็นต์ที่ต้องการ
+        percentages_input = input("กรุณากรอกเปอร์เซ็นต์ที่ต้องการ (เช่น 10, 20): ").strip()
+        percentages = list(map(int, percentages_input.split(',')))
+        fixed = None  # ไม่ใช้ fixed ถ้าเลือกโหมด percent
+    elif mode == 'fixed':
+        # ถ้าเลือกโหมด fixed, ให้กรอกค่า fixed ที่ต้องการ
+        fixed_input = input("กรุณากรอกค่า fixed ที่ต้องการ (เช่น 100, 200): ").strip()
+        fixed = list(map(int, fixed_input.split(',')))
+        percentages = None  # ไม่ใช้ percentages ถ้าเลือกโหมด fixed
+    else:
+        raise ValueError("Invalid mode. Please choose 'percent' or 'fixed'.")
 
-    benign_c_candidates = compute_c_candidates(
-        n_samples=len(benign_strings),
-        mode=c_mode,
-        percentages=c_percentages,
-        fixed=c_fixed
+    # กรอกค่า m
+    m = float(input("กรุณากรอกค่า m: "))
+
+    print(f"\nกำลังใช้ชุดข้อมูล {dataset}, m={m}, โหมด={mode}, เปอร์เซ็นต์={percentages}, ค่า fixed={fixed}")
+
+    # โหลดข้อมูลจากไฟล์ที่ผู้ใช้กรอก
+    dataset_path = os.path.join(path, dataset)
+    df = load_json_lines(dataset_path)
+    strings = df.iloc[:, 0].astype(str).tolist()
+
+    # คำนวณค่า c ตามโหมดที่เลือก
+    c_candidates = compute_c_candidates(
+        n_samples=len(strings),
+        mode=mode,
+        percentages=percentages,  # รับเปอร์เซ็นต์จากผู้ใช้
+        fixed=fixed  # รับค่า fixed จากผู้ใช้
     )
 
-    if mode == "optimizer":
-        print("🔍 Running optimizer for benign dataset ...")
-        optimizer_c_m(
-            strings=benign_strings,
-            label="benign",
-            c_candidates=benign_c_candidates,
-            m_candidates=m_candidates,
-            save_dir=path_save,
-            tolerance_percent=20,
-            max_iter=10
-        )
-    else:
-        for c in benign_c_candidates:
-            for m in m_candidates:
-                filename = f"benign_c{c}_m{str(m).replace('.', '_')}.csv"
-                save_path = os.path.join(path_save, filename)
-                sgfcmed_iterative_fast(benign_strings.copy(), c, m, save_path, label="benign",
-                                       tolerance_percent=1.0, max_iter=50)
+    # โปรแกรมเลือกค่า c อัตโนมัติจากโหมดที่เลือก
+    print(f"ค่าที่เป็นไปได้ของ c คือ: {c_candidates}")
 
-    del benign_df, benign_strings
-
-    print("📥 Loading malware dataset ...")
-    malware_df = load_json_lines(os.path.join(path, "malware_train.json"))
-    malware_strings = malware_df.iloc[:, 0].astype(str).tolist()
-
-    malware_c_candidates = compute_c_candidates(
-        n_samples=len(malware_strings),
-        mode=c_mode,
-        percentages=c_percentages,
-        fixed=c_fixed
-    )
-
-    if mode == "optimizer":
-        print("🔍 Running optimizer for malware dataset ...")
-        optimizer_c_m(
-            strings=malware_strings,
-            label="malware",
-            c_candidates=malware_c_candidates,
-            m_candidates=m_candidates,
-            save_dir=path_save,
-            tolerance_percent=20,
-            max_iter=10
-        )
-    else:
-        for c in malware_c_candidates:
-            for m in m_candidates:
-                filename = f"malware_c{c}_m{str(m).replace('.', '_')}.csv"
-                save_path = os.path.join(path_save, filename)
-                sgfcmed_iterative_fast(malware_strings.copy(), c, m, save_path, label="malware",
-                                       tolerance_percent=1.0, max_iter=50)
-
-    del malware_df, malware_strings
-    print("✅ All datasets processed successfully.")
+    # เลือกค่า c จากค่า c_candidates ที่คำนวณได้
+    for c in c_candidates:
+        save_path = os.path.join(path_save, f"{dataset}_c{c}_m{str(m).replace('.', '_')}.csv")
+        sgfcmed_iterative_fast(strings.copy(), c, m, save_path, label=dataset,
+                               tolerance_percent=1.0, max_iter=5)
