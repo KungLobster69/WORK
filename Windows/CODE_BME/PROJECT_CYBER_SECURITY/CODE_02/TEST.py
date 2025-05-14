@@ -12,7 +12,6 @@ from Levenshtein import distance as lev_distance
 from joblib import Parallel, delayed
 from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
 from tqdm import tqdm
-import argparse
 
 # --------------------------
 # PARAMETERS
@@ -20,20 +19,6 @@ import argparse
 path = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_01\01.TRAIN_TEST_SET"
 path_save = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\RESULT_02\01.PROTOTYPE"
 os.makedirs(path_save, exist_ok=True)
-
-# --------------------------
-# PARSER FOR COMMAND LINE INPUT
-# --------------------------
-def parse_arguments():
-    parser = argparse.ArgumentParser(description="เลือกพารามิเตอร์และชุดข้อมูลที่ต้องการใช้")
-
-    # เพิ่มพารามิเตอร์
-    parser.add_argument('--dataset', type=str, required=True, help="ชื่อไฟล์ชุดข้อมูลที่ต้องการใช้ (เช่น benign_train.json หรือ malware_train.json)")
-    parser.add_argument('--c', type=int, nargs='?', default=100, help="ค่าของ c ที่ต้องการใช้ในการคำนวณ (ค่าเดียวได้)")
-    parser.add_argument('--m', type=float, nargs='?', default=2.0, help="ค่าของ m ที่ต้องการใช้ในการคำนวณ (ค่าเดียวได้)")
-    parser.add_argument('--mode', choices=['percent', 'fixed'], default='percent', help="โหมดการเลือก c (percent หรือ fixed)")
-
-    return parser.parse_args()
 
 # --------------------------
 # JSON LOADER
@@ -110,6 +95,55 @@ def evaluate_clustering_quality(strings, prototypes, true_labels, save_path):
     with open(save_path.replace(".csv", "_quality.json"), "w") as f:
         json.dump(metrics, f, indent=4)
     print(f"✅ Purity={purity:.4f}, NMI={nmi:.4f}, ARI={ari:.4f}")
+
+# --------------------------
+# IMPROVED FUZZY MEDIAN STRING
+# --------------------------
+def generate_edit_candidates(s, alphabet):
+    candidates = set()
+    # แก้ไขตัวอักษรในสตริง
+    for i in range(len(s)):
+        for a in alphabet:
+            if s[i] != a:
+                candidates.add(s[:i] + a + s[i+1:])
+    # การแทรกตัวอักษรใหม่
+    for i in range(len(s) + 1):
+        for a in alphabet:
+            candidates.add(s[:i] + a + s[i:])
+    # การลบตัวอักษร
+    for i in range(len(s)):
+        candidates.add(s[:i] + s[i+1:])
+    return candidates
+
+def compute_weighted_distance(candidate, strings, memberships):
+    # คำนวณระยะห่างที่มีน้ำหนัก
+    return sum(m * lev_distance(candidate, x) for m, x in zip(memberships, strings))
+
+def improved_fuzzy_median_string(current_string, strings, memberships, alphabet, max_local_iter=5):
+    s = current_string
+    for _ in range(max_local_iter):
+        candidates = generate_edit_candidates(s, alphabet)
+        candidates.add(s)
+        candidates = list(candidates)
+
+        best = s
+        best_score = sum(m * lev_distance(s, x) for m, x in zip(memberships, strings))
+
+        # แบ่งการประมวลผลเป็น batch
+        batches = [candidates[i:i+5000] for i in range(0, len(candidates), 5000)]
+        for batch in batches:
+            scores = Parallel(n_jobs=num_cores, backend="loky")(
+                delayed(compute_weighted_distance)(cand, strings, memberships) for cand in batch
+            )
+            min_idx = np.argmin(scores)
+            if scores[min_idx] < best_score:
+                best = batch[min_idx]
+                best_score = scores[min_idx]
+
+        if best == s:
+            break
+        s = best
+    return s
 
 # --------------------------
 # SGFCMedIterativeFast
