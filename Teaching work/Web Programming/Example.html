@@ -1,12 +1,43 @@
 <!DOCTYPE html>
-<html lang="th">
-<head>
+<html> 
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inline CSS Example</title>
-</head>
-<body>
-    <h1 style="color: blue; text-align: center;">ยินดีต้อนรับสู่เว็บไซต์ของเรา!</h1>
-    <p style="color: green; font-size: 18px;">ข้อความนี้จะมีสีเขียวและขนาดฟอนต์ 18px</p>
-</body>
+    <title>VSCode Style with Highlight</title>
+    <style>
+      body {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        font-family: Consolas, monospace;
+        padding: 20px;
+        font-size: 40px;
+      }
+
+      .highlight {
+        background-color: yellow;
+        color: black;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      .declaration { color: #c5c5c5; } /* VSCode style for <!DOCTYPE> */
+      .tag { color: #569cd6; }
+      .attr-name { color: #9cdcfe; }
+      .attr-value { color: #ce9178; }
+      .text { color: #d4d4d4; }
+    </style>
+  </head>
+  <body>
+<pre><code><span class="declaration">&lt;!DOCTYPE html&gt;</span>
+<span class="tag highlight">&lt;html&gt;</span> 
+  <span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr-name">charset</span>=<span class="attr-value">"UTF-8"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;title&gt;</span><span class="text">Example</span><span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;/head&gt;</span>
+  <span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;h1&gt;</span><span class="text">Hello World</span><span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+<span class="tag highlight">&lt;/html&gt;</span>
+</code></pre>
+  </body>
 </html>
