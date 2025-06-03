@@ -2,9 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Example</title>
+  <title>CSS Colors Example</title>
+  <style>
+    /* 1. ใช้ชื่อสี (Color Name) */
+    .color-name {
+      color: red;
+      background-color: lightyellow;
+    }
+
+    /* 2. ใช้รหัส Hex */
+    .hex-color {
+      color: #ffffff;
+      background-color: #1e90ff; /* dodgerblue */
+    }
+
+    /* 3. ใช้ RGB / RGBA */
+    .rgb-color {
+      color: rgb(255, 255, 255);
+      background-color: rgba(0, 128, 0, 0.7); /* semi-transparent green */
+    }
+
+    /* 4. ใช้ HSL / HSLA */
+    .hsl-color {
+      color: hsl(0, 0%, 100%); /* white */
+      background-color: hsla(300, 100%, 50%, 0.6); /* semi-transparent purple-pink */
+    }
+
+    /* เสริม: รูปแบบรวม */
+    .box {
+      padding: 10px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello <span style="color: red;">World</span></h1>
+
+  <div class="box color-name">
+    1. Color Name: red on lightyellow
+  </div>
+
+  <div class="box hex-color">
+    2. Hex Code: #ffffff on #1e90ff
+  </div>
+
+  <div class="box rgb-color">
+    3. RGB/RGBA: rgb white on rgba green
+  </div>
+
+  <div class="box hsl-color">
+    4. HSL/HSLA: hsl white on hsla purple
+  </div>
+
 </body>
 </html>
