@@ -2,56 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CSS Colors Example</title>
+  <title>Box Model Example</title>
   <style>
-    /* 1. ใช้ชื่อสี (Color Name) */
-    .color-name {
-      color: red;
-      background-color: lightyellow;
+    body {
+      background-color: #f9f9f9;
+      font-family: 'Segoe UI', sans-serif;
     }
 
-    /* 2. ใช้รหัส Hex */
-    .hex-color {
-      color: #ffffff;
-      background-color: #1e90ff; /* dodgerblue */
-    }
-
-    /* 3. ใช้ RGB / RGBA */
-    .rgb-color {
-      color: rgb(255, 255, 255);
-      background-color: rgba(0, 128, 0, 0.7); /* semi-transparent green */
-    }
-
-    /* 4. ใช้ HSL / HSLA */
-    .hsl-color {
-      color: hsl(0, 0%, 100%); /* white */
-      background-color: hsla(300, 100%, 50%, 0.6); /* semi-transparent purple-pink */
-    }
-
-    /* เสริม: รูปแบบรวม */
     .box {
-      padding: 10px;
-      margin: 10px 0;
+      margin: 40px;                  /* ขอบนอก – ห่างจากกล่องอื่น */
+      border: 4px solid #ff9800;     /* เส้นขอบกล่อง */
+      padding: 20px;                 /* ช่องว่างภายใน */
+      background-color: #e0f7fa;     /* สีของเนื้อหา (content) */
+      color: #333;
+      font-size: 18px;
       font-weight: bold;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #777;
+      margin: 10px auto;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <div class="box color-name">
-    1. Color Name: red on lightyellow
-  </div>
+  <div class="label">กล่องนี้ใช้ครบทั้ง 4 องค์ประกอบของ Box Model</div>
 
-  <div class="box hex-color">
-    2. Hex Code: #ffffff on #1e90ff
-  </div>
-
-  <div class="box rgb-color">
-    3. RGB/RGBA: rgb white on rgba green
-  </div>
-
-  <div class="box hsl-color">
-    4. HSL/HSLA: hsl white on hsla purple
+  <div class="box">
+    👋 This is content inside the box.<br>
+    (with padding, border, and margin)
   </div>
 
 </body>

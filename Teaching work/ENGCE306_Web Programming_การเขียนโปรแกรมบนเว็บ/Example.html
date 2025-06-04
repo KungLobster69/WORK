@@ -2,31 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Attribute Selector</title>
+  <title>Box Model Highlight</title>
   <style>
     body {
       background-color: #1e1e1e;
       color: #d4d4d4;
       font-family: Consolas, monospace;
       padding: 20px;
-      font-size: 26px;
-      white-space: pre;
+      font-size: 16px;
+      white-space: pre-wrap;
     }
 
-    .tag { color: #569cd6; }
-    .attr-name { color: #9cdcfe; }
-    .attr-value { color: #ce9178; }
-    .text { color: #d4d4d4; }
-    .css-prop { color: #9cdcfe; }
-    .css-value { color: #ce9178; }
+    .tag         { color: #569cd6; }
+    .attr-name   { color: #9cdcfe; }
+    .attr-value  { color: #ce9178; }
+    .css-prop    { color: #9cdcfe; }
+    .css-value   { color: #ce9178; }
+    .comment     { color: #6a9955; font-style: italic; }
 
     .highlight {
       background-color: yellow;
-      color: black;
+      color: black !important;
       font-weight: bold;
-      padding: 2px 6px;
+      padding: 2px 4px;
       border-radius: 4px;
-      display: inline-block;
     }
 
     .highlight * {
@@ -36,35 +35,34 @@
 </head>
 <body>
 <pre><code>
-&lt;<span class="tag">!DOCTYPE</span> <span class="attr-value">html</span>&gt;
-<span class="tag">&lt;html</span> <span class="attr-name">lang=</span><span class="attr-value">"en"</span>&gt;
+<span class="tag">&lt;!DOCTYPE</span> html&gt;
+<span class="tag">&lt;html</span> <span class="attr-name">lang=</span><span class="attr-value">"en"</span><span class="tag">&gt;</span>
   <span class="tag">&lt;head&gt;</span>
-    &lt;<span class="tag">meta</span> <span class="attr-name">charset=</span><span class="attr-value">"UTF-8"</span>&gt;
-    &lt;<span class="tag">title&gt;</span><span class="text">Attribute Selector</span>&lt;/<span class="tag">title</span>&gt;
-    &lt;<span class="tag">style&gt;</span>
-      <span class="highlight">input[type="text"] {</span>
-        <span class="highlight"><span class="css-prop">background-color</span>: <span class="css-value">lightyellow</span>;</span>
-        <span class="highlight"><span class="css-prop">border</span>: <span class="css-value">1px solid orange</span>;</span>
-      <span class="highlight">}</span>
-
-      <span class="highlight">a[target="_blank"] {</span>
-        <span class="highlight"><span class="css-prop">color</span>: <span class="css-value">red</span>;</span>
-        <span class="highlight"><span class="css-prop">font-weight</span>: <span class="css-value">bold</span>;</span>
-      <span class="highlight">}</span>
-    &lt;/<span class="tag">style</span>&gt;
+    <span class="tag">&lt;meta</span> <span class="attr-name">charset=</span><span class="attr-value">"UTF-8"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;title&gt;</span>Box Model Example<span class="tag">&lt;/title&gt;</span>
+    <span class="tag">&lt;style&gt;</span>
+      .box {
+        <span class="highlight"><span class="css-prop">margin</span>: <span class="css-value">40px</span>;</span>                <span class="comment"> /* margin: ขอบนอก */</span>
+        <span class="highlight"><span class="css-prop">border</span>: <span class="css-value">4px solid #ff9800</span>;</span>  <span class="comment">  /* border: เส้นขอบ */</span>
+        <span class="highlight"><span class="css-prop">padding</span>: <span class="css-value">20px</span>;</span>               <span class="comment"> /* padding: ระยะภายใน */</span>
+        <span class="highlight"><span class="css-prop">background-color</span>: <span class="css-value">#e0f7fa</span>;</span>  <span class="comment">  /* content: พื้นหลังเนื้อหา */</span>
+        <span class="css-prop">color</span>: <span class="css-value">#333</span>;
+        <span class="css-prop">font-size</span>: <span class="css-value">18px</span>;
+        <span class="css-prop">font-weight</span>: <span class="css-value">bold</span>;
+        <span class="css-prop">text-align</span>: <span class="css-value">center</span>;
+        <span class="css-prop">width</span>: <span class="css-value">300px</span>;
+        <span class="css-prop">box-shadow</span>: <span class="css-value">0 4px 8px rgba(0, 0, 0, 0.1)</span>;
+        <span class="css-prop">border-radius</span>: <span class="css-value">10px</span>;
+      }
+    <span class="tag">&lt;/style&gt;</span>
   <span class="tag">&lt;/head&gt;</span>
+
   <span class="tag">&lt;body&gt;</span>
 
-    &lt;<span class="tag">h3&gt;</span><span class="text">Form:</span>&lt;/<span class="tag">h3&gt;</span>
-    <span class="highlight">&lt;<span class="tag">input</span> <span class="attr-name">type=</span><span class="attr-value">"text"</span> <span class="attr-name">placeholder=</span><span class="attr-value">"Enter your name"</span>&gt;</span>
-    &lt;<span class="tag">input</span> <span class="attr-name">type=</span><span class="attr-value">"password"</span> <span class="attr-name">placeholder=</span><span class="attr-value">"Enter password"</span>&gt;
-
-    &lt;<span class="tag">h3&gt;</span><span class="text">Links:</span>&lt;/<span class="tag">h3&gt;</span>
-    <span class="highlight">&lt;<span class="tag">a</span> <span class="attr-name">href=</span><span class="attr-value">"https://www.example.com"</span> <span class="attr-name">target=</span><span class="attr-value">"_blank"</span>&gt;</span>
-      <span class="text">🔗 External Link (new tab)</span>
-    <span class="highlight">&lt;/<span class="tag">a&gt;</span></span>
-    &lt;<span class="tag">br&gt;</span>
-    &lt;<span class="tag">a</span> <span class="attr-name">href=</span><span class="attr-value">"page.html"</span>&gt;<span class="text">🔗 Internal Link</span>&lt;/<span class="tag">a&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr-name">class=</span><span class="attr-value">"box"</span><span class="tag">&gt;</span>
+      👋 This is content inside the box.<br>
+      (with padding, border, and margin)
+    <span class="tag">&lt;/div&gt;</span>
 
   <span class="tag">&lt;/body&gt;</span>
 <span class="tag">&lt;/html&gt;</span>
