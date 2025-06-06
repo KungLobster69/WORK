@@ -12,6 +12,7 @@ from Levenshtein import distance as lev_distance
 from joblib import Parallel, delayed
 from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
 from tqdm import tqdm
+import hashlib
 
 # --------------------------
 # PARAMETERS
@@ -187,7 +188,7 @@ def improved_fuzzy_median_string(current_string, strings, memberships, alphabet,
     return s
 
 def sgfcmed_iterative_fast(strings, c, m, save_path, label,
-                           tolerance_percent=1.0, max_iter=50,
+                           tolerance_percent=1.0, max_iter=10,
                            adjust_every=1, adjust_rate=0.9):
     temp_save_path = save_path.replace(".csv", "_temp.csv")
     idx_save_path = save_path.replace(".csv", "_temp_idx.json")
@@ -289,7 +290,7 @@ def sgfcmed_iterative_fast(strings, c, m, save_path, label,
 
 
 def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
-                  tolerance_percent=1.0, max_iter=50):
+                  tolerance_percent=1.0, max_iter=10):
     results = []
     os.makedirs(save_dir, exist_ok=True)
 
@@ -352,7 +353,7 @@ if __name__ == "__main__":
             m_candidates=m_candidates,
             save_dir=path_save,
             tolerance_percent=20,
-            max_iter=10
+            max_iter=3
         )
     else:
         for c in benign_c_candidates:
@@ -384,7 +385,7 @@ if __name__ == "__main__":
             m_candidates=m_candidates,
             save_dir=path_save,
             tolerance_percent=20,
-            max_iter=10
+            max_iter=3
         )
     else:
         for c in malware_c_candidates:
