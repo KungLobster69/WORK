@@ -31,7 +31,7 @@ path_save = r"C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER
 os.makedirs(path_save, exist_ok=True)
 
 # Clustering parameter settings
-c_mode = 'percent'
+c_mode = 'fixed' #percent,fixed
 c_percentages = [10, 20]  # percentage of samples for number of prototypes
 c_fixed = [100, 200, 300, 400, 500]  # for fixed mode
 m_candidates = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
@@ -435,7 +435,7 @@ def optimizer_c_m(strings, label, c_candidates, m_candidates, save_dir,
 # MAIN EXECUTION BLOCK
 # ------------------------------------------------------
 if __name__ == "__main__":
-    mode = "optimizer"  # or "manual"
+    mode = "manual"  # or "manual" , "optimizer
 
     print("📥 Loading benign dataset ...")
     benign_df = load_json_lines(os.path.join(path, "benign_train.json"))
@@ -468,36 +468,4 @@ if __name__ == "__main__":
                                        tolerance_percent=1.0, max_iter=3)
 
     del benign_df, benign_strings
-
-    print("📥 Loading malware dataset ...")
-    malware_df = load_json_lines(os.path.join(path, "malware_train.json"))
-    malware_strings = malware_df.iloc[:, 0].astype(str).tolist()
-
-    malware_c_candidates = compute_c_candidates(
-        n_samples=len(malware_strings),
-        mode=c_mode,
-        percentages=c_percentages,
-        fixed=c_fixed
-    )
-
-    if mode == "optimizer":
-        print("🔍 Running optimizer for malware dataset ...")
-        optimizer_c_m(
-            strings=malware_strings,
-            label="malware",
-            c_candidates=malware_c_candidates,
-            m_candidates=m_candidates,
-            save_dir=path_save,
-            tolerance_percent=20,
-            max_iter=3
-        )
-    else:
-        for c in malware_c_candidates:
-            for m in m_candidates:
-                filename = f"malware_c{c}_m{str(m).replace('.', '_')}.csv"
-                save_path = os.path.join(path_save, filename)
-                sgfcmed_iterative_fast(malware_strings.copy(), c, m, save_path, label="malware",
-                                       tolerance_percent=1.0, max_iter=3)
-
-    del malware_df, malware_strings
     print("✅ All datasets processed successfully.")
