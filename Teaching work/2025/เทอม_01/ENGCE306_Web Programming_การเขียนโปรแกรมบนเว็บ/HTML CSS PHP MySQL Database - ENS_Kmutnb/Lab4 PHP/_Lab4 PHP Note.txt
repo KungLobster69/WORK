@@ -1,0 +1,4 @@
+วางไฟล์ใน Folder 
+php
+เช่น
+http://localhost/php/1hello.php
