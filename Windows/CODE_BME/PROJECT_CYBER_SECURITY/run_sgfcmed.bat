@@ -1,14 +1,9 @@
 @echo off
 echo ============================================
-echo Running 001_sgFCMed_Full_benign.py in a new window...
+echo Running 002_SGFCMed_Update_06_06_2025.py in a new window...
 echo ============================================
 cd /d C:\Users\BMEi\Documents\GitHub\WORK\Windows\CODE_BME\PROJECT_CYBER_SECURITY\CODE_02
-start "Benign Window" cmd /k "python 001_sgFCMed_Full_benign.py"
-
-echo ============================================
-echo Running 001_sgFCMed_Full_malware.py in a new window...
-echo ============================================
-start "Malware Window" cmd /k "python 001_sgFCMed_Full_malware.py"
+start "SGFCMed" cmd /k "python 002_SGFCMed_Update_06_06_2025.py"
 
 echo ============================================
 echo Both scripts are running in separate windows...
