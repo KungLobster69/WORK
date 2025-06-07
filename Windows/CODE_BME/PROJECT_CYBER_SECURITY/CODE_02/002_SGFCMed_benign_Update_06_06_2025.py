@@ -465,7 +465,7 @@ if __name__ == "__main__":
                 filename = f"benign_c{c}_m{str(m).replace('.', '_')}.csv"
                 save_path = os.path.join(path_save, filename)
                 sgfcmed_iterative_fast(benign_strings.copy(), c, m, save_path, label="benign",
-                                       tolerance_percent=1.0, max_iter=3)
+                                       tolerance_percent=20, max_iter=3)
 
     del benign_df, benign_strings
     print("✅ All datasets processed successfully.")
