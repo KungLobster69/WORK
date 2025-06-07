@@ -1,0 +1,38 @@
+h1 {
+    background-color: white;
+    color: blue;
+}
+body {
+    background-color: pink;
+    font-family: tahoma;
+}
+p {
+    margin: 25px 50px 40px;
+}
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 8px;
+}
+table {
+    width: 400px;
+}
+.bigtitle {
+    background-color: purple;
+    color: white;
+    padding: 10px;
+}
+#promotion {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    width: 400px;
+    border: 5px solid blue;
+    border-radius: 10px;
+    text-align: center;
+}
