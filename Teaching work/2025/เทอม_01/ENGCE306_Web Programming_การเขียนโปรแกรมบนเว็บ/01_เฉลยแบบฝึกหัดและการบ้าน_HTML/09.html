@@ -1,0 +1,26 @@
+<!-- ****************************************************** -->
+<!-- ** โจทย์ข้อที่ 9: การจัดกลุ่มองค์ประกอบในฟอร์ม ** -->
+<!-- ****************************************************** -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Grouping Form Elements</title>
+  <style> body { font-family: sans-serif; } </style>
+</head>
+<body>
+  <h2>แบบฟอร์มลงทะเบียน</h2>
+  <form action="/submit-form" method="post">
+    <fieldset>
+      <legend>ข้อมูลส่วนตัว</legend>
+      <label for="fullName">ชื่อ-นามสกุล:</label><br>
+      <input type="text" id="fullName" name="fullName" required><br><br>
+
+      <label for="email">อีเมล:</label><br>
+      <input type="email" id="email" name="email" required><br><br>
+    </fieldset>
+    <br>
+    <input type="submit" value="ส่งข้อมูล">
+  </form>
+</body>
+</html>

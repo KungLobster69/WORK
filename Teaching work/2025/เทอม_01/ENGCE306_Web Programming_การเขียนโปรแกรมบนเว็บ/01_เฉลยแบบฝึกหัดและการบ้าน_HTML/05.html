@@ -1,0 +1,55 @@
+<!-- ****************************************************** -->
+<!-- ** โจทย์ข้อที่ 5: การสร้างตารางข้อมูล ** -->
+<!-- ****************************************************** -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Table</title>
+  <style>
+    body { font-family: sans-serif; }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tfoot {
+        font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>รายการสินค้า</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ลำดับ</th>
+        <th>ชื่อสินค้า</th>
+        <th>ราคา (บาท)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>หนังสือ HTML & CSS</td>
+        <td>350</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>คอร์สเรียน JavaScript</td>
+        <td>1,200</td>
+      </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2">ราคารวม</td>
+            <td>1,550</td>
+        </tr>
+    </tfoot>
+  </table>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!-- ****************************************************** -->
+<!-- ** โจทย์ข้อที่ 7: ฟอร์มที่มี Checkbox และ Radio Button ** -->
+<!-- ****************************************************** -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkbox and Radio Buttons</title>
+    <style> body { font-family: sans-serif; } </style>
+</head>
+<body>
+    <h2>แบบสำรวจ</h2>
+    <form action="/survey" method="post">
+        <p>งานอดิเรกของคุณคืออะไร (เลือกได้มากกว่า 1 ข้อ)</p>
+        <input type="checkbox" id="hobby1" name="hobbies" value="reading">
+        <label for="hobby1">อ่านหนังสือ</label><br>
+        <input type="checkbox" id="hobby2" name="hobbies" value="movies">
+        <label for="hobby2">ดูหนัง</label><br>
+        <input type="checkbox" id="hobby3" name="hobbies" value="gaming">
+        <label for="hobby3">เล่นเกม</label><br><br>
+
+        <p>คุณพึงพอใจกับบริการของเราหรือไม่</p>
+        <input type="radio" id="satisfied" name="satisfaction" value="satisfied" checked>
+        <label for="satisfied">พอใจ</label><br>
+        <input type="radio" id="unsatisfied" name="satisfaction" value="unsatisfied">
+        <label for="unsatisfied">ไม่พอใจ</label><br><br>
+
+        <input type="submit" value="ส่งแบบสำรวจ">
+    </form>
+</body>
+</html>

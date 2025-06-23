@@ -1,0 +1,26 @@
+<!-- ****************************************************** -->
+<!-- ** โจทย์ข้อที่ 10: Input Types สมัยใหม่ ** -->
+<!-- ****************************************************** -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Modern Input Types</title>
+    <style> body { font-family: sans-serif; } </style>
+</head>
+<body>
+    <h2>ฟอร์มข้อมูลเพิ่มเติม</h2>
+    <form action="/more-info" method="post">
+        <label for="birthday">วันเกิด:</label>
+        <input type="date" id="birthday" name="birthday"><br><br>
+
+        <label for="skill">ระดับความสามารถ (1-10):</label>
+        <input type="range" id="skill" name="skill" min="1" max="10" value="5"><br><br>
+        
+        <label for="favcolor">สีที่ชอบ:</label>
+        <input type="color" id="favcolor" name="favcolor" value="#ff0000"><br><br>
+
+        <input type="submit" value="บันทึก">
+    </form>
+</body>
+</html>
