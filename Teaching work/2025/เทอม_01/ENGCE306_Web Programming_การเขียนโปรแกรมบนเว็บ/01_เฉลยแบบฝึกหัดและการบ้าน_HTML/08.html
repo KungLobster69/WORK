@@ -1,0 +1,27 @@
+<!-- ****************************************************** -->
+<!-- ** โจทย์ข้อที่ 8: Dropdown List และ Text Area ** -->
+<!-- ****************************************************** -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Dropdown and Textarea</title>
+    <style> body { font-family: sans-serif; } </style>
+</head>
+<body>
+    <h2>ติดต่อเรา</h2>
+    <form action="/contact" method="post">
+        <label for="topic">หัวข้อที่ต้องการติดต่อ:</label><br>
+        <select id="topic" name="topic">
+            <option value="inquiry">สอบถามข้อมูล</option>
+            <option value="problem">แจ้งปัญหา</option>
+            <option value="suggestion">เสนอแนะ</option>
+        </select><br><br>
+
+        <label for="message">ข้อความ:</label><br>
+        <textarea id="message" name="message" rows="5" cols="40"></textarea><br><br>
+
+        <input type="submit" value="ส่งข้อความ">
+    </form>
+</body>
+</html>

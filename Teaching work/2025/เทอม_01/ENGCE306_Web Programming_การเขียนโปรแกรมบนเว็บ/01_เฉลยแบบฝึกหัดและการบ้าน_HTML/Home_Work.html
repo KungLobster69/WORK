@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <!-- ส่วนที่ 1: โครงสร้างพื้นฐาน -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio ของ สมชาย ใจดี</title>
+    <style>
+        /* CSS พื้นฐานเพื่อความสวยงาม (ไม่รวมในเกณฑ์การให้คะแนน แต่ช่วยให้อ่านง่ายขึ้น) */
+        html {
+            scroll-behavior: smooth; /* ทำให้การเลื่อนหน้าจอเมื่อคลิกลิงก์ภายในนุ่มนวล */
+        }
+        body {
+            font-family: 'Sarabun', sans-serif; /* ใช้ฟอนต์ที่อ่านง่าย */
+            line-height: 1.7;
+            margin: 0;
+            color: #333;
+        }
+        header, footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        nav {
+            background-color: #34495e;
+            padding: 1rem;
+            text-align: center;
+            position: sticky; /* ทำให้แถบนำทางติดอยู่ด้านบนเมื่อเลื่อนหน้าจอ */
+            top: 0;
+            z-index: 100;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        main {
+            max-width: 960px;
+            margin: auto;
+            padding: 1rem;
+        }
+        section {
+            padding: 3rem 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        #about img {
+            max-width: 180px;
+            height: 180px;
+            border-radius: 50%; /* ทำให้รูปเป็นวงกลม */
+            float: left;
+            margin-right: 2rem;
+            border: 5px solid #ecf0f1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 12px;
+            text-align: left;
+        }
+        thead {
+            background-color: #34495e;
+            color: white;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem; /* สร้างระยะห่างระหว่างช่องกรอกข้อมูล */
+        }
+        input[type="text"], input[type="email"], textarea {
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+    <!-- Google Font (Sarabun) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ส่วนที่ 2: ส่วนหัว (Header) -->
+    <header>
+        <h1>สมชาย ใจดี</h1>
+        <p>นักเรียนผู้หลงใหลในการสร้างสรรค์เว็บไซต์ด้วยโค้ด</p>
+    </header>
+
+    <!-- ส่วนที่ 3: ส่วนนำทาง (Navigation) -->
+    <nav>
+        <a href="#about">เกี่ยวกับฉัน</a>
+        <a href="#projects">ผลงานและทักษะ</a>
+        <a href="#contact">ติดต่อ</a>
+    </nav>
+
+    <!-- ส่วนที่ 4: ส่วนเนื้อหาหลัก (Main) -->
+    <main>
+        <!-- Section 1: เกี่ยวกับฉัน -->
+        <section id="about" class="clearfix">
+            <h2>เกี่ยวกับฉัน</h2>
+            <img src="https://placehold.co/180x180/EFEFEF/333333?text=Profile" alt="รูปโปรไฟล์ของสมชาย ใจดี">
+            <p>
+                สวัสดีครับ ผมสมชาย ใจดี กำลังศึกษาอยู่ที่โรงเรียนพัฒนาวิทยา มีความสนใจในการเขียนโปรแกรมและการสร้างเว็บไซต์เป็นอย่างยิ่ง ผมเชื่อว่าเทคโนโลยีสามารถสร้างสรรค์สิ่งดีๆ ให้กับโลกได้ และผมมีความฝันที่จะเป็นส่วนหนึ่งของการเปลี่ยนแปลงนั้น
+            </p>
+            <p>
+                ในเวลาว่าง ผมชอบศึกษาหาความรู้เพิ่มเติมเกี่ยวกับเทคโนโลยีใหม่ๆ เช่น JavaScript Frameworks และการออกแบบ UX/UI นอกจากนี้ยังชอบอ่านหนังสือและเล่นกีฬาฟุตบอลกับเพื่อนๆ ครับ
+            </p>
+        </section>
+
+        <!-- Section 2: ผลงานและทักษะ -->
+        <section id="projects">
+            <h2>ผลงานและทักษะ</h2>
+            
+            <!-- ตารางแสดงผลงาน -->
+            <h3>รายชื่อผลงานที่เคยทำ</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ชื่อผลงาน</th>
+                        <th>คำอธิบายสั้นๆ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>เว็บไซต์ชมรมคอมพิวเตอร์</td>
+                        <td>ใช้ HTML และ CSS ในการสร้างหน้าเว็บประชาสัมพันธ์กิจกรรมของชมรม</td>
+                    </tr>
+                    <tr>
+                        <td>โปรเจกต์วิชาวิทยาศาสตร์</td>
+                        <td>สร้างหน้าเว็บนำเสนอข้อมูลการทดลองเรื่องการเติบโตของพืช</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- รายการแสดงทักษะ -->
+            <h3>ทักษะที่มี</h3>
+            <ul>
+                <li>HTML5</li>
+                <li>CSS3 (มีความเข้าใจใน Flexbox และ Grid)</li>
+                <li>การออกแบบเว็บเบื้องต้น</li>
+                <li>Microsoft Office Suite</li>
+            </ul>
+        </section>
+
+        <!-- Section 3: ติดต่อ และ โจทย์พิเศษ (Iframe) -->
+        <section id="contact">
+            <h2>ติดต่อ</h2>
+            <p>หากคุณสนใจในผลงานของผม หรือต้องการพูดคุย สามารถกรอกฟอร์มด้านล่างนี้เพื่อติดต่อได้เลยครับ</p>
+            
+            <!-- ฟอร์มสำหรับติดต่อ -->
+            <form action="#" method="post">
+                <label for="name">ชื่อ:</label>
+                <input type="text" id="name" name="user_name" required>
+
+                <label for="email">อีเมล:</label>
+                <input type="email" id="email" name="user_email" required>
+
+                <label for="message">ข้อความ:</label>
+                <textarea id="message" name="user_message" rows="5" required></textarea>
+
+                <input type="submit" value="ส่งข้อความ">
+            </form>
+
+            <!-- โจทย์พิเศษ: ฝังแผนที่ -->
+            <h3 style="margin-top: 3rem; text-align: center;">ที่ตั้งโรงเรียน</h3>
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.552324227094!2d100.56105181534947!3d13.74578890124707!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29ee109dab6e1%3A0xfd18989332244243!2sTerminal%2021%20Asok!5e0!3m2!1sth!2sth!4v1655982845347!5m2!1sth!2sth"
+                width="100%" 
+                height="450" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </section>
+    </main>
+
+    <!-- ส่วนที่ 5: ส่วนท้าย (Footer) -->
+    <footer>
+        <p>&copy; 2025 สมชาย ใจดี</p>
+    </footer>
+
+</body>
+</html>

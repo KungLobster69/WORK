@@ -1,0 +1,36 @@
+<!-- ****************************************************** -->
+<!-- ** โจทย์ข้อที่ 13: การใช้ <aside> ** -->
+<!-- ****************************************************** -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Aside Element</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; }
+        .container { display: flex; max-width: 1000px; margin: auto; }
+        .content { flex: 3; padding: 20px;}
+        aside { flex: 1; border-left: 1px solid #ccc; padding: 20px; background: #f9f9f9;}
+        header, footer { text-align: center; background: #f4f4f4; padding: 1rem;}
+    </style>
+</head>
+<body>
+    <header><h1>บล็อกของฉัน</h1></header>
+    <div class="container">
+        <main class="content">
+            <article>
+                <h2>หัวข้อบทความที่ 1</h2>
+                <p>เนื้อหาของบทความ... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </article>
+        </main>
+        <aside>
+            <h3>ลิงก์ที่เกี่ยวข้อง</h3>
+            <ul>
+                <li><a href="#">บทความเก่า</a></li>
+                <li><a href="#">บทความยอดนิยม</a></li>
+            </ul>
+        </aside>
+    </div>
+    <footer><p>&copy; 2025</p></footer>
+</body>
+</html>

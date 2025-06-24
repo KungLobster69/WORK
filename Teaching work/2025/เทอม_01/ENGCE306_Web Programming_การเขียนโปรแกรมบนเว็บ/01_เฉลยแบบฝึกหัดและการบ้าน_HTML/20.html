@@ -1,0 +1,63 @@
+<!-- ****************************************************** -->
+<!-- ** โจทย์ข้อที่ 20: โปรเจกต์รวมมิตร - สร้างหน้า Portfolio อย่างง่าย ** -->
+<!-- ****************************************************** -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+      html { scroll-behavior: smooth; }
+      body { font-family: sans-serif; line-height: 1.6; margin: 0; }
+      header, footer { text-align: center; background-color: #f4f4f4; padding: 1rem;}
+      nav { text-align: center; padding: 1rem; background: #333; position: sticky; top: 0; }
+      nav a { color: white; text-decoration: none; padding: 0 1rem; }
+      section { padding: 4rem 2rem; border-bottom: 1px solid #ddd; max-width: 900px; margin: auto; }
+      #about { overflow: hidden; } /* Clear float */
+      #about img { max-width: 150px; border-radius: 50%; float: left; margin-right: 2rem;}
+      h2 { text-align: center; margin-bottom: 2rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>สมชาย ใจดี</h1>
+        <p>Web Developer & Designer</p>
+    </header>
+
+    <nav>
+        <a href="#about">เกี่ยวกับฉัน</a>
+        <a href="#projects">ผลงาน</a>
+        <a href="#contact">ติดต่อ</a>
+    </nav>
+
+    <main>
+        <section id="about">
+            <h2>เกี่ยวกับฉัน</h2>
+            <img src="https://placehold.co/150x150/e2e8f0/334155?text=Profile" alt="รูปโปรไฟล์">
+            <p>สวัสดีครับ ผมเป็นนักพัฒนาเว็บที่มีความหลงใหลในการสร้างสรรค์เว็บไซต์ที่สวยงามและใช้งานง่าย มีความเชี่ยวชาญใน HTML, CSS และ JavaScript และพร้อมที่จะเรียนรู้เทคโนโลยีใหม่ๆ อยู่เสมอ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae felis ut ex tincidunt pellentesque. Vivamus quis dolor ut dui consequat tincidunt.</p>
+        </section>
+
+        <section id="projects">
+            <h2>ผลงานของฉัน</h2>
+            <ul>
+                <li><strong>เว็บไซต์บริษัท A:</strong> ออกแบบและพัฒนาหน้าบ้านด้วย React</li>
+                <li><strong>แอปพลิเคชัน B:</strong> พัฒนาส่วนติดต่อผู้ใช้ (UI) สำหรับแอปพลิเคชันมือถือ</li>
+                <li><strong>บล็อกส่วนตัว:</strong> สร้างด้วย HTML/CSS แบบ Semantic</li>
+            </ul>
+        </section>
+
+        <section id="contact">
+            <h2>ติดต่อ</h2>
+            <p>หากคุณสนใจร่วมงานกับผม สามารถติดต่อได้ทางอีเมล:</p>
+            <p><a href="mailto:somchai.d@example.com">somchai.d@example.com</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 สมชาย ใจดี</p>
+    </footer>
+
+</body>
+</html>
