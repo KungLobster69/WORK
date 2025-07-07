@@ -1,19 +1,29 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Simple Form</title>
+<style>
+    /* เปลี่ยน span ที่มีคลาส .block-span ให้เป็น block */
+    .block-span {
+        display: block;
+        background-color: lightblue;
+        padding: 10px;
+    }
+
+    .inline-span {
+        background-color: lightcoral;
+    }
+</style>
 </head>
 <body>
-  <h2>แบบฟอร์มลงทะเบียน</h2>
-  <form action="/submit-form" method="post">
-    <label for="fullName">ชื่อ-นามสกุล:</label><br>
-    <input type="text" id="fullName" name="fullName" required><br><br>
 
-    <label for="email">อีเมล:</label><br>
-    <input type="email" id="email" name="email" required><br><br>
+    <p>
+        นี่คือ <span class="inline-span">span แบบปกติ</span>
+        <span class="inline-span">มันจะเรียงต่อกัน</span>
+    </p>
 
-    <input type="submit" value="ส่งข้อมูล">
-  </form>
+    <p>ส่วนนี่คือ span ที่ใช้ display: block</p>
+    <span class="block-span">จะเห็นว่ามันขึ้นบรรทัดใหม่</span>
+    <span class="block-span">และกินพื้นที่เหมือนกล่องข้อความ</span>
+
 </body>
 </html>
