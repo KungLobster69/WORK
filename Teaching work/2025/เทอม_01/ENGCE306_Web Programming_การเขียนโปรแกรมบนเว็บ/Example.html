@@ -46,41 +46,39 @@
   </style>
 </head>
 <body>
-<pre><code><span class="tag">&lt;h1&gt;</span><span class="text">การเขียนบทความสอน HTML</span><span class="tag">&lt;/h1&gt;</span>
-<span class="tag">&lt;p&gt;</span>
-    <span class="text">หนึ่งในสถานการณ์ที่จำเป็นต้องใช้ HTML Entities มากที่สุดคือการเขียนบทความสอนเกี่ยวกับโค้ด
-    หากเราต้องการแสดงตัวอย่างแท็ก </span><span class="code-inline"><span class="highlight">&lt;</span>h1<span class="highlight">&gt;</span></span><span class="text"> หรือ </span><span class="code-inline"><span class="highlight">&lt;</span>p<span class="highlight">&gt;</span></span><span class="text"> บนหน้าเว็บ เราไม่สามารถพิมพ์ </span><span class="code-inline">&lt;h1&gt;</span><span class="text"> ลงไปตรงๆ ได้ เพราะเบราว์เซอร์จะเข้าใจผิดว่าเรากำลังจะสร้างหัวข้อใหม่</span>
-<span class="tag">&lt;/p&gt;</span>
-
-<span class="tag">&lt;h2&gt;</span><span class="text">ตัวอย่าง: การแสดง Code Snippet</span><span class="tag">&lt;/h2&gt;</span>
-<span class="tag">&lt;p&gt;</span>
-    <span class="text">เราจึงต้องแปลงอักขระ </span><span class="code-inline"><span class="highlight">&lt;</span></span><span class="text"> และ </span><span class="code-inline"><span class="highlight">&gt;</span></span><span class="text"> ให้เป็น Entities ก่อน ดังตัวอย่างในกล่องโค้ดด้านล่างนี้ ซึ่งใช้ทั้ง </span><span class="tag">&lt;strong&gt;</span><span class="strong">Entity Name</span><span class="tag">&lt;/strong&gt;</span><span class="text"> (</span><span class="code-inline"><span class="highlight">&amp;lt;</span></span><span class="text">) และ </span><span class="tag">&lt;strong&gt;</span><span class="strong">Entity Number</span><span class="tag">&lt;/strong&gt;</span><span class="text"> (</span><span class="code-inline"><span class="highlight">&amp;#60;</span></span><span class="text">) ผสมกัน</span>
-<span class="tag">&lt;/p&gt;</span>
-    
-<span class="tag">&lt;pre&gt;&lt;code&gt;</span><span class="comment">&lt;!-- โค้ดตัวอย่างสำหรับแสดงผลบนเว็บ --&gt;</span>
-<span class="highlight">&amp;lt;</span>div class="product-card"<span class="highlight">&amp;gt;</span>
-  <span class="highlight">&amp;lt;</span>h2<span class="highlight">&amp;gt;</span>หูฟังไร้สาย รุ่น Pro<span class="highlight">&amp;lt;</span>/h2<span class="highlight">&amp;gt;</span>
-  <span class="comment">&lt;!-- ใช้ Entity Number สำหรับแท็ก p --&gt;</span>
-  <span class="highlight">&amp;#60;</span>p<span class="highlight">&amp;#62;</span>ราคาพิเศษเพียง 2,500 บาท (ปกติ 3,000 บาท)<span class="highlight">&amp;#60;</span>/p<span class="highlight">&amp;#62;</span>
-<span class="highlight">&amp;lt;</span>/div<span class="highlight">&amp;gt;</span><span class="tag">&lt;/code&gt;&lt;/pre&gt;</span>
-
-
-<span class="tag">&lt;h2&gt;</span><span class="text">ตัวอย่าง: การใช้อักขระพิเศษในเนื้อหาทั่วไป</span><span class="tag">&lt;/h2&gt;</span>
-<span class="tag">&lt;p&gt;</span>
-    <span class="text">นอกจากการแสดงโค้ดแล้ว เรายังใช้ Entities เพื่อแสดงสัญลักษณ์พิเศษต่างๆ ในเนื้อหา เช่น สัญลักษณ์ลิขสิทธิ์ (©), เครื่องหมายการค้า (™ หรือ ®), หรือแม้กระทั่งการบอกขนาดที่ "น้อยกว่าหรือเท่ากับ" (≤)</span>
-<span class="tag">&lt;/p&gt;</span>
-
-<span class="tag">&lt;div</span> <span class="attr-name">class=</span><span class="attr-value">"footer"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;p&gt;</span>
-        <span class="text">สินค้าทั้งหมดอยู่ภายใต้แบรนด์ TechPro Inc.</span><span class="tag">&lt;b&gt;</span><span class="highlight">&amp;reg;</span><span class="tag">&lt;/b&gt;</span> <span class="highlight">&amp;mdash;</span> <span class="text">นวัตกรรมเพื่อชีวิตที่ดีกว่า</span>
-    <span class="tag">&lt;/p&gt;</span>
-    <span class="tag">&lt;p&gt;</span>
-        <span class="text">ราคาสินค้าในยุโรปเริ่มต้นที่ </span><span class="tag">&lt;b&gt;</span><span class="highlight">&amp;euro;</span><span class="text">50</span><span class="tag">&lt;/b&gt;</span><span class="text"> และอาจมีการเปลี่ยนแปลง</span>
-    <span class="tag">&lt;/p&gt;</span>
-    <span class="tag">&lt;p&gt;</span>
-        <span class="text">สงวนลิขสิทธิ์ </span><span class="tag">&lt;b&gt;</span><span class="highlight">&amp;#169;</span><span class="text"> 2025</span><span class="tag">&lt;/b&gt;</span><span class="text">, TechPro Inc. All rights reserved.</span>
-    <span class="tag">&lt;/p&gt;</span>
-<span class="tag">&lt;/div&gt;</span>
+<pre><code><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html <span class="attr-name">lang=</span><span class="attr-value">"th"</span>&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;title&gt;</span><span class="text">ตัวอย่างฟอร์มสมัครสมาชิก</span><span class="tag">&lt;/title&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;h2&gt;</span><span class="text">ฟอร์มสมัครสมาชิก</span><span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;form <span class="attr-name">action=</span><span class="attr-value">"/submit-form"</span> <span class="attr-name">method=</span><span class="attr-value">"post"</span>&gt;</span>
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;label <span class="attr-name">for=</span><span class="attr-value">"username"</span>&gt;</span><span class="text">ชื่อผู้ใช้:</span><span class="tag">&lt;/label&gt;</span>
+            <span class="tag">&lt;input <span class="attr-name">type=</span><span class="attr-value">"text"</span> <span class="attr-name">id=</span><span class="attr-value">"username"</span> <span class="attr-name">name=</span><span class="attr-value">"username"</span> <span class="attr-name">required</span>&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;label <span class="attr-name">for=</span><span class="attr-value">"password"</span>&gt;</span><span class="text">รหัสผ่าน:</span><span class="tag">&lt;/label&gt;</span>
+            <span class="tag">&lt;input <span class="attr-name">type=</span><span class="attr-value">"password"</span> <span class="attr-name">id=</span><span class="attr-value">"password"</span> <span class="attr-name">name=</span><span class="attr-value">"password"</span> <span class="attr-name">required</span>&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;label <span class="attr-name">for=</span><span class="attr-value">"province"</span>&gt;</span><span class="text">จังหวัด:</span><span class="tag">&lt;/label&gt;</span>
+            <span class="tag">&lt;select <span class="attr-name">id=</span><span class="attr-value">"province"</span> <span class="attr-name">name=</span><span class="attr-value">"province"</span>&gt;</span>
+                <span class="tag">&lt;option <span class="attr-name">value=</span><span class="attr-value">"bkk"</span>&gt;</span><span class="text">กรุงเทพมหานคร</span><span class="tag">&lt;/option&gt;</span>
+                <span class="tag">&lt;option <span class="attr-name">value=</span><span class="attr-value">"cm"</span>&gt;</span><span class="text">เชียงใหม่</span><span class="tag">&lt;/option&gt;</span>
+            <span class="tag">&lt;/select&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;label <span class="attr-name">for=</span><span class="attr-value">"comment"</span>&gt;</span><span class="text">หมายเหตุ:</span><span class="tag">&lt;/label&gt;</span>
+            <span class="tag">&lt;textarea <span class="attr-name">id=</span><span class="attr-value">"comment"</span> <span class="attr-name">name=</span><span class="attr-value">"comment"</span> <span class="attr-name">rows=</span><span class="attr-value">"4"</span>&gt;</span><span class="tag">&lt;/textarea&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;button <span class="attr-name">type=</span><span class="attr-value">"submit"</span>&gt;</span><span class="text">สมัครสมาชิก</span><span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/form&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span>
 </code></pre>
 </body>
 </html>
