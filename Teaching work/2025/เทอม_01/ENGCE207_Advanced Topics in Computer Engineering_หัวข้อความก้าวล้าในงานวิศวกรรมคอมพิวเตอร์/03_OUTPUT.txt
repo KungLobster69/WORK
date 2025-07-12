@@ -1,0 +1,164 @@
+--- ภาระงานข้อที่ 1: การโหลดและตรวจสอบข้อมูลเบื้องต้น ---
+
+แสดงข้อมูล 10 แถวแรก:
+   StudentID FirstName   LastName                   Major  MidtermScore  \
+0    6401001   Somchai     Jaidee    Computer Engineering          85.0   
+1    6401002    Somsri     Rakdee    Computer Engineering          76.0   
+2    6401003      Mana      Petch       Civil Engineering          65.0   
+3    6401004    Chujai      Klaew  Electrical Engineering          92.0   
+4    6401005      Piti     Yindee    Computer Engineering          88.0   
+5    6401006     Malee     Boonma       Civil Engineering           NaN   
+6    6401007     Weera    Chokdee  Electrical Engineering          78.0   
+7    6401008     Jinda     Suksai    Computer Engineering          95.0   
+8    6401009      Arun  Rungrueng  Industrial Engineering          55.0   
+9    6401010     Naree    Ngamdee       Civil Engineering          72.0   
+
+   FinalScore  ProjectScore  Attendance  
+0        90.0          45.0          95  
+1         NaN          48.0          88  
+2        72.0          38.0          92  
+3        95.0          50.0          98  
+4        85.0          42.0          85  
+5        65.0          35.0          75  
+6        82.0          40.0          90  
+7        98.0          49.0          99  
+8        60.0          30.0          68  
+9        78.0          41.0          94  
+
+ตรวจสอบชนิดข้อมูลและค่าว่างด้วย .info():
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 15 entries, 0 to 14
+Data columns (total 8 columns):
+ #   Column        Non-Null Count  Dtype  
+---  ------        --------------  -----  
+ 0   StudentID     15 non-null     int64  
+ 1   FirstName     15 non-null     object 
+ 2   LastName      15 non-null     object 
+ 3   Major         15 non-null     object 
+ 4   MidtermScore  13 non-null     float64
+ 5   FinalScore    14 non-null     float64
+ 6   ProjectScore  15 non-null     float64
+ 7   Attendance    15 non-null     int64  
+dtypes: float64(3), int64(2), object(3)
+memory usage: 1.1+ KB
+
+คำตอบคำถามข้อ 1:
+คอลัมน์ที่มีข้อมูลขาดหายคือ MidtermScore (2 ค่า) และ FinalScore (1 ค่า)
+ชนิดข้อมูลเป็น float64 เนื่องจาก Pandas จะแปลงคอลัมน์ที่มีค่าว่างเป็น float โดยอัตโนมัติ
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 2: การจัดการข้อมูลที่ขาดหาย ---
+เติมค่าที่ขาดหายด้วย median เรียบร้อยแล้ว
+ตรวจสอบข้อมูลขาดหายอีกครั้ง:
+StudentID       0
+FirstName       0
+LastName        0
+Major           0
+MidtermScore    0
+FinalScore      0
+ProjectScore    0
+Attendance      0
+dtype: int64
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 3: การแปลงชนิดข้อมูล ---
+ชนิดข้อมูลของ ProjectScore ก่อนแปลง: float64
+ชนิดข้อมูลของ ProjectScore หลังแปลง: int64
+แปลงชนิดข้อมูลเรียบร้อยแล้ว
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 4: การสร้างคอลัมน์ FullName ---
+สร้างคอลัมน์ FullName เรียบร้อยแล้ว, ดูตัวอย่าง:
+  FirstName LastName        FullName
+0   Somchai   Jaidee  Somchai Jaidee
+1    Somsri   Rakdee   Somsri Rakdee
+2      Mana    Petch      Mana Petch
+3    Chujai    Klaew    Chujai Klaew
+4      Piti   Yindee     Piti Yindee
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 5: การคำนวณคะแนนรวม ---
+สร้างคอลัมน์ TotalScore เรียบร้อยแล้ว, ดูตัวอย่าง:
+         FullName  MidtermScore  FinalScore  ProjectScore  TotalScore
+0  Somchai Jaidee          85.0        90.0            45       220.0
+1   Somsri Rakdee          76.0        81.0            48       205.0
+2      Mana Petch          65.0        72.0            38       175.0
+3    Chujai Klaew          92.0        95.0            50       237.0
+4     Piti Yindee          88.0        85.0            42       215.0
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 6: การคำนวณและตัดเกรด ---
+สร้างคอลัมน์ FinalGrade เรียบร้อยแล้ว, ดูตัวอย่าง:
+         FullName  TotalScore FinalGrade
+0  Somchai Jaidee       220.0          A
+1   Somsri Rakdee       205.0          B
+2      Mana Petch       175.0          C
+3    Chujai Klaew       237.0          A
+4     Piti Yindee       215.0          B
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 7: การคัดกรองข้อมูล ---
+
+นักศึกษาวิศวกรรมคอมพิวเตอร์ที่ได้เกรด 'A':
+          FullName                 Major  TotalScore FinalGrade
+0   Somchai Jaidee  Computer Engineering       220.0          A
+7     Jinda Suksai  Computer Engineering       242.0          A
+10     David Smith  Computer Engineering       248.0          A
+
+นักศึกษาที่มีการเข้าเรียนน้อยกว่า 70%:
+          FullName                   Major  Attendance
+8   Arun Rungrueng  Industrial Engineering          68
+14    Chris Wilson  Industrial Engineering          65
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 8: การเรียงลำดับข้อมูล ---
+
+5 อันดับแรกของนักศึกษาที่มีคะแนนรวมสูงสุด:
+          FullName                   Major  TotalScore FinalGrade
+10     David Smith    Computer Engineering       248.0          A
+7     Jinda Suksai    Computer Engineering       242.0          A
+3     Chujai Klaew  Electrical Engineering       237.0          A
+0   Somchai Jaidee    Computer Engineering       220.0          A
+13   Jessica Davis    Computer Engineering       217.0          B
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 9: การจัดกลุ่มและสรุปผลข้อมูล ---
+
+คะแนนเฉลี่ยของแต่ละสาขาวิชา:
+                        Average_TotalScore  Average_FinalScore
+Major                                                         
+Civil Engineering                   187.25               73.75
+Computer Engineering                224.50               91.00
+Electrical Engineering              206.33               84.00
+Industrial Engineering              155.00               65.00
+
+คำตอบคำถามข้อ 9:
+สาขาวิชาที่มีคะแนนรวมเฉลี่ยสูงสุดคือ: Computer Engineering
+--------------------------------------------------
+
+--- ภาระงานข้อที่ 10: การเตรียมและการบันทึกรายงานสรุป ---
+
+ตัวอย่างข้อมูลใน report_df:
+   StudentID        FullName                   Major  TotalScore FinalGrade
+0    6401001  Somchai Jaidee    Computer Engineering       220.0          A
+1    6401002   Somsri Rakdee    Computer Engineering       205.0          B
+2    6401003      Mana Petch       Civil Engineering       175.0          C
+3    6401004    Chujai Klaew  Electrical Engineering       237.0          A
+4    6401005     Piti Yindee    Computer Engineering       215.0          B
+
+ไฟล์ 'student_grade_report.csv' ถูกสร้างเรียบร้อยแล้ว (โค้ดถูกคอมเมนต์ไว้)
+--------------------------------------------------
+C:\Users\LOBSTER69\AppData\Local\Temp\ipykernel_26564\3556606257.py:51: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+
+  df['MidtermScore'].fillna(midterm_median, inplace=True)
+C:\Users\LOBSTER69\AppData\Local\Temp\ipykernel_26564\3556606257.py:52: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+
+  df['FinalScore'].fillna(final_median, inplace=True)
