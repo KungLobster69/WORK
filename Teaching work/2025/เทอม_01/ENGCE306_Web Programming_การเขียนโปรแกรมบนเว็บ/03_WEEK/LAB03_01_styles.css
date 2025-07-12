@@ -1,0 +1,6 @@
+/* 5. External CSS */
+p:last-of-type {
+    font-weight: bold;
+    text-decoration: underline;
+    color: purple;
+}
