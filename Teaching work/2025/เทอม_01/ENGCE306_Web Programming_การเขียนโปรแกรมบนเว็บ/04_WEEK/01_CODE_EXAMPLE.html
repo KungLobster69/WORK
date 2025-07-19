@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>สลับข้อความ (แบบสั้น)</title>
+</head>
+<body>
+
+    <!-- 1. ข้อความเริ่มต้น -->
+    <h1 id="messageText">สวัสดี!</h1>
+
+    <!-- 2. ปุ่มสำหรับคลิก -->
+    <button onclick="toggleText()">สลับข้อความ</button>
+
+    <!-- 3. โค้ด JavaScript -->
+    <script>
+        function toggleText() {
+            // ดึง element ที่มี id="messageText"
+            let textElement = document.getElementById("messageText");
+
+            // ตรวจสอบข้อความปัจจุบันแล้วสลับ
+            if (textElement.innerHTML === "สวัสดี!") {
+                textElement.innerHTML = "ลาก่อน!";
+            } else {
+                textElement.innerHTML = "สวัสดี!";
+            }
+        }
+    </script>
+
+</body>
+</html>
