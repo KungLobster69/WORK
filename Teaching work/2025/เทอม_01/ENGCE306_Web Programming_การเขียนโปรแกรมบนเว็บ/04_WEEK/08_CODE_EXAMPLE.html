@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง String</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <div id="output"></div>
+
+    <script>
+        let singleQuote = 'สวัสดี';
+        let doubleQuote = "ยินดีต้อนรับ";
+
+        // Backtick (Template Literals) สามารถแทรกตัวแปรได้
+        let userName = "สมชาย";
+        let userAge = 30;
+        let template = `ชื่อผู้ใช้คือ ${userName} และเขามีอายุ ${userAge} ปี`;
+
+        console.log(singleQuote); // แสดงผล 'สวัสดี'
+        console.log(doubleQuote); // แสดงผล "ยินดีต้อนรับ"
+        console.log(template);    // แสดงผล "ชื่อผู้ใช้คือ สมชาย และเขามีอายุ 30 ปี"
+
+        // ลองแสดงผลบนหน้าเว็บด้วย
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = template;
+    </script>
+</body>
+</html>

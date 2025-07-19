@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่างเรื่อง Scope</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <script>
+        // 1. Global Scope
+        const globalVar = "ฉันอยู่ได้ทุกที่";
+        console.log("จาก Global:", globalVar); // "ฉันอยู่ได้ทุกที่"
+
+        function testScope() {
+            // 2. Function Scope
+            var functionScopedVar = "ฉันอยู่ในฟังก์ชันเท่านั้น";
+            console.log("จากใน Function:", globalVar); // เข้าถึง Global ได้
+            console.log("จากใน Function:", functionScopedVar); // เข้าถึงตัวเองได้
+        }
+
+        testScope();
+        // console.log(functionScopedVar); // -> Error: functionScopedVar is not defined
+
+        // 3. Block Scope
+        if (true) {
+            var blockScopedVar_var = "ฉันประกาศด้วย var ใน if";
+            let blockScopedVar_let = "ฉันประกาศด้วย let ใน if";
+            console.log("จากใน if:", blockScopedVar_var); // "ฉันประกาศด้วย var ใน if"
+            console.log("จากใน if:", blockScopedVar_let); // "ฉันประกาศด้วย let ใน if"
+        }
+
+        // ปัญหาของ var: มัน "ทะลุ" ออกมาจาก block scope ได้
+        console.log("จากนอก if (var):", blockScopedVar_var); // "ฉันประกาศด้วย var ใน if"
+
+        // let ปลอดภัยกว่า: มันไม่ทะลุออกมา
+        // ลอง uncomment บรรทัดข้างล่างนี้จะเกิด Error
+        console.log("จากนอก if (let):", blockScopedVar_let); // -> Error: blockScopedVar_let is not defined
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่างตัวแปร let</title>
+</head>
+<body>
+
+    <!-- โค้ด HTML จากในสไลด์จะอยู่ตรงนี้ -->
+    <p>คะแนนปัจจุบัน: <span id="score-display">0</span></p>
+    <button id="increase-btn">เพิ่มคะแนน</button>
+
+    <!-- และต้องมีการเชื่อมต่อกับไฟล์ JavaScript -->
+    <script>
+        // โค้ด JavaScript ทั้งหมดจากในสไลด์จะอยู่ตรงนี้
+        const scoreDisplay = document.getElementById('score-display');
+        const increaseBtn = document.getElementById('increase-btn');
+        
+        let currentScore = 0;
+        
+        // แต่ถ้าเราพยายาม "ประกาศซ้ำ" แบบนี้ จะเกิด Error ทันที
+        // let currentScore = 50; // -> Uncaught SyntaxError: Identifier 'currentScore' has already been declared
+        
+        increaseBtn.addEventListener('click', () => {
+            currentScore = currentScore + 10;
+            scoreDisplay.textContent = currentScore;
+        });
+    </script>
+
+</body>
+</html>

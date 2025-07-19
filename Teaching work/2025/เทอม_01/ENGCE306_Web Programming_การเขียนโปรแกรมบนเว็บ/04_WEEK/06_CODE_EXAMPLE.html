@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่างปัญหาของ var</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <script>
+        console.log("--- ตัวอย่างการใช้ var ใน loop ---");
+        for (var i = 0; i < 3; i++) {
+            console.log("ใน loop:", i); // แสดงผล 0, 1, 2
+        }
+        // ปัญหา: เรายังสามารถเข้าถึงตัวแปร i ได้นอก loop
+        // ซึ่งค่าสุดท้ายของ i คือ 3 (เพราะเงื่อนไข i < 3 เป็นเท็จ)
+        console.log("นอก loop:", i); // แสดงผล 3
+
+        console.log("--- ถ้าใช้ let จะเป็นแบบนี้ ---");
+        for (let j = 0; j < 3; j++) {
+            console.log("ใน loop:", j); // แสดงผล 0, 1, 2
+        }
+        // ถูกต้อง: เราไม่สามารถเข้าถึง j นอก loop ได้ เพราะ j มีขอบเขตแค่ใน {...} ของ for
+        // ลอง uncomment บรรทัดข้างล่างนี้จะเกิด Error
+        console.log("นอก loop:", j); // -> Uncaught ReferenceError: j is not defined
+    </script>
+</body>
+</html>
