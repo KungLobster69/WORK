@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Array Methods (วนลูป)</title>
+</head>
+<body>
+    <h1>Original Numbers: [1, 2, 3, 4]</h1>
+    <h2>ผลลัพธ์จาก .forEach() (ดูใน Console)</h2>
+    <h2>ผลลัพธ์จาก .map():</h2>
+    <ul id="map-output"></ul>
+    <script>
+        const numbers = [1, 2, 3, 4];
+        // .forEach()
+        console.log("--- .forEach() ---");
+        numbers.forEach((number, index) => {
+            console.log(`Index: ${index}, Value: ${number}`);
+        });
+        // .map()
+        const doubledNumbers = numbers.map((number) => {
+            return number * 2;
+        });
+        console.log("--- .map() ---");
+        console.log("Original:", numbers); // [1, 2, 3, 4]
+        console.log("Doubled:", doubledNumbers); // [2, 4, 6, 8]
+        // แสดงผล .map() บนหน้าเว็บ
+        const mapOutputUl = document.getElementById('map-output');
+        doubledNumbers.forEach(num => {
+            const li = document.createElement('li');
+            li.textContent = num;
+            mapOutputUl.appendChild(li);
+        });
+    </script>
+</body>
+</html>

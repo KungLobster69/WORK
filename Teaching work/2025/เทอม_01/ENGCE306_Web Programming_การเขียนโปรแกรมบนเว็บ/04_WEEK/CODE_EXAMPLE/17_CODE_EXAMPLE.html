@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Array Methods (พื้นฐาน)</title>
+    <style>
+          body { font-family: sans-serif; padding: 20px; }
+          pre { background-color: #f4f4f4; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12) และบนหน้าจอ</h1>
+    <pre id="output"></pre>
+    <script>
+        let colors = ["red", "green"];
+        let results = [];
+        results.push(`เริ่มต้น: [${colors}]`);
+        // .push()
+        colors.push("blue");
+        results.push(`หลัง .push("blue"): [${colors}]`);
+        // .pop()
+        let removedColor = colors.pop();
+        results.push(`หลัง .pop() (ลบ ${removedColor} ออก): [${colors}]`);
+        // .unshift()
+        colors.unshift("yellow");
+        results.push(`หลัง .unshift("yellow"): [${colors}]`);
+        // .shift()
+        removedColor = colors.shift();
+        results.push(`หลัง .shift() (ลบ ${removedColor} ออก): [${colors}]`);
+        // .length
+        results.push(`ความยาวสุดท้าย: ${colors.length}`);
+        // แสดงผล
+        document.getElementById('output').textContent = results.join('\n');
+        console.log(results.join('\n'));
+    </script>
+</body>
+</html>

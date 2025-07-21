@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Style Example</title>
+    <style>
+        #styleBox {
+            padding: 20px;
+            border: 2px solid black;
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="styleBox">กล่องสำหรับเปลี่ยนสไตล์</div>
+    <button onclick="toggleStyle()">สลับสไตล์</button>
+
+    <script>
+        function toggleStyle() {
+            const box = document.getElementById('styleBox');
+            // ตรวจสอบว่าสไตล์ถูกเปลี่ยนไปแล้วหรือยัง โดยดูจากสีพื้นหลัง
+            if (box.style.backgroundColor === 'lightblue') {
+                // ถ้าใช่, ให้เปลี่ยนกลับเป็นสไตล์เดิม (ค่าว่างจะทำให้กลับไปใช้ค่าจาก CSS หรือค่า default)
+                box.style.backgroundColor = '';
+                box.style.color = '';
+                box.style.borderRadius = '';
+                box.style.fontWeight = '';
+                box.textContent = 'กล่องสำหรับเปลี่ยนสไตล์';
+            } else {
+                // ถ้ายัง, ให้ใช้สไตล์ใหม่
+                box.style.backgroundColor = 'lightblue';
+                box.style.color = 'darkblue';
+                box.style.borderRadius = '15px';
+                box.style.fontWeight = 'bold';
+                box.textContent = 'สไตล์ถูกเปลี่ยนแล้ว!';
+            }
+        }
+    </script>
+</body>
+</html>

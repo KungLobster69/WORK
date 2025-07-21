@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Arrow Function (แบบย่อ)</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .output { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>ดูผลลัพธ์การทำงานของ Arrow Function รูปแบบต่างๆ</h1>
+
+    <div class="output" id="output-full"></div>
+    <div class="output" id="output-shorthand"></div>
+    <div class="output" id="output-single-param"></div>
+
+    <script>
+        // --- 1. แบบเต็ม (มีทั้ง {} และ return) ---
+        const add = (a, b) => {
+            return a + b;
+        };
+        document.getElementById('output-full').textContent = `แบบเต็ม: add(5, 10) = ${add(5, 10)}`;
+        // --- 2. แบบย่อ (มี 2 Parameters, รีเทิร์นบรรทัดเดียว) ---
+        // ละ {} และ return ได้
+        const subtract = (a, b) => a - b;
+        document.getElementById('output-shorthand').textContent = `แบบย่อ (2 params): subtract(10, 4) = ${subtract(10, 4)}`;
+        // --- 3. แบบย่อ (มี 1 Parameter, รีเทิร์นบรรทัดเดียว) ---
+        // ละ () ที่ครอบ parameter, {}, และ return ได้
+        const square = x => x * x;
+        document.getElementById('output-single-param').textContent = `แบบย่อ (1 param): square(8) = ${square(8)}`;
+    </script>
+</body>
+</html>

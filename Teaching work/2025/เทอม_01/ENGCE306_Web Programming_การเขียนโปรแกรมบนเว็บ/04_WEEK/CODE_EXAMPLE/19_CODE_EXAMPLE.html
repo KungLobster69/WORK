@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Operators</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <script>
+        let x = 10;
+        let y = 4;
+        console.log("--- Arithmetic Operators ---");
+        console.log(`${x} + ${y} = ${x + y}`); // 14
+        console.log(`${x} - ${y} = ${x - y}`); // 6
+        console.log(`${x} * ${y} = ${x * y}`); // 40
+        console.log(`${x} / ${y} = ${x / y}`); // 2.5
+        console.log(`${x} % ${y} = ${x % y}`); // 2 (เศษ)
+        console.log(`${y} ** 2 = ${y ** 2}`); // 16
+        console.log("--- Assignment Operators ---");
+        let total = 100;
+        console.log(`เริ่มต้น total = ${total}`);
+        total += 50; // total = total + 50
+        console.log(`หลัง total += 50: ${total}`); // 150
+        total -= 20; // total = total - 20
+        console.log(`หลัง total -= 20: ${total}`); // 130
+    </script>
+</body>
+</html>

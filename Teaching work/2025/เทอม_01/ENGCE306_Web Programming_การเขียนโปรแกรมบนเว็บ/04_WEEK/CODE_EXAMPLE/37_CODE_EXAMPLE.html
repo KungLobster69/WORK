@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <button id="myButton">กดฉันสิ!</button>
+    <p id="messageArea"></p>
+
+    <script>
+        // 1. เลือก Element ที่ต้องการ
+        const button = document.getElementById('myButton');
+        const messageArea = document.getElementById('messageArea');
+        // 2. สร้างฟังก์ชันที่จะให้ทำงาน (Listener)
+        function showMessage() {
+          messageArea.textContent = 'คุณกดปุ่มแล้ว!';
+          console.log('Event "click" เกิดขึ้นบนปุ่ม');
+        }
+        // 3. ผูก Event 'click' เข้ากับปุ่ม โดยให้เรียกใช้ฟังก์ชัน showMessage
+        button.addEventListener('click', showMessage);
+    </script>
+</body>
+</html>

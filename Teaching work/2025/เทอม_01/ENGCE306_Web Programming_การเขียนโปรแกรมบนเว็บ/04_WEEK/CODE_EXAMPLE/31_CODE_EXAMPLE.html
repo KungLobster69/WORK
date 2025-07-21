@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Default Parameters</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <script>
+        const greet = (name = "ผู้มาเยือน") => {
+            console.log(`สวัสดี, ${name}`);
+        };
+        greet("สมศรี"); // แสดงผล: "สวัสดี, สมศรี"
+        greet();       // แสดงผล: "สวัสดี, ผู้มาเยือน"
+    </script>
+</body>
+</html>

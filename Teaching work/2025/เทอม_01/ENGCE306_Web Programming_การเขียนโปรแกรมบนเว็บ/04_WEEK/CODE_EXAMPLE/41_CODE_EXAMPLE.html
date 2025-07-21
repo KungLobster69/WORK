@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ตัวอย่าง Element.remove()</title>
+</head>
+<body>
+    <h2>รายการสินค้า</h2>
+    <ul id="productList">
+        <li>สินค้าชิ้นที่ 1</li>
+        <li id="item-to-remove">สินค้าชิ้นที่ 2 (จะถูกลบ)</li>
+        <li>สินค้าชิ้นที่ 3</li>
+    </ul>
+    <script>
+        // 1. ค้นหา Element ที่ต้องการลบผ่าน ID ของมัน
+        const itemToRemove = document.getElementById('item-to-remove');
+        // 2. สั่งให้ Element นั้นลบตัวเองออกไป
+        // ตรวจสอบก่อนว่าหาเจอหรือไม่ เพื่อป้องกัน error
+        if (itemToRemove) {
+            itemToRemove.remove();
+        }
+    </script>
+</body>
+</html>

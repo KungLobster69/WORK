@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <img id="myImage" src="https://placehold.co/200x100/E8117F/white?text=รูปที่+1" alt="รูปภาพเริ่มต้น">
+    <br>
+    <button id="actionButton">กดปุ่มนี้</button>
+    <br><br>
+    <button onclick="changeImage()">เปลี่ยนรูป</button>
+    <button onclick="disableButton()">ปิดการใช้งานปุ่ม "กดปุ่มนี้"</button>
+    <script>
+        function changeImage() {
+            const image = document.getElementById('myImage');
+            image.setAttribute('src', 'https://placehold.co/200x100/3498DB/white?text=รูปที่+2');
+        }
+        function disableButton() {
+            const button = document.getElementById('actionButton');
+            button.setAttribute('disabled', 'true');
+        }
+    </script>
+</body>
+</html>

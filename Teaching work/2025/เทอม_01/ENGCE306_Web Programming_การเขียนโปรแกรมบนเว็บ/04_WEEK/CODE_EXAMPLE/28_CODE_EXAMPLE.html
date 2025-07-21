@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Function</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <script>
+        // Function Declaration
+        function greetDeclaration(name) {
+            return `(Declaration) สวัสดี, ${name}!`;
+        }
+        // Arrow Function
+        const greetArrow = (name) => {
+            return `(Arrow) สวัสดี, ${name}!`;
+        };
+        // การเรียกใช้งาน
+        console.log(greetDeclaration("สมชาย"));
+        console.log(greetArrow("สมหญิง"));
+    </script>
+</body>
+</html>

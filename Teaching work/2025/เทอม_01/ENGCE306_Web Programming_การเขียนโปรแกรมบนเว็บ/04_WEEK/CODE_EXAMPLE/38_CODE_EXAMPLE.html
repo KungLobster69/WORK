@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Events</title>
+    <style>
+        .focused { border: 2px solid blue; }
+    </style>
+</head>
+<body>
+    <form id="myForm">
+        <!-- focus & blur -->
+        <label for="myInput">Focus/Blur:</label>
+        <input type="text" id="myInput" placeholder="คลิกที่นี่">
+        <hr>
+        <!-- input -->
+        <label for="liveInput">Input:</label>
+        <input type="text" id="liveInput" placeholder="พิมพ์แล้วดูผลสดๆ">
+        <p>คุณกำลังพิมพ์: <span id="liveOutput"></span></p>
+        <hr>
+        <!-- change -->
+        <label for="changeInput">Change:</label>
+        <input type="text" id="changeInput" placeholder="พิมพ์แล้วคลิกที่อื่น">
+        <p id="changeOutput"></p>
+        <hr>
+        <!-- submit -->
+        <button type="submit">ส่งฟอร์ม</button>
+    </form>
+
+    <script>
+        // focus & blur
+        const myInput = document.getElementById('myInput');
+        myInput.addEventListener('focus', function() {
+            myInput.classList.add('focused');
+        });
+        myInput.addEventListener('blur', function() {
+            myInput.classList.remove('focused');
+        });
+
+        // input
+        const liveInput = document.getElementById('liveInput');
+        liveInput.addEventListener('input', function(event) {
+            document.getElementById('liveOutput').textContent = event.target.value;
+        });
+
+        // change
+        const changeInput = document.getElementById('changeInput');
+        changeInput.addEventListener('change', function(event) {
+            document.getElementById('changeOutput').textContent = 'ข้อมูลเปลี่ยนเป็น: ' + event.target.value;
+        });
+
+        // submit
+        const myForm = document.getElementById('myForm');
+        myForm.addEventListener('submit', function(event) {
+            // หยุดการทำงานปกติของฟอร์ม (ไม่ให้รีโหลดหน้า)
+            event.preventDefault();
+            alert('ฟอร์มถูกส่ง แต่หน้าไม่รีโหลด!');
+        });
+    </script>
+</body>
+</html>

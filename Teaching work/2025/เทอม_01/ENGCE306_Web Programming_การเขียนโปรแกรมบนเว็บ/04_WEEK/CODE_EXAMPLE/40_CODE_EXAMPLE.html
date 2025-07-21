@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ตัวอย่าง appendChild</title>
+</head>
+<body>
+    <div id="container">
+      <h1>รายการของฉัน</h1>
+    </div>
+    <script>
+        // 1. สร้าง <li> element ใหม่ขึ้นมา
+        const newItem = document.createElement('li');
+        newItem.textContent = 'ไอเทมที่ 2 (สร้างใหม่)'; // กำหนดข้อความข้างใน
+        // 2. หา element แม่ ที่เราต้องการจะเอา <li> ไปใส่
+        const listContainer = document.getElementById('container');
+        // 3. นำ newItem (ลูก) ไปต่อท้ายใน listContainer (แม่)
+        listContainer.appendChild(newItem);
+    </script>
+</body>
+</html>

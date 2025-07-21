@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Truthy/Falsy</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <script>
+        const valuesToCheck = [
+            false,
+            0,
+            "",
+            null,
+            undefined,
+            NaN,
+            "hello",
+            100,
+            [],
+            {}
+        ];
+        console.log("--- ตรวจสอบค่า Truthy/Falsy ---");
+        valuesToCheck.forEach(value => {
+            if (value) {
+                console.log(`ค่า: ${JSON.stringify(value)} -> เป็น Truthy`);
+            } else {
+                console.log(`ค่า: ${JSON.stringify(value)} -> เป็น Falsy`);
+            }
+        });
+    </script>
+</body>
+</html>

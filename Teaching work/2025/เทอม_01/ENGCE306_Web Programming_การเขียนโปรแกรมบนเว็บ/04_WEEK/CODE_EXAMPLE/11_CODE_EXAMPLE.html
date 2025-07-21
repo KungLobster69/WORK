@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Number</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <ul id="output-list"></ul>
+    <script>
+        let age = 30; // Integer
+        let price = 199.99; // Floating-point
+        let temperature = -10; // Negative Number
+        const outputList = document.getElementById('output-list');
+        // สร้างฟังก์ชันเพื่อแสดงผลทั้งใน Console และบนหน้าเว็บ
+        function logAndDisplay(variableName, value) {
+            const type = typeof value;
+            const logMessage = `${variableName}: ${value} (ประเภท: ${type})`;
+            // แสดงใน Console
+            console.log(logMessage);
+            // แสดงบนหน้าเว็บ
+            const listItem = document.createElement('li');
+            listItem.textContent = logMessage;
+            outputList.appendChild(listItem);
+        }
+        logAndDisplay('age', age);
+        logAndDisplay('price', price);
+        logAndDisplay('temperature', temperature);
+        // การคำนวณ
+        let totalPrice = price * 2;
+        logAndDisplay('totalPrice', totalPrice);
+    </script>
+</body>
+</html>

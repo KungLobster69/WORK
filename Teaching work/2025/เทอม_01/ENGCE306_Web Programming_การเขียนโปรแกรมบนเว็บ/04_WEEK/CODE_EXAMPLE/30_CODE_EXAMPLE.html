@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Parameters vs Arguments</title>
+</head>
+<body>
+    <h1>ฟังก์ชันทักทาย</h1>
+    <p>ผลลัพธ์: <span id="result"></span></p>
+    <script>
+        // `name` และ `greeting` คือ "Parameters"
+        // เป็นเหมือนตัวแปรที่รอรับค่าอยู่ภายในฟังก์ชัน
+        const displayGreeting = (name, greeting) => {
+            const message = `${greeting}, ${name}!`;
+            document.getElementById('result').textContent = message;
+            console.log(message);
+        };
+        // "สมปอง" และ "ยินดีต้อนรับ" คือ "Arguments"
+        // เป็นค่าจริงที่เราส่งเข้าไปให้ฟังก์ชันทำงาน
+        displayGreeting("สมปอง", "ยินดีต้อนรับ"); 
+        // ลองเรียกใช้ด้วย Arguments ที่ต่างกัน
+        // displayGreeting("Somsri", "Hello");
+    </script>
+</body>
+</html>

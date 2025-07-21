@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง String Methods</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        pre { background-color: #f4f4f4; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12) และบนหน้าจอ</h1>
+    <pre id="output"></pre>
+    <script>
+        let message = "  Hello World  ";
+        let results = []; // สร้าง Array เพื่อเก็บผลลัพธ์
+        // .length
+        results.push(`Original message: "${message}"`);
+        results.push(`ความยาว (.length): ${message.length}`);
+        // .trim()
+        let trimmedMessage = message.trim();
+        results.push(`ข้อความหลัง .trim(): "${trimmedMessage}"`);
+        results.push(`ความยาวหลัง .trim(): ${trimmedMessage.length}`);
+        // .toUpperCase()
+        results.push(`ตัวพิมพ์ใหญ่ (.toUpperCase()): ${trimmedMessage.toUpperCase()}`);
+        // .toLowerCase()
+        results.push(`ตัวพิมพ์เล็ก (.toLowerCase()): ${trimmedMessage.toLowerCase()}`);
+        // .slice(0, 5)
+        results.push(`ตัดข้อความ .slice(0, 5): "${trimmedMessage.slice(0, 5)}"`);
+        // .includes('World')
+        results.push(`มีคำว่า 'World' หรือไม่ (.includes()): ${trimmedMessage.includes('World')}`);
+        // .includes('Goodbye')
+        results.push(`มีคำว่า 'Goodbye' หรือไม่ (.includes()): ${trimmedMessage.includes('Goodbye')}`);
+        // แสดงผลลัพธ์ทั้งหมดบนหน้าเว็บ
+        const outputPre = document.getElementById('output');
+        outputPre.textContent = results.join('\n'); // ใช้ \n เพื่อขึ้นบรรทัดใหม่ใน <pre>
+        // แสดงผลใน Console ด้วย
+        console.log(results.join('\n'));
+    </script>
+</body>
+</html>

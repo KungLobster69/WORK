@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Number Methods</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        pre { background-color: #f4f4f4; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12) และบนหน้าจอ</h1>
+    <pre id="output"></pre>
+    <script>
+        let num = 123.456;
+        let priceString = "99.50 บาท";
+        let quantityString = "10 ชิ้น";
+        let results = [];
+        results.push(`ตัวเลขเริ่มต้น: ${num}`);
+        results.push(`.toFixed(2): ${num.toFixed(2)} (ประเภท: ${typeof num.toFixed(2)})`);
+        results.push(`---`);
+        results.push(`ราคา (String): "${priceString}"`);
+        results.push(`parseFloat(): ${parseFloat(priceString)} (ประเภท: ${typeof parseFloat(priceString)})`);
+        results.push(`จำนวน (String): "${quantityString}"`);
+        results.push(`parseInt(): ${parseInt(quantityString)} (ประเภท: ${typeof parseInt(quantityString)})`);
+        results.push(`---`);
+        results.push(`Math.random(): ${Math.random()}`);
+        results.push(`Math.floor(9.9): ${Math.floor(9.9)}`);
+        results.push(`Math.ceil(9.1): ${Math.ceil(9.1)}`);
+        results.push(`Math.round(9.5): ${Math.round(9.5)}`);
+        results.push(`Math.round(9.4): ${Math.round(9.4)}`);
+        // แสดงผลลัพธ์
+        const outputPre = document.getElementById('output');
+        outputPre.textContent = results.join('\n');
+        console.log(results.join('\n'));
+    </script>
+</body>
+</html>

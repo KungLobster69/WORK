@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ตัวอย่าง createElement (รวมไฟล์)</title>
+</head>
+<body>
+
+  <div id="myDiv">
+    <h2>หัวข้อเดิม</h2>
+  </div>
+  <script>
+    // 1. สร้าง Element <p> ขึ้นมาใหม่
+    const newParagraph = document.createElement('p');
+    // 2. กำหนดเนื้อหา
+    newParagraph.textContent = 'นี่คือข้อความที่ถูกสร้างขึ้นมาใหม่โดย JavaScript!';
+    // 3. กำหนด class (ถ้าต้องการ)
+    newParagraph.className = 'my-style';
+    // 4. ค้นหา Element แม่ที่เราจะนำ Element ใหม่ไปใส่
+    const containerDiv = document.getElementById('myDiv');
+    // 5. นำ Element ใหม่ไปต่อท้ายใน Element แม่
+    containerDiv.appendChild(newParagraph);
+  </script>
+</body>
+</html>

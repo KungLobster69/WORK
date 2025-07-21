@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Comparison Operators</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <script>
+        let num = 5;
+        let strNum = "5";
+        console.log("--- เปรียบเทียบ 5 กับ '5' ---");
+        console.log(`5 == "5": ${num == strNum}`);   // true (เพราะ JS แปลง "5" เป็น 5 ก่อน)
+        console.log(`5 === "5": ${num === strNum}`);  // false (เพราะเป็น Number กับ String)
+        console.log("--- เปรียบเทียบ 5 กับ 10 ---");
+        console.log(`5 > 10: ${num > 10}`);  // false
+        console.log(`5 <= 10: ${num <= 10}`); // true
+    </script>
+</body>
+</html>

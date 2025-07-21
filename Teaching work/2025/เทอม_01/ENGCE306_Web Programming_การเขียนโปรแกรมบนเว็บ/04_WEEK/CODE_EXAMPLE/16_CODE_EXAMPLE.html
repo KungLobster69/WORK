@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Array</title>
+</head>
+<body>
+    <h1>รายการสิ่งที่ต้องทำ</h1>
+    <ul id="task-list"></ul>
+    <script>
+        const dailyTasks = ["ตื่นนอน", "เขียนโค้ด", "กินข้าว", "นอน"];
+        // แสดงผลใน Console
+        console.log("รายการงานทั้งหมด:", dailyTasks);
+        console.log("งานลำดับที่ 2:", dailyTasks[1]); // Index เริ่มที่ 0
+        // แสดงผลบนหน้าเว็บ
+        const taskListUl = document.getElementById('task-list');
+        // วนลูปเพื่อสร้าง <li> จากข้อมูลใน Array
+        for (let i = 0; i < dailyTasks.length; i++) {
+            const task = dailyTasks[i];
+            const listItem = document.createElement('li');
+            listItem.textContent = task;
+            taskListUl.appendChild(listItem);
+        }
+    </script>
+</body>
+</html>

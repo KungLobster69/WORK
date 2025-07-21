@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Return Values</title>
+</head>
+<body>
+    <h1>ผลการคำนวณ</h1>
+    <p id="calculation-result"></p>
+    <script>
+        // ฟังก์ชันนี้รับตัวเลข 2 ตัว และ "ส่งค่ากลับ" เป็นผลบวก
+        const add = (a, b) => {
+            return a + b;
+        };
+        // เรียกใช้ฟังก์ชันและเก็บค่าที่ return กลับมาไว้ในตัวแปร result
+        let result = add(10, 5); // result จะมีค่าเป็น 15
+        console.log(`ผลลัพธ์คือ: ${result}`);
+        // แสดงผลบนหน้าเว็บ
+        document.getElementById('calculation-result').textContent = `10 + 5 = ${result}`;
+    </script>
+</body>
+</html>

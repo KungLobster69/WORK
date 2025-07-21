@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง undefined vs null</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <p>ที่อยู่ผู้ใช้: <span id="address"></span></p>
+    <p>รถที่เลือก: <span id="car"></span></p>
+    <script>
+        let userAddress; // ประกาศแต่ไม่ได้กำหนดค่า
+        let selectedCar = null; // ตั้งใจกำหนดให้เป็นค่าว่าง
+        console.log(`ค่าของ userAddress: ${userAddress}`); // undefined
+        console.log(`ประเภทของ userAddress: ${typeof userAddress}`); // undefined
+        console.log(`ค่าของ selectedCar: ${selectedCar}`); // null
+        console.log(`ประเภทของ selectedCar: ${typeof selectedCar}`); // object (นี่เป็น Bug เก่าแก่ของ JS แต่ก็ยังคงอยู่)
+        document.getElementById('address').textContent = userAddress;
+        document.getElementById('car').textContent = selectedCar;
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>textContent vs innerHTML</title>
+    <style>
+        #message { border: 1px solid #ccc; padding: 10px; margin-top: 5px; }
+        button { margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div id="message">ข้อความเริ่มต้น</div>
+    <button onclick="changeWithTextContent()">ใช้ .textContent</button>
+    <button onclick="changeWithInnerHTML()">ใช้ .innerHTML</button>
+    <script>
+        const messageBox = document.getElementById('message');
+        function changeWithTextContent() {
+            // Tag <strong> จะถูกมองเป็นข้อความธรรมดา
+            messageBox.textContent = 'เปลี่ยนเป็น <strong>ตัวหนา</strong>';
+        }
+        function changeWithInnerHTML() {
+            // Tag <strong> จะถูกประมวลผลเป็น HTML
+            messageBox.innerHTML = 'เปลี่ยนเป็น <strong>ตัวหนา</strong>';
+        }
+    </script>
+</body>
+</html>

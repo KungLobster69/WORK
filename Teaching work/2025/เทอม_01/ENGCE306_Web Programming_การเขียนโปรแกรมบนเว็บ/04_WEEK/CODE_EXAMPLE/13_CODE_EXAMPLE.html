@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Boolean</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <div id="status"></div>
+    <script>
+        let age = 10;
+        let isMember = true;
+        // การเปรียบเทียบจะให้ผลลัพธ์เป็น boolean
+        let isAdult = (age >= 18); // isAdult จะมีค่าเป็น true
+        console.log(`เป็นสมาชิกหรือไม่: ${isMember}`);
+        console.log(`เป็นผู้ใหญ่หรือไม่: ${isAdult}`);
+        const statusDiv = document.getElementById('status');
+        if (isMember && isAdult) {
+            statusDiv.textContent = "คุณเป็นสมาชิกที่เป็นผู้ใหญ่แล้ว สามารถเข้าถึงเนื้อหาทั้งหมดได้";
+            statusDiv.style.color = "green";
+        } else {
+            statusDiv.textContent = "คุณยังไม่สามารถเข้าถึงเนื้อหาทั้งหมดได้";
+            statusDiv.style.color = "red";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Logical Operators</title>
+</head>
+<body>
+    <h1>ดูผลลัพธ์ใน Console (F12)</h1>
+    <script>
+        let age = 20;
+        let hasTicket = true;
+        let isVip = false;
+        console.log("--- AND (&&) Operator ---");
+        if (age >= 18 && hasTicket) {
+            console.log("อายุผ่าน และมีตั๋ว: เข้าชมภาพยนตร์ได้");
+        } else {
+            console.log("เงื่อนไขไม่ครบ: เข้าชมไม่ได้");
+        }
+        console.log("--- OR (||) Operator ---");
+        if (hasTicket || isVip) {
+            console.log("มีตั๋ว หรือเป็น VIP: เข้าพื้นที่พิเศษได้");
+        } else {
+            console.log("ไม่มีสิทธิ์เข้าพื้นที่พิเศษ");
+        }
+        console.log("--- NOT (!) Operator ---");
+        if (!isVip) {
+            console.log("คุณไม่ใช่ VIP");
+        }
+    </script>
+</body>
+</html>

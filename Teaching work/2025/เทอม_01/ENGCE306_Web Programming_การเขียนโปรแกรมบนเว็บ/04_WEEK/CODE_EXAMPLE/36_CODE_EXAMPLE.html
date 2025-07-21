@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>classList Example</title>
+    <style>
+        /* เตรียม class ที่จะใช้ตกแต่งไว้ก่อน */
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+            border-left: 5px solid red;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <p id="myText">ข้อความนี้สามารถสลับการไฮไลท์ได้</p>
+    <button onclick="toggleHighlight()">สลับไฮไลท์</button>
+    <script>
+        function toggleHighlight() {
+            const textElement = document.getElementById('myText');
+            // .toggle() จะเพิ่ม class ถ้ายังไม่มี และจะลบออกถ้ามีอยู่แล้ว
+            textElement.classList.toggle('highlight');
+        }
+    </script>
+</body>
+</html>

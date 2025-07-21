@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>ตัวอย่าง Object</title>
+</head>
+<body>
+    <h1>ข้อมูลผู้ใช้</h1>
+    <div id="user-info"></div>
+    <script>
+        const user = {
+            firstName: "สมศรี",
+            lastName: "ใจงาม",
+            age: 25,
+            isStudent: false,
+            address: {
+                city: "เชียงราย",
+                zipCode: 57100
+            }
+        };
+        // แสดงผลใน Console
+        console.log(user);
+        // แสดงผลบนหน้าเว็บ
+        const userInfoDiv = document.getElementById('user-info');
+        userInfoDiv.innerHTML = `
+            <p><b>ชื่อ:</b> ${user.firstName} ${user.lastName}</p>
+            <p><b>อายุ:</b> ${user.age} ปี</p>
+            <p><b>ที่อยู่:</b> ${user.address.city}, ${user.address.zipCode}</p>
+        `;
+    </script>
+</body>
+</html>
