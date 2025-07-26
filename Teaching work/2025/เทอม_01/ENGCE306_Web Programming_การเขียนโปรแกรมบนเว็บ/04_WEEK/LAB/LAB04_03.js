@@ -3,7 +3,7 @@ const messageInput = document.getElementById('message-input');
 const charCountSpan = document.getElementById('char-count');
 
 // (ไม่จำเป็น แต่ช่วยให้อ่านโค้ดง่ายขึ้น)
-const maxLength = 20;
+const maxLength = 150;
 
 // 2. เพิ่ม Event Listener แบบ 'input' ให้กับ textarea
 messageInput.addEventListener('input', () => {
@@ -14,7 +14,7 @@ messageInput.addEventListener('input', () => {
     charCountSpan.textContent = currentLength;
 
     // 4. (เพิ่มเติม) เปลี่ยนสีตัวอักษรเมื่อใกล้เต็ม
-    if (currentLength > 10) {
+    if (currentLength > 130) {
         charCountSpan.style.color = 'red';
     } else {
         charCountSpan.style.color = 'black';
