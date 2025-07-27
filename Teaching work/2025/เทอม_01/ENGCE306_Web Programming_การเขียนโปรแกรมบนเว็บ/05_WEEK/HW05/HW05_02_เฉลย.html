@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote Generator</title>
+    <style>
+        body {
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 1rem;
+        }
+
+        .quote-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 3rem 4rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quote-wrapper {
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 2rem;
+            transition: opacity 0.4s ease-in-out; /* Animation transition */
+        }
+
+        #quote-text {
+            font-size: 2rem;
+            font-style: italic;
+            color: #2c3e50;
+            margin: 0 0 1.5rem 0;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        #quote-text::before {
+            content: '“';
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 4rem;
+            color: #764ba2;
+            opacity: 0.8;
+            position: absolute;
+            top: -1.5rem;
+            left: -2.5rem;
+        }
+
+        #quote-author {
+            font-size: 1.2rem;
+            color: #555;
+            font-weight: normal;
+            font-style: normal;
+            margin-top: 1rem;
+            align-self: flex-end;
+        }
+
+        #quote-author::before {
+            content: "— ";
+        }
+
+        #new-quote-btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        #new-quote-btn:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        #new-quote-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quote-container">
+        <div class="quote-wrapper" id="quote-wrapper">
+            <blockquote id="quote-text">
+                <!-- คำคมจะถูกแสดงที่นี่ -->
+            </blockquote>
+            <cite id="quote-author">
+                <!-- ชื่อผู้กล่าวจะถูกแสดงที่นี่ -->
+            </cite>
+        </div>
+        <button id="new-quote-btn">สุ่มคำคมใหม่</button>
+    </div>
+
+    <script type="module">
+        // ส่วนที่ 1: กำหนดโครงสร้างข้อมูล (Interface และ Array)
+        /**
+         * @typedef {object} Quote
+         * @property {string} text
+         * @property {string} author
+         */
+
+        /** @type {Quote[]} */
+        const quotes = [
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { text: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" },
+            { text: "The mind is everything. What you think you become.", author: "Buddha" },
+            { text: "An unexamined life is not worth living.", author: "Socrates" },
+            { text: "Your time is limited, so don’t waste it living someone else’s life.", author: "Steve Jobs" },
+            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+            { text: "It is never too late to be what you might have been.", author: "George Eliot" }
+        ];
+
+        /** @type {Quote | null} */
+        let currentQuote = null;
+
+        // ส่วนที่ 2: อ้างอิง HTML Elements
+        const quoteWrapper = document.getElementById('quote-wrapper');
+        const quoteTextElement = document.getElementById('quote-text');
+        const quoteAuthorElement = document.getElementById('quote-author');
+        const newQuoteBtn = document.getElementById('new-quote-btn');
+
+        // ส่วนที่ 3: สร้างฟังก์ชันหลัก
+        function getRandomQuote() {
+            let newQuote;
+            // ป้องกันการสุ่มได้คำคมเดิมซ้ำ
+            do {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                newQuote = quotes[randomIndex];
+            } while (newQuote === currentQuote);
+            
+            currentQuote = newQuote;
+            return newQuote;
+        }
+
+        function displayQuote(quote) {
+            quoteTextElement.textContent = quote.text;
+            quoteAuthorElement.textContent = quote.author;
+        }
+
+        // ฟังก์ชันสำหรับจัดการการแสดงผลพร้อม Animation
+        function showNewQuote() {
+            // Fade out
+            quoteWrapper.style.opacity = '0';
+
+            setTimeout(() => {
+                const newQuote = getRandomQuote();
+                displayQuote(newQuote);
+                // Fade in
+                quoteWrapper.style.opacity = '1';
+            }, 400); // รอให้ animation fade out จบก่อน (0.4s)
+        }
+
+        // ส่วนที่ 4: เพิ่ม Event Listener และการทำงานเริ่มต้น
+        newQuoteBtn.addEventListener('click', showNewQuote);
+
+        // --- Initial Load ---
+        // แสดงคำคมเริ่มต้นเมื่อเปิดหน้าเว็บ
+        showNewQuote();
+    </script>
+</body>
+</html>

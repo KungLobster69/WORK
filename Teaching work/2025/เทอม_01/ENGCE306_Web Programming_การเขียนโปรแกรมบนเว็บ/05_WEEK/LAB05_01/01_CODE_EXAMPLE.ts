@@ -1,6 +1,7 @@
 // ไฟล์ my-script.ts
 interface User {
   name: string;
+  age : number;
 }
 
 function greet(user: User): string {

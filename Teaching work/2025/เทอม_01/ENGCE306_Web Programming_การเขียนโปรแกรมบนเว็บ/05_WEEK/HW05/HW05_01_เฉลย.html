@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 40px;
+        }
+
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 550px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Section */
+        #task-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        #task-input {
+            flex-grow: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        #task-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        #task-form button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #task-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Task List Section */
+        #task-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #task-list li {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+        
+        #task-list li:first-child {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        #task-list li:last-child {
+            border-bottom: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        #task-list li:hover {
+            background-color: #f0f0f0;
+        }
+
+        #task-list li input[type="checkbox"] {
+            margin-right: 1rem;
+            cursor: pointer;
+            transform: scale(1.3);
+        }
+
+        #task-list li span {
+            flex-grow: 1;
+            transition: color 0.3s ease;
+        }
+
+        /* Completed Task Styling */
+        #task-list li.completed span {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        /* Delete Button */
+        #task-list li .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        #task-list li:hover .delete-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #task-list li .delete-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <header>
+            <h1>My To-Do List</h1>
+        </header>
+        
+        <section class="form-section">
+            <form id="task-form">
+                <input type="text" id="task-input" placeholder="เพิ่มรายการใหม่ที่นี่..." autocomplete="off" required>
+                <button type="submit">เพิ่ม</button>
+            </form>
+        </section>
+
+        <section class="list-section">
+            <ul id="task-list">
+                <!-- รายการ Task จะถูกสร้างและแทรกโดย TypeScript ที่นี่ -->
+            </ul>
+        </section>
+    </main>
+
+    <script type="module">
+        // ส่วนที่ 1: กำหนด Interface และ State
+        /**
+         * @typedef {object} Task
+         * @property {number} id
+         * @property {string} text
+         * @property {boolean} isCompleted
+         */
+
+        /** @type {Task[]} */
+        let tasks = loadTasks();
+
+        // ส่วนที่ 2: อ้างอิง HTML Elements
+        const taskForm = document.getElementById('task-form');
+        const taskInput = document.getElementById('task-input');
+        const taskList = document.getElementById('task-list');
+
+        // ส่วนที่ 3: สร้างฟังก์ชันสำหรับจัดการข้อมูล (Logic)
+        function addTask(text) {
+            const newTask = {
+                id: Date.now(),
+                text: text,
+                isCompleted: false,
+            };
+            tasks.push(newTask);
+        }
+
+        function toggleTaskCompleted(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.isCompleted = !task.isCompleted;
+            }
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+        }
+
+        // --- BONUS: LocalStorage Functions ---
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function loadTasks() {
+            const tasksJSON = localStorage.getItem('tasks');
+            return tasksJSON ? JSON.parse(tasksJSON) : [];
+        }
+
+        // ส่วนที่ 4: สร้างฟังก์ชันสำหรับแสดงผล (Render)
+        function renderTasks() {
+            // ล้างข้อมูลเก่าใน list
+            taskList.innerHTML = '';
+
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.dataset.id = task.id;
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.isCompleted;
+                
+                const span = document.createElement('span');
+                span.textContent = task.text;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'X';
+                deleteBtn.className = 'delete-btn';
+
+                if (task.isCompleted) {
+                    li.classList.add('completed');
+                }
+
+                li.appendChild(checkbox);
+                li.appendChild(span);
+                li.appendChild(deleteBtn);
+                taskList.appendChild(li);
+            });
+        }
+
+        // ส่วนที่ 5: เพิ่ม Event Listeners
+        taskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = taskInput.value.trim();
+            if (text) {
+                addTask(text);
+                taskInput.value = '';
+                saveTasks();
+                renderTasks();
+            }
+        });
+
+        taskList.addEventListener('click', (e) => {
+            const target = e.target;
+            const li = target.closest('li');
+            if (!li) return;
+
+            const taskId = Number(li.dataset.id);
+
+            if (target.type === 'checkbox') {
+                toggleTaskCompleted(taskId);
+            } else if (target.classList.contains('delete-btn')) {
+                deleteTask(taskId);
+            }
+            
+            saveTasks();
+            renderTasks();
+        });
+
+        // --- Initial Render ---
+        // แสดงผลรายการทั้งหมดเมื่อเปิดหน้าเว็บครั้งแรก
+        renderTasks();
+    </script>
+
+</body>
+</html>
