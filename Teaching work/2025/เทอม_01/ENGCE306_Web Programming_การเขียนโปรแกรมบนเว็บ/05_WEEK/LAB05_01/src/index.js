@@ -1,3 +1,2 @@
-"use strict";
-let message = 'Initialization of TypeScript Project is complete.';
+var message = 'Initialization of TypeScript Project is complete.';
 console.log(message);
