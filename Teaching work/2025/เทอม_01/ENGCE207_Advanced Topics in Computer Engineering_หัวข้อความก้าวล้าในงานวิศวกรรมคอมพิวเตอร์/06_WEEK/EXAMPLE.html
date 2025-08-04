@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตัวอย่าง K-Means Clustering แบบทีละขั้นตอน</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+        }
+        canvas {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            cursor: default;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-4xl">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">ตัวอย่างการทำงาน K-Means แบบทีละขั้นตอน</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Controls and Explanation -->
+            <div class="md:col-span-1 bg-white p-4 rounded-lg shadow-md flex flex-col">
+                <div class="mb-4">
+                    <label for="k-value" class="font-bold text-gray-700">จำนวนคลัสเตอร์ (K):</label>
+                    <input type="number" id="k-value" value="4" min="2" max="10" class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <button id="reset-button" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 mb-4">
+                    สุ่มข้อมูลและ Centroid ใหม่
+                </button>
+
+                <div class="flex justify-between gap-2 mb-4">
+                    <button id="prev-button" class="w-1/2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">ย้อนกลับ</button>
+                    <button id="next-button" class="w-1/2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">ถัดไป</button>
+                </div>
+
+                <button id="save-button" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300 mb-4">
+                    บันทึกรูปภาพ
+                </button>
+
+                <div class="flex-grow bg-gray-50 p-3 rounded-md border">
+                    <h3 class="font-bold text-lg mb-2">ขั้นตอนปัจจุบัน:</h3>
+                    <p id="explanation-text" class="text-gray-700"></p>
+                </div>
+                 <div id="iteration-counter" class="font-semibold text-gray-700 mt-4 text-center">รอบที่: 0</div>
+            </div>
+
+            <!-- Canvas -->
+            <div class="md:col-span-2">
+                <canvas id="kmeans-canvas" width="800" height="600"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Elements ---
+        const canvas = document.getElementById('kmeans-canvas');
+        const ctx = canvas.getContext('2d');
+        const kValueInput = document.getElementById('k-value');
+        const resetButton = document.getElementById('reset-button');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const saveButton = document.getElementById('save-button');
+        const explanationText = document.getElementById('explanation-text');
+        const iterationCounter = document.getElementById('iteration-counter');
+
+        // --- Configuration ---
+        const NUM_POINTS = 200;
+        const POINT_RADIUS = 5;
+        const CENTROID_RADIUS = 10;
+        const CLUSTER_COLORS = ['#3b82f6', '#10b981', '#f97316', '#8b5cf6', '#ec4899', '#facc15', '#22d3ee', '#ef4444', '#a855f7', '#65a30d'];
+
+        // --- State Variables ---
+        let history = []; // Stores states {points, centroids, phase, iteration}
+        let currentStateIndex = -1;
+
+        // --- Utility Functions ---
+        const getRandom = (min, max) => Math.random() * (max - min) + min;
+        const getDistance = (p1, p2) => Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
+        const clone = (obj) => JSON.parse(JSON.stringify(obj));
+
+        // --- Core K-Means Logic ---
+        function initialize() {
+            history = [];
+            currentStateIndex = 0;
+            
+            const k = parseInt(kValueInput.value, 10);
+            
+            const initialPoints = [];
+            for (let i = 0; i < NUM_POINTS; i++) {
+                initialPoints.push({
+                    x: getRandom(20, canvas.width - 20),
+                    y: getRandom(20, canvas.height - 20),
+                    cluster: -1
+                });
+            }
+
+            const initialCentroids = [];
+            const usedIndices = new Set();
+            while (initialCentroids.length < k) {
+                const randomIndex = Math.floor(Math.random() * initialPoints.length);
+                if (!usedIndices.has(randomIndex)) {
+                    initialCentroids.push(clone(initialPoints[randomIndex]));
+                    usedIndices.add(randomIndex);
+                }
+            }
+            
+            history.push({
+                points: initialPoints,
+                centroids: initialCentroids,
+                phase: 'initial',
+                iteration: 0
+            });
+            
+            updateUI();
+        }
+        
+        function assignPointsToClusters(points, centroids) {
+            let changed = false;
+            const newPoints = clone(points);
+            newPoints.forEach(point => {
+                let minDistance = Infinity;
+                let closestCentroidIndex = -1;
+                centroids.forEach((centroid, index) => {
+                    const distance = getDistance(point, centroid);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestCentroidIndex = index;
+                    }
+                });
+                if (point.cluster !== closestCentroidIndex) {
+                    point.cluster = closestCentroidIndex;
+                    changed = true;
+                }
+            });
+            return { points: newPoints, changed };
+        }
+
+        function updateCentroids(points, centroids) {
+            const newCentroids = clone(centroids);
+            const clusterSums = Array(newCentroids.length).fill(0).map(() => ({ x: 0, y: 0, count: 0 }));
+
+            points.forEach(point => {
+                if (point.cluster !== -1) {
+                    clusterSums[point.cluster].x += point.x;
+                    clusterSums[point.cluster].y += point.y;
+                    clusterSums[point.cluster].count++;
+                }
+            });
+
+            newCentroids.forEach((centroid, index) => {
+                const sum = clusterSums[index];
+                if (sum.count > 0) {
+                    centroid.x = sum.x / sum.count;
+                    centroid.y = sum.y / sum.count;
+                }
+            });
+            return newCentroids;
+        }
+        
+        // --- Drawing and UI ---
+        function draw() {
+            if (currentStateIndex < 0) return;
+            const { points, centroids } = history[currentStateIndex];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw lines from points to their assigned centroids
+            points.forEach(point => {
+                if (point.cluster !== -1) {
+                    const centroid = centroids[point.cluster];
+                    ctx.beginPath();
+                    ctx.moveTo(point.x, point.y);
+                    ctx.lineTo(centroid.x, centroid.y);
+                    ctx.strokeStyle = CLUSTER_COLORS[point.cluster % CLUSTER_COLORS.length] + '80'; // '80' = 50% opacity
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            });
+
+            // Draw points
+            points.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, POINT_RADIUS, 0, Math.PI * 2);
+                ctx.fillStyle = point.cluster === -1 ? '#9ca3af' : CLUSTER_COLORS[point.cluster % CLUSTER_COLORS.length];
+                ctx.fill();
+            });
+
+            // Draw centroids
+            centroids.forEach((centroid, index) => {
+                ctx.beginPath();
+                ctx.arc(centroid.x, centroid.y, CENTROID_RADIUS, 0, Math.PI * 2);
+                ctx.fillStyle = CLUSTER_COLORS[index % CLUSTER_COLORS.length];
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Sarabun';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(index + 1, centroid.x, centroid.y);
+            });
+        }
+
+        function updateUI() {
+            if (currentStateIndex < 0) return;
+            draw();
+
+            const state = history[currentStateIndex];
+            let explanation = '';
+            switch(state.phase) {
+                case 'initial':
+                    explanation = 'เริ่มต้น: สุ่มข้อมูลและกำหนด Centroid เริ่มต้น (วงกลมใหญ่) กด "ถัดไป" เพื่อเริ่มจัดกลุ่ม';
+                    break;
+                case 'assign':
+                    explanation = `รอบที่ ${state.iteration} - จัดสรร: จัดสรรแต่ละจุดข้อมูลไปยัง Centroid ที่ใกล้ที่สุด จุดข้อมูลจะเปลี่ยนสีตามกลุ่มที่สังกัด`;
+                    break;
+                case 'update':
+                    explanation = `รอบที่ ${state.iteration} - ปรับปรุง: คำนวณตำแหน่งใหม่ของ Centroid จากค่าเฉลี่ยของจุดในคลัสเตอร์ Centroid จะขยับไปยังตำแหน่งใหม่`;
+                    break;
+                case 'converged':
+                    explanation = `เสร็จสิ้นใน ${state.iteration} รอบ: ตำแหน่งของ Centroid คงที่แล้ว ไม่มีการเปลี่ยนแปลงกลุ่มของข้อมูลอีกต่อไป`;
+                    break;
+            }
+            explanationText.textContent = explanation;
+            iterationCounter.textContent = `รอบที่: ${state.iteration}`;
+
+            prevButton.disabled = currentStateIndex === 0;
+            saveButton.disabled = currentStateIndex < 0;
+            // ** BUG FIX HERE **
+            // The "Next" button should only be disabled if the algorithm has converged.
+            nextButton.disabled = state.phase === 'converged';
+        }
+
+        // --- Event Handlers ---
+        function handleNext() {
+            if (currentStateIndex < history.length - 1) {
+                // If we are navigating back and forth in history, just move to the next state.
+                currentStateIndex++;
+            } else {
+                // Otherwise, compute the next step in the algorithm.
+                const currentState = history[currentStateIndex];
+                if (currentState.phase === 'converged') return;
+
+                let nextState;
+                if (currentState.phase === 'initial' || currentState.phase === 'update') {
+                    const { points: newPoints, changed } = assignPointsToClusters(currentState.points, currentState.centroids);
+                    if (!changed && currentState.phase !== 'initial') {
+                         nextState = { ...clone(currentState), phase: 'converged' };
+                    } else {
+                        nextState = { points: newPoints, centroids: clone(currentState.centroids), phase: 'assign', iteration: currentState.iteration + 1 };
+                    }
+                } else { // phase is 'assign'
+                    const newCentroids = updateCentroids(currentState.points, currentState.centroids);
+                    nextState = { points: clone(currentState.points), centroids: newCentroids, phase: 'update', iteration: currentState.iteration };
+                }
+                history.push(nextState);
+                currentStateIndex++;
+            }
+            updateUI();
+        }
+
+        function handlePrev() {
+            if (currentStateIndex > 0) {
+                currentStateIndex--;
+                updateUI();
+            }
+        }
+
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            for(let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                const metrics = context.measureText(testLine);
+                const testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, y);
+        }
+
+        function handleSaveImage() {
+            const tempCanvas = document.createElement('canvas');
+            const explanationPadding = 80;
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height + explanationPadding;
+            
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            tempCtx.fillStyle = '#f3f4f6';
+            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+            tempCtx.drawImage(canvas, 0, 0);
+
+            tempCtx.fillStyle = '#ffffff';
+            tempCtx.fillRect(0, canvas.height, tempCanvas.width, explanationPadding);
+            
+            tempCtx.fillStyle = '#374151';
+            tempCtx.font = '18px Sarabun';
+            tempCtx.textAlign = 'center';
+            wrapText(tempCtx, explanationText.textContent, tempCanvas.width / 2, canvas.height + 30, tempCanvas.width - 40, 24);
+
+            const link = document.createElement('a');
+            link.download = `kmeans-step-${currentStateIndex}.png`;
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // --- Event Listeners ---
+        resetButton.addEventListener('click', initialize);
+        nextButton.addEventListener('click', handleNext);
+        prevButton.addEventListener('click', handlePrev);
+        saveButton.addEventListener('click', handleSaveImage);
+        
+        window.onload = initialize;
+    </script>
+
+</body>
+</html>
