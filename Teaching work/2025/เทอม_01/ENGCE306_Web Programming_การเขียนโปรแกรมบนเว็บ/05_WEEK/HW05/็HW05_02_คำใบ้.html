@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote Generator (Hint)</title>
+    <link rel="stylesheet" href="HW05_02.css">
+</head>
+<body>
+
+    <div class="quote-container">
+        <div class="quote-wrapper">
+            <blockquote id="quote-text">
+                กดปุ่มเพื่อเริ่มสุ่มคำคม...
+            </blockquote>
+            <cite id="quote-author"></cite>
+        </div>
+        <button id="new-quote-btn">สุ่มคำคมใหม่</button>
+    </div>
+
+    <script type="module">
+        // TODO: ส่วนที่ 1: กำหนดโครงสร้างข้อมูล (Interface และ Array)
+
+        /**
+         * @typedef {object} Quote - โครงสร้างของข้อมูลสำหรับคำคม
+         * @property {string} text - ข้อความคำคม
+         * @property {string} author - ชื่อผู้กล่าว
+         */
+
+        /** @type {Quote[]} */
+        const quotes = [
+            // เพิ่ม object คำคมอย่างน้อย 3-4 อันที่นี่
+            // ตัวอย่าง:
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+            { text: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" },
+            { text: "The mind is everything. What you think you become.", author: "Buddha" },
+            { text: "Your time is limited, so don’t waste it living someone else’s life.", author: "Steve Jobs" }
+        ];
+
+
+        // TODO: ส่วนที่ 2: อ้างอิง HTML Elements
+        const quoteTextElement = document.getElementById('quote-text');
+        const quoteAuthorElement = document.getElementById('quote-author');
+        const newQuoteBtn = document.getElementById('new-quote-btn');
+
+
+        // TODO: ส่วนที่ 3: สร้างฟังก์ชันหลัก (getRandomQuote, displayQuote)
+
+        /**
+         * สุ่มคำคมจาก array `quotes`
+         * @returns {Quote} - object คำคมที่สุ่มได้
+         */
+        function getRandomQuote() {
+            // 1. สุ่ม index จาก 0 ถึงความยาวของ array `quotes` - 1
+            //    (ใช้ Math.random() และ Math.floor())
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            
+            // 2. ดึงคำคมจาก array `quotes` ตาม index ที่สุ่มได้
+            const randomQuote = quotes[randomIndex];
+
+            // 3. คืนค่า (return) object คำคมนั้นออกมา
+            return randomQuote;
+        }
+
+        /**
+         * แสดงคำคมบนหน้าเว็บ
+         * @param {Quote} quote - object คำคมที่จะแสดง
+         */
+        function displayQuote(quote) {
+            // 1. นำ quote.text ไปแสดงใน quoteTextElement (ใช้ .textContent)
+            quoteTextElement.textContent = quote.text;
+            
+            // 2. นำ quote.author ไปแสดงใน quoteAuthorElement
+            quoteAuthorElement.textContent = quote.author;
+        }
+
+
+        // TODO: ส่วนที่ 4: เพิ่ม Event Listener และการทำงานเริ่มต้น
+        
+        function showNewQuote() {
+             // 1. เรียกใช้ getRandomQuote() เพื่อเอาคำคมใหม่
+            const newQuote = getRandomQuote();
+            // 2. เรียกใช้ displayQuote() เพื่อแสดงคำคมที่ได้มา
+            displayQuote(newQuote);
+        }
+
+        // Event listener สำหรับปุ่ม "สุ่มคำคมใหม่"
+        newQuoteBtn.addEventListener('click', showNewQuote);
+
+        // --- การทำงานเริ่มต้น ---
+        // เมื่อเปิดหน้าเว็บครั้งแรก ให้แสดงคำคมเริ่มต้นเลย
+        showNewQuote();
+        
+    </script>
+</body>
+</html>
