@@ -1,14 +1,9 @@
-const button = document.getElementById('myButton');
-const text = document.getElementById('myText');
-button.addEventListener('click', () => {
-  text.style.color = 'red';
-});
-
-const [isClicked, setIsClicked] = useState(false);
-return (
-  <p style={{ color: isClicked ? 'red' : 'black' }}>
-    Some Text
-  </p>
-);
-
-
+function AboutMe() {
+  return (
+    <section id="about">
+      <h2>About Me</h2>
+      <p>My name is Somsak Jaidee and I am a Computer Engineering student with a passion for web development.</p>
+    </section>
+  );
+}
+export default AboutMe;
