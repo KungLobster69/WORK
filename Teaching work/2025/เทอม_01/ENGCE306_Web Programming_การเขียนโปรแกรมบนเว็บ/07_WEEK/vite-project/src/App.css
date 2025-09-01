@@ -1,0 +1,19 @@
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+/* เพิ่มสไตล์เล็กน้อยสำหรับ To-Do List */
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+li span {
+  flex-grow: 1;
+  margin: 0 0.5rem;
+}
