@@ -1,0 +1,66 @@
+<!-- 01 -->
+<div class="card">
+  <div class="card-header">
+    <h1>ชื่อหนังสือ</h1>
+  </div>
+  <div class="card-body">
+    <img src="[https://placehold.co/200x280](https://placehold.co/200x280)">
+    <p>คำอธิบายสั้นๆ เกี่ยวกับหนังสือ...</p>
+  </div>
+  <div class="card-footer">
+    <p>ผู้แต่ง: สมชาย ใจดี | ราคา: 299 บาท</p>
+  </div>
+</div>
+
+<!-- 02 -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>CSS Analysis</title>
+    <style>
+        .card-container {
+          background-color: lightgray;
+          border: 1px solid black;
+        }
+        p {
+          color: blue;
+          font-size: 16px;
+        }
+        .highlight-text {
+          background-color: yellow;
+          color: red;
+          border: 2px dashed red;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+      <p class="highlight-text">โปรโมชั่นพิเศษ!</p>
+    </div>
+</body>
+</html>
+
+<!-- 03 -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <title>JavaScript Event Analysis</title>
+</head>
+<body>
+    <p id="status-message">กรุณารอสักครู่...</p>
+    <button id="confirm-btn">ยืนยันข้อมูล</button>
+
+    <script>
+        const message = document.getElementById('status-message');
+        const button = document.getElementById('confirm-btn');
+
+        button.addEventListener('click', () => {
+            message.textContent = 'บันทึกข้อมูลสำเร็จ!';
+            message.style.color = 'green';
+            message.style.fontWeight = 'bold';
+            button.textContent = 'ดำเนินการเรียบร้อย';
+            button.disabled = true;
+        });
+    </script>
+</body>
+</html>
