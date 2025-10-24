@@ -1,0 +1,333 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.8 Chrome/140.0.7339.240 Electron/38.4.0 Safari/537.36" version="28.2.8">
+  <diagram name="Page-1" id="eP4tzcnQiLDJRXvrMQ2j">
+    <mxGraphModel dx="2426" dy="1656" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="etTe637KNwKxk9RRvghC-88" value="" style="rounded=0;whiteSpace=wrap;html=1;gradientColor=none;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="320" y="80" width="1640" height="840" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-2" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;b style=&quot;&quot;&gt;GEBXXXXX&lt;br&gt;&lt;/b&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot; face=&quot;Helvetica&quot;&gt;ศึกษาทั่วไปบังคับ 1&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;strokeColor=#FF0000;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-3" target="etTe637KNwKxk9RRvghC-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=0;dashed=1;strokeColor=#FF0000;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-3" target="etTe637KNwKxk9RRvghC-21">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="380" />
+              <mxPoint x="840" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=0;dashed=1;strokeColor=#FF0000;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-3" target="etTe637KNwKxk9RRvghC-22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="460" />
+              <mxPoint x="840" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-3" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;FUNMA110&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Fundamental of Calculus for Engineers&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="400" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-5" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCC301&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Engineering Drawing&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="480" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;curved=0;strokeColor=#FF8000;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-6" target="etTe637KNwKxk9RRvghC-14">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="530" y="580" />
+              <mxPoint x="530" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-6" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCC304&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Computer Programming&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="560" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-7" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGEE105&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Fundamental of Engineering Training&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-8" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGEE106&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Electrical Instruments and Measurements&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-9" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGEE160&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Engineering Electronics&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="800" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-11" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปบังคับ 2&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-12" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;FUNMA111&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Applied Calculus for Engineers&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="400" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-13" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;FUNSC115&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Fundamental of Physics for Engineers&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="480" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;curved=0;strokeColor=#0000FF;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-14" target="etTe637KNwKxk9RRvghC-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="580" />
+              <mxPoint x="730" y="780" />
+              <mxPoint x="840" y="780" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-14" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE117&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-size: 6px;&quot;&gt;&lt;b&gt;Computer Programming for ComputerEngineer&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="560" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-44" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;curved=0;strokeColor=#7F00FF;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-15" target="etTe637KNwKxk9RRvghC-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="690" />
+              <mxPoint x="950" y="690" />
+              <mxPoint x="950" y="780" />
+              <mxPoint x="1040" y="780" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-15" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE118&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Discrete Mathematics for ComputerEngineering&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-16" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE120&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Basic Computer Engineering Skills&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;curved=0;strokeColor=#80FF00;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-17" target="etTe637KNwKxk9RRvghC-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="820" />
+              <mxPoint x="740" y="540" />
+              <mxPoint x="840" y="540" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-17" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGEE161&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Digital Circuits and Logic Design&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="800" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-20" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปบังคับ 3&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-21" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGEE101&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Electric Circuits&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="400" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-22" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGEE102&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Electrical Engineering Mathematics&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="480" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-23" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE106&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-size: 6px;&quot;&gt;&lt;b&gt;Data Communication and Networks&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="560" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-46" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=0;dashed=1;strokeColor=#FF66FF;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-24" target="etTe637KNwKxk9RRvghC-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="660" />
+              <mxPoint x="930" y="770" />
+              <mxPoint x="1040" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-24" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE119&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Probability and Statistics for Engineering&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-25" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE121&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Computer Architecture and Organization&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-41" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;curved=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#FF0080;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-26" target="etTe637KNwKxk9RRvghC-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-26" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE124&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Data Structures and Algorithms&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="800" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;curved=0;dashed=1;strokeColor=#80FF00;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-17" target="etTe637KNwKxk9RRvghC-25">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="850" as="sourcePoint" />
+            <mxPoint x="800" y="610" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="740" y="820" />
+              <mxPoint x="740" y="700" />
+              <mxPoint x="840" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-33" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปบังคับ 4&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-34" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปบังคับ 5&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="400" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-54" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;curved=0;dashed=1;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-35" target="etTe637KNwKxk9RRvghC-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-35" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE122&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Microprocessor and Interface&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="480" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-36" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE125&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-size: 6px;&quot;&gt;&lt;b&gt;Operating Systems&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="560" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-55" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;curved=0;dashed=1;strokeColor=#FF9933;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-37" target="etTe637KNwKxk9RRvghC-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-37" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE126&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Database System&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-38" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE200&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Digital Systems Design&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-39" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE400&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Introduction to Artificial Intelligence andMachine Learning&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="800" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;curved=0;strokeColor=#80FF00;" edge="1" parent="1" target="etTe637KNwKxk9RRvghC-35">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="720" y="820" as="sourcePoint" />
+            <mxPoint x="910" y="550" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="740" y="820" />
+              <mxPoint x="740" y="450" />
+              <mxPoint x="1040" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;curved=0;strokeColor=#0000FF;" edge="1" parent="1" target="etTe637KNwKxk9RRvghC-37">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="720" y="580" as="sourcePoint" />
+            <mxPoint x="840" y="800" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="730" y="580" />
+              <mxPoint x="730" y="620" />
+              <mxPoint x="1040" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;curved=0;dashed=1;strokeColor=#80FF00;" edge="1" parent="1" target="etTe637KNwKxk9RRvghC-38">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="720" y="819.97" as="sourcePoint" />
+            <mxPoint x="840" y="719.97" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="740" y="820" />
+              <mxPoint x="740" y="700" />
+              <mxPoint x="1040" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-47" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปบังคับ 6&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-48" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปบังคับ 7&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="400" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-49" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE110&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Computer and Data Security&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="480" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-50" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE123&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-size: 6px;&quot;&gt;&lt;b&gt;Embedded Systems and Internet ofEverything&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="560" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-51" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE127&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;System Analysis and Design&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-52" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCEXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;วิชาชีพเลือก 1&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-53" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCEXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;วิชาชีพเลือก 2&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="800" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-56" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปบังคับ 8&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-68" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=0;dashed=1;strokeColor=#B266FF;" edge="1" parent="1" source="etTe637KNwKxk9RRvghC-57" target="etTe637KNwKxk9RRvghC-66">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1440" y="460" />
+              <mxPoint x="1840" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-57" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE113&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Computer Engineering Pre-Project&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="400" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-58" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE128&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Pre-Co-Operative Education in ComputerEngineering&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="480" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-59" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCEXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-size: 6px;&quot;&gt;&lt;b&gt;วิชาชีพเลือก 3&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="560" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-60" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCEXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;วิชาชีพเลือก 4&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-61" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;XXXXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;วิชาเลือกเสรี 1&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="720" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-63" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE115&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Co-operative Education in ComputerEngineering&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1560" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-64" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปเลือก&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="320" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-65" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GEBXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;ศึกษาทั่วไปเลือก 2&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="400" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-66" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;ENGCE114&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 6px;&quot;&gt;Computer Engineering Project&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="480" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-67" value="&lt;p&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;XXXXXXXX&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-size: 6px;&quot;&gt;&lt;b&gt;วิชาเลือกเสรี 2&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="560" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-70" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;ปีการศึกษาที่ 1&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="440" y="200" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-71" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;ภาคการศึกษาที่ 1&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="360" y="260" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-73" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;ภาคการศึกษาที่ 2&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="560" y="260" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-74" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;ภาคการศึกษาที่ 1&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="760" y="260" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-75" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;ภาคการศึกษาที่ 2&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="960" y="260" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-76" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;ภาคการศึกษาที่ 1&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1160" y="260" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-77" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;ภาคการศึกษาที่ 2&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1360" y="260" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-78" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;ภาคการศึกษาที่ 1&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1560" y="260" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-79" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;ภาคการศึกษาที่ 2&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1760" y="260" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-80" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;ปีการศึกษาที่ 2&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="840" y="200" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-81" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;ปีการศึกษาที่ 3&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1240" y="200" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-82" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;ปีการศึกษาที่ 4&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1640" y="200" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-83" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="740" y="880" as="sourcePoint" />
+            <mxPoint x="740" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-84" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1140" y="880" as="sourcePoint" />
+            <mxPoint x="1140" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-85" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1540" y="880" as="sourcePoint" />
+            <mxPoint x="1540" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="etTe637KNwKxk9RRvghC-86" value="&lt;font style=&quot;font-size: 36px;&quot;&gt;แผนการศึกษา&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="930" y="120" width="400" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
