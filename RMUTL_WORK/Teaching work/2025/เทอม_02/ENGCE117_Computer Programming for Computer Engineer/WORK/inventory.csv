@@ -1,0 +1,201 @@
+ID,Type,Name,Price,Stock,Extra_Info
+1001,Perishable,Greek Yogurt (200g),1117,97,2026-02-21
+1002,Electronic,Mechanical Keyboard Model-493,44253,145,1 Year
+1003,Electronic,External Hard Drive Model-351,3395,49,6 Months
+1004,Perishable,Kimchi (2000g),866,69,2026-01-31
+1005,Electronic,External Hard Drive Model-527,10426,7,6 Months
+1006,Electronic,Wireless Mouse Model-499,98398,9,3 Years
+1007,Electronic,Wireless Mouse Model-752,56788,119,5 Years
+1008,Perishable,Vanilla Ice Cream (100g),1825,97,2026-03-28
+1009,Electronic,VR Headset Model-894,42737,160,3 Years
+1010,Perishable,Kimchi (1000g),583,56,2026-03-01
+1011,Perishable,Tomatoes (500g),436,82,2026-02-28
+1012,Electronic,Drone Model-802,99273,117,2 Years
+1013,Perishable,Spinach (300g),849,94,2026-02-16
+1014,Electronic,Projector Model-524,64592,93,6 Months
+1015,Perishable,Organic Eggs (200g),51,14,2026-02-27
+1016,Perishable,Bacon (5000g),1690,56,2026-01-16
+1017,Perishable,Whole Wheat Bread (100g),1306,5,2026-01-17
+1018,Perishable,Fresh Milk (2000ml),541,78,2026-04-04
+1019,Electronic,Monitor 24 inch Model-110,84882,17,3 Years
+1020,Electronic,Projector Model-961,33706,26,3 Years
+1021,Perishable,Organic Eggs (300g),631,37,2026-03-10
+1022,Electronic,Printer Model-484,81183,114,5 Years
+1023,Perishable,Soft Tofu (500g),697,18,2026-01-15
+1024,Perishable,Cheddar Cheese (200g),1075,36,2026-03-30
+1025,Perishable,Fresh Basil (5000g),633,50,2026-01-17
+1026,Perishable,Fresh Milk (300ml),421,93,2026-02-19
+1027,Electronic,VR Headset Model-762,2130,138,6 Months
+1028,Electronic,External Hard Drive Model-352,57384,40,1 Year
+1029,Perishable,Whole Wheat Bread (5000g),494,33,2026-03-05
+1030,Electronic,Drone Model-740,87064,88,5 Years
+1031,Electronic,WiFi Router Model-406,50145,162,1 Year
+1032,Perishable,Strawberries (300g),192,74,2026-02-02
+1033,Electronic,External Hard Drive Model-222,26860,105,5 Years
+1034,Perishable,Soy Milk (1000ml),1989,27,2026-03-24
+1035,Perishable,Pork Tenderloin (5000g),90,75,2026-04-10
+1036,Perishable,Grapes (500g),990,15,2026-01-13
+1037,Perishable,Organic Eggs (100g),533,74,2026-02-10
+1038,Electronic,WiFi Router Model-465,64256,190,1 Year
+1039,Electronic,Extension Cord Model-826,20229,29,2 Years
+1040,Perishable,Carrots (200g),777,27,2026-03-07
+1041,Perishable,Apple (1000g),1464,6,2026-01-30
+1042,Electronic,Monitor 24 inch Model-408,2048,198,1 Year
+1043,Perishable,Carrots (2000g),145,18,2026-04-10
+1044,Electronic,HDMI Cable Model-622,77447,174,2 Years
+1045,Perishable,Kimchi (200g),147,39,2026-03-09
+1046,Electronic,Power Bank Model-589,45949,58,3 Years
+1047,Perishable,Chicken Breast (5000g),1457,26,2026-01-28
+1048,Electronic,Webcam Model-709,32154,74,2 Years
+1049,Electronic,Micro SD Card Model-338,33294,0,1 Year
+1050,Electronic,WiFi Router Model-450,22949,99,3 Years
+1051,Electronic,Gaming Chair Model-866,1568,60,3 Years
+1052,Perishable,Banana (1000g),188,48,2026-02-14
+1053,Perishable,Blueberries (1000g),287,60,2026-02-25
+1054,Electronic,Smartphone Model-462,53095,58,3 Years
+1055,Electronic,Wireless Mouse Model-484,65333,177,2 Years
+1056,Electronic,Mechanical Keyboard Model-394,85581,24,1 Year
+1057,Electronic,Drone Model-815,92723,84,5 Years
+1058,Electronic,VR Headset Model-338,18760,115,3 Years
+1059,Perishable,Fresh Basil (100g),1442,56,2026-02-14
+1060,Electronic,Bluetooth Speaker Model-139,12404,122,2 Years
+1061,Electronic,Wireless Mouse Model-743,25945,119,1 Year
+1062,Electronic,Headphones Model-675,77110,16,5 Years
+1063,Perishable,Strawberries (5000g),842,17,2026-01-10
+1064,Electronic,External Hard Drive Model-685,19222,38,6 Months
+1065,Electronic,Printer Model-608,16989,105,3 Years
+1066,Perishable,Blueberries (1000g),503,17,2026-03-30
+1067,Electronic,Smart Plug Model-689,39160,43,6 Months
+1068,Electronic,VR Headset Model-128,71936,106,3 Years
+1069,Electronic,Mechanical Keyboard Model-513,60508,120,1 Year
+1070,Perishable,Frozen Peas (1000g),928,64,2026-02-22
+1071,Perishable,Greek Yogurt (200g),1406,57,2026-02-06
+1072,Electronic,VR Headset Model-455,57730,6,2 Years
+1073,Electronic,Headphones Model-898,33821,148,6 Months
+1074,Perishable,Sausages (200g),1878,60,2026-04-01
+1075,Perishable,Kimchi (5000g),1856,92,2026-04-12
+1076,Perishable,Cheddar Cheese (300g),1917,6,2026-03-10
+1077,Electronic,Webcam Model-671,96748,33,5 Years
+1078,Perishable,Greek Yogurt (2000g),1051,50,2026-04-10
+1079,Perishable,Spinach (100g),1203,66,2026-01-28
+1080,Perishable,Apple (200g),1852,55,2026-02-17
+1081,Perishable,Organic Eggs (1000g),872,12,2026-03-01
+1082,Perishable,Soft Tofu (500g),677,49,2026-01-25
+1083,Perishable,Chicken Breast (200g),443,48,2026-02-24
+1084,Electronic,Micro SD Card Model-751,95601,13,2 Years
+1085,Perishable,Sausages (1000g),558,83,2026-02-09
+1086,Perishable,Grapes (5000g),173,41,2026-04-04
+1087,Electronic,Smartwatch Model-779,15779,62,5 Years
+1088,Perishable,Lettuce (500g),1993,20,2026-04-12
+1089,Electronic,Monitor 24 inch Model-300,46151,108,5 Years
+1090,Electronic,Gaming Chair Model-496,66974,187,5 Years
+1091,Perishable,Carrots (1000g),1247,91,2026-01-20
+1092,Electronic,Drone Model-403,25796,141,5 Years
+1093,Perishable,Spinach (1000g),1316,94,2026-02-09
+1094,Perishable,Grapes (100g),782,45,2026-03-13
+1095,Electronic,Wireless Mouse Model-499,9041,70,3 Years
+1096,Perishable,Orange Juice (1000ml),343,58,2026-02-07
+1097,Perishable,Ground Pork (1000g),937,13,2026-03-28
+1098,Perishable,Chicken Breast (1000g),750,40,2026-01-14
+1099,Electronic,Projector Model-882,57210,53,5 Years
+1100,Electronic,External Hard Drive Model-326,68885,196,6 Months
+1101,Perishable,Organic Eggs (5000g),1971,19,2026-01-17
+1102,Electronic,Projector Model-625,31319,19,3 Years
+1103,Perishable,Salted Butter (2000g),472,87,2026-02-20
+1104,Perishable,Blueberries (1000g),1317,81,2026-01-07
+1105,Electronic,Mechanical Keyboard Model-139,3623,30,3 Years
+1106,Perishable,Tomatoes (300g),263,11,2026-04-11
+1107,Perishable,Salmon Fillet (1000g),388,13,2026-02-21
+1108,Perishable,Kimchi (100g),375,8,2026-03-25
+1109,Electronic,Extension Cord Model-813,48644,135,5 Years
+1110,Electronic,Bluetooth Speaker Model-791,15118,153,5 Years
+1111,Perishable,Avocado (300g),1849,9,2026-02-06
+1112,Perishable,Banana (2000g),944,84,2026-03-07
+1113,Perishable,Orange Juice (1000ml),492,10,2026-02-23
+1114,Perishable,Tomatoes (300g),415,11,2026-02-28
+1115,Perishable,Fresh Basil (500g),1956,77,2026-04-06
+1116,Electronic,VR Headset Model-290,32316,82,5 Years
+1117,Electronic,Smartwatch Model-398,60339,116,2 Years
+1118,Electronic,VR Headset Model-776,19502,186,2 Years
+1119,Electronic,External Hard Drive Model-983,56662,199,5 Years
+1120,Perishable,Strawberries (5000g),143,47,2026-04-03
+1121,Perishable,Soy Milk (200ml),1163,12,2026-01-08
+1122,Electronic,Extension Cord Model-698,19981,195,5 Years
+1123,Electronic,Headphones Model-211,70378,97,5 Years
+1124,Perishable,Apple (5000g),341,35,2026-02-25
+1125,Electronic,Gaming Laptop Model-106,14384,191,6 Months
+1126,Electronic,Projector Model-820,83327,123,3 Years
+1127,Electronic,Projector Model-188,92710,1,1 Year
+1128,Electronic,Printer Model-478,5971,170,5 Years
+1129,Electronic,HDMI Cable Model-862,33639,66,3 Years
+1130,Perishable,Kimchi (200g),1611,11,2026-02-16
+1131,Electronic,Desk Lamp Model-993,33682,143,6 Months
+1132,Electronic,Micro SD Card Model-518,16861,0,2 Years
+1133,Perishable,Salmon Fillet (100g),1902,54,2026-03-04
+1134,Electronic,Smartphone Model-278,25492,119,3 Years
+1135,Perishable,Apple (5000g),1417,37,2026-01-30
+1136,Perishable,Soy Milk (300ml),1779,66,2026-03-26
+1137,Perishable,Blueberries (500g),1081,44,2026-02-13
+1138,Perishable,Soft Tofu (200g),617,97,2026-03-18
+1139,Electronic,HDMI Cable Model-474,22193,65,6 Months
+1140,Electronic,Tablet Model-617,60618,178,1 Year
+1141,Electronic,VR Headset Model-584,36691,102,5 Years
+1142,Perishable,Banana (1000g),778,45,2026-04-08
+1143,Electronic,External Hard Drive Model-734,78931,48,1 Year
+1144,Electronic,Bluetooth Speaker Model-780,61498,159,3 Years
+1145,Perishable,Pork Tenderloin (100g),1378,53,2026-02-01
+1146,Perishable,Pork Tenderloin (1000g),1902,44,2026-02-03
+1147,Perishable,Organic Eggs (2000g),735,92,2026-01-11
+1148,Electronic,VR Headset Model-870,17403,50,2 Years
+1149,Electronic,Drone Model-901,81180,136,3 Years
+1150,Electronic,Drawing Tablet Model-123,3407,147,2 Years
+1151,Perishable,Greek Yogurt (200g),531,71,2026-03-26
+1152,Electronic,Monitor 24 inch Model-311,83148,22,1 Year
+1153,Perishable,Sausages (100g),283,9,2026-01-25
+1154,Electronic,HDMI Cable Model-702,12346,139,6 Months
+1155,Electronic,HDMI Cable Model-118,36729,128,5 Years
+1156,Perishable,Apple (2000g),272,63,2026-01-17
+1157,Perishable,Bacon (100g),403,20,2026-03-01
+1158,Electronic,Smart Plug Model-913,55766,107,5 Years
+1159,Electronic,Extension Cord Model-599,23699,159,1 Year
+1160,Electronic,Projector Model-222,16433,96,6 Months
+1161,Electronic,Smart Plug Model-159,72065,17,2 Years
+1162,Electronic,Power Bank Model-325,12496,44,6 Months
+1163,Perishable,Blueberries (2000g),40,43,2026-04-09
+1164,Electronic,USB Hub Model-426,20835,35,6 Months
+1165,Perishable,Blueberries (200g),1834,13,2026-04-05
+1166,Electronic,HDMI Cable Model-502,91904,156,2 Years
+1167,Electronic,Printer Model-197,7370,2,3 Years
+1168,Electronic,Extension Cord Model-345,15460,2,3 Years
+1169,Perishable,Blueberries (1000g),1458,72,2026-01-25
+1170,Perishable,Spinach (300g),1292,44,2026-03-22
+1171,Electronic,Projector Model-904,28651,35,3 Years
+1172,Electronic,Power Bank Model-627,58065,32,1 Year
+1173,Electronic,Drawing Tablet Model-935,12313,194,1 Year
+1174,Electronic,Gaming Laptop Model-620,82047,143,1 Year
+1175,Electronic,Projector Model-917,92776,160,3 Years
+1176,Electronic,Mechanical Keyboard Model-352,2784,69,2 Years
+1177,Perishable,Soft Tofu (2000g),1123,39,2026-01-28
+1178,Electronic,Gaming Chair Model-382,81701,47,1 Year
+1179,Electronic,Extension Cord Model-856,50738,180,1 Year
+1180,Electronic,Extension Cord Model-155,44936,49,1 Year
+1181,Perishable,Kimchi (1000g),1851,45,2026-01-18
+1182,Perishable,Strawberries (1000g),654,28,2026-03-04
+1183,Perishable,Tomatoes (5000g),1458,96,2026-03-17
+1184,Perishable,Spinach (200g),264,39,2026-03-21
+1185,Electronic,Tablet Model-508,96838,64,3 Years
+1186,Electronic,VR Headset Model-445,1021,124,1 Year
+1187,Perishable,Bacon (5000g),474,97,2026-03-10
+1188,Electronic,Projector Model-951,32458,33,5 Years
+1189,Electronic,HDMI Cable Model-316,42863,199,5 Years
+1190,Electronic,VR Headset Model-360,20330,197,3 Years
+1191,Electronic,Tablet Model-419,94857,48,3 Years
+1192,Electronic,Wireless Mouse Model-896,81099,87,2 Years
+1193,Perishable,Apple (5000g),1971,53,2026-01-17
+1194,Perishable,Spinach (100g),1661,78,2026-03-01
+1195,Perishable,Salmon Fillet (300g),1419,8,2026-01-27
+1196,Electronic,External Hard Drive Model-317,39503,99,2 Years
+1197,Electronic,HDMI Cable Model-775,57012,178,3 Years
+1198,Electronic,Smartphone Model-703,9841,143,5 Years
+1199,Electronic,Webcam Model-288,60418,174,6 Months
+1200,Electronic,Desk Lamp Model-254,84594,200,3 Years
