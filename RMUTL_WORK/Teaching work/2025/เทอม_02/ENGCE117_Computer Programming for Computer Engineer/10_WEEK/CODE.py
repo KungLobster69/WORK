@@ -1,14 +1,25 @@
 import tkinter as tk
 
-root = tk.Tk()
-root.geometry("200x150")
+class MyApp(tk.Tk):
+    def __init__(self):
+        super().__init__() # สร้างหน้าต่างหลัก
+        self.title("My OOP GUI")
+        self.geometry("300x200")
+        
+        # วางโครงสร้าง UI
+        self.create_widgets()
 
-# จัดเรียงจากบนลงล่าง และให้ขยายเต็มแกน X แนวนอน
-tk.Button(root, text="Top Button", bg="red", fg="white").pack(side=tk.TOP, fill=tk.X)
-tk.Button(root, text="Bottom Button", bg="blue", fg="white").pack(side=tk.BOTTOM, fill=tk.X)
+    def create_widgets(self):
+        # สร้าง Widget และเก็บไว้ใน self
+        self.label = tk.Label(self, text="Hello OOP GUI!", font=("Arial", 14))
+        self.label.pack(pady=20)
+        
+        self.btn = tk.Button(self, text="Click Me", command=self.on_click)
+        self.btn.pack(pady=10)
+        
+    def on_click(self):
+        self.label.config(text="Button Clicked!", fg="red")
 
-# จัดเรียงซ้ายขวา
-tk.Button(root, text="Left", bg="green", fg="white").pack(side=tk.LEFT, fill=tk.Y)
-tk.Button(root, text="Right", bg="orange", fg="black").pack(side=tk.RIGHT, fill=tk.Y)
-
-root.mainloop()
+if __name__ == "__main__":
+    app = MyApp()
+    app.mainloop()
